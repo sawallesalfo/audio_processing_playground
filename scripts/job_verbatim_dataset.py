@@ -48,7 +48,6 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
         file_path = f"{bucket_name}/{file}"
         dataset = create_dataset_from_json(file_path, fs)
         datasets.append(dataset)
-        break
 
     if datasets:
         combined_dataset = concatenate_datasets(datasets)
