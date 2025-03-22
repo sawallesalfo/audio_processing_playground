@@ -51,7 +51,7 @@ def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options=None
     logger.info("Tous les fichiers audio ont été enregistrés.")
   
     # Récupération des données du dataset initial
-    paths = get_audio_paths(output_dir)
+    paths = get_audio_paths(output_dir, "wav)
     logger.info(f"Nombre de fichiers audio détectés : {len(paths)}")
 
     transcripts = dataset["transcript"]
