@@ -108,7 +108,6 @@ if __name__ == "__main__":
     PAGE_END = 42
     audio_files  = generate_audio_dict(PAGE_START, PAGE_END, "raw_data", CHAPTER, file_pattern)
 
-
     access_key = os.getenv("AWS_ACCESS_KEY_ID")
     secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
     endpoint_url = os.getenv("AWS_ENDPOINT_URL_S3")
