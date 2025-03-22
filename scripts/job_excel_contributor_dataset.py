@@ -16,7 +16,6 @@ from shelpers.parser import time_to_milliseconds, extract_audio_identifier, remo
 from shelpers.matcher import get_matches
 from shelpers.s3 import download_file_from_s3
 
-
 def segment_audio_from_excel(df_sheet, audio, sheet_name, output_folder="segments"):
     """ Segmente un fichier audio en fonction des timestamps d'une feuille Excel. """
     sheet_output_folder = os.path.join(output_folder, sheet_name)
