@@ -11,7 +11,7 @@ on:
       - scripts/job_verbatim_dataset.py
     branches:
       - master                    # Only run on pull requests to the master branch
-  workflow_dispatch:              # Allows manual triggering of the workflow
+  # workflow_dispatch:              # Allows manual triggering of the workflow
 
 env:
   IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/moorecollection
