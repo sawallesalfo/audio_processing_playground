@@ -49,6 +49,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
     results = []
 
     for sheet_name in tqdm(sheet_names, desc="📄 Traitement des feuilles"):
+        print(sheet_name)
 
         if sheet_name in audio_files:
             audio_file = audio_files[sheet_name]
@@ -65,14 +66,15 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
         # Extraction de l'ID de la page
         try:
             page_id = int(sheet_name.replace("page_", ""))
-        except ValueError:
+        except ValueError as e:
             logger.error(f"⚠️ Impossible d'extraire un ID de page depuis '{sheet_name}'")
-            continue
+            raise e
 
         segments = get_audio_paths(f"{output_folder}/{sheet_name}", "wav")
 
         # Filtrage des transcriptions correspondant à cette page et ce chapitre
         sub_transcription_df = dataset[(dataset["page"] == page_id) & (dataset["chapter"] == chapter)]
+        print("hello")
         transcriptions = get_matches(df_sheet, sub_transcription_df)
 
         audio_sequence = list(range(1, len(transcriptions) + 1))
@@ -89,7 +91,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
 
 def generate_audio_dict(page_start, page_end, base_path, subfolder, file_pattern):
     audio_files = {
-        f"page_{page}": os.path.join(base_path, subfolder, file_pattern.format(page=page))
+        f"page_{page}": os.path.join(base_path, subfolder) + "\\" + file_pattern.format(page=page)
         for page in range(page_start, page_end + 1)
     }
     return audio_files
@@ -132,8 +134,7 @@ if __name__ == "__main__":
     logger.info("Download files")
     download_file_from_s3(s3_client, BUCKET_NAME, EXCEL_FILE, EXCEL_FILE)
     for audio_file in audio_files.values():
-        audio_file = audio_file.replace("raw_data\\", "raw_data/")   #drunkly code , (trick to pass data bad storage)
-        print (audio_file)
+        print(audio_file)
         download_file_from_s3(s3_client, BUCKET_NAME, audio_file, audio_file)
 
 
