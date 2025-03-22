@@ -5,8 +5,3 @@ datasets
 boto3
 s3fs
 pydub  #audio
-
-export AWS_SECRET_ACCESS_KEY=tsec_+Hi+IEp5cjohld+dpFAn+6mYDtmch8nuTDc_QInPkY4CY0dpGIRp2QdDLYZfOH-hVkC8RT
-export AWS_ACCESS_KEY_ID=tid_KmqUYMFShhoOTFfgrzXeiqCyDrAMTIDufIQhKvoRlmWkYRjvAv
-export AWS_ENDPOINT_URL_S3=https://fly.storage.tigris.dev
-export HF_TOKEN=hf_cAFaxllXthoXPtqmJoFWfwEgaqWQiKDqF
