@@ -83,7 +83,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
         agg_dataset = dataset.map(mapper_function2, batched=True, batch_size=BATCH_SIZE, remove_columns=list(dataset.features))
         agg_dataset = agg_dataset.add_column("audio_sequence", list(range(1, len(agg_dataset) + 1)))
         combined_dataset.append(agg_dataset)
-    
+        break
     if combined_dataset:
         final_dataset = concatenate_datasets(combined_dataset)
         final_dataset = final_dataset.cast(features)
