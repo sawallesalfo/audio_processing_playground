@@ -40,7 +40,6 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
     })
 
     files = list_s3_files(s3_client, bucket_name, folder_to_process)[1:]  # Skip the folder itself
-
     datasets = []
     for file in files:
         try:
