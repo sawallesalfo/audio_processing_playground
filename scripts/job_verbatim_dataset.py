@@ -42,15 +42,12 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
     files = list_s3_files(s3_client, bucket_name, folder_to_process)[1:]  # Skip the folder itself
     datasets = []
     for file in files:
-        try:
-            segmented_audio_folder = f"fasoai-segmented_audios/Sɩngre/{file.split('/')[-1].replace('.json','')}"
-            print(segmented_audio_folder)
-            download_folder_from_s3(s3_client, bucket_name, segmented_audio_folder)
-            file_path = f"{bucket_name}/{file}"
-            dataset = create_dataset_from_json(file_path, fs)
-            datasets.append(dataset)
-        except Exception as e:
-            print(f"Error processing file {file}: {e}")
+        segmented_audio_folder = f"fasoai-segmented_audios/Sɩngre/{file.split('/')[-1].replace('.json','')}"
+        print(segmented_audio_folder)
+        download_folder_from_s3(s3_client, bucket_name, segmented_audio_folder)
+        file_path = f"{bucket_name}/{file}"
+        dataset = create_dataset_from_json(file_path, fs)
+        datasets.append(dataset)
         break
 
     if datasets:
