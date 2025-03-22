@@ -1,4 +1,4 @@
-name: Scripts jobs audio segmentation
+name: Scripts jobs Ccontributor matcher
 
 on:
   push:
@@ -37,4 +37,4 @@ jobs:
           mkdir -p /app/scripts/downloaded_audio && chmod 777 /app/scripts/downloaded_audio && ls -ld /app/scripts/downloaded_audio"
 
       - name: Run Python script inside Docker
-        run: docker run --rm -v ${{ github.workspace }}:/app -w /app --env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --env AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }}  ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} /bin/bash -c "python /app/scripts/job_excel_contributor_dataset.py"
+        run: docker run --rm -v ${{ github.workspace }}:/app -w /app --env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --env AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --env HF_TOKEN=${{ secrets.HF_TOKEN }} --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }}  ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} /bin/bash -c "python /app/scripts/job_excel_contributor_dataset.py"
