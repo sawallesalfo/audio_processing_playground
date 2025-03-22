@@ -11,12 +11,6 @@ Ce module réalise les opérations suivantes :
 4. Construit un nouveau dataset Hugging Face en associant à chaque audio son transcript, la page associée, la séquence audio et la durée.
 5. Affiche la durée totale de l'ensemble des fichiers audio et le dataset final.
 
-Les dépendances requises sont :
-- datasets (Hugging Face)
-- soundfile
-- pydub
-- tqdm
-
 Assurez-vous d'avoir installé les dépendances via pip (par exemple, `pip install datasets soundfile pydub tqdm ffmpeg`) et que ffmpeg est installé sur votre système.
 """
 
