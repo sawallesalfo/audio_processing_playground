@@ -133,6 +133,7 @@ if __name__ == "__main__":
     download_file_from_s3(s3_client, BUCKET_NAME, EXCEL_FILE, EXCEL_FILE)
     for audio_file in audio_files.values():
         audio_file = audio_file.replace("raw_data\\", "raw_data/")   #drunkly code , (trick to pass data bad storage)
+        print (audio_file)
         download_file_from_s3(s3_client, BUCKET_NAME, audio_file, audio_file)
 
 
