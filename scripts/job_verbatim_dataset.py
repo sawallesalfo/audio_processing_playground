@@ -55,7 +55,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
         combined_dataset = combined_dataset.cast(features)
         combined_dataset.save_to_disk(
             output_path,
-            storage_options={"key": access_key, "secret": secret_key, client_kwargs={"endpoint_url":endpoint_url}},
+            storage_options={"key": access_key, "secret": secret_key, "client_kwargs":{"endpoint_url":endpoint_url}},
         )
         print(f"Dataset saved to {output_path}")
     else:
