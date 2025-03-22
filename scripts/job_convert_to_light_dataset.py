@@ -43,7 +43,6 @@ def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options):
     """
     os.makedirs(output_dir, exist_ok=True)            
     dataset = load_from_disk(dataset_path, storage_options=storage_options)
-    
     logger.info(f"Dataset chargé: {len(dataset)} exemples, {dataset.data.nbytes/1e6:.2f} MB")
     
     # Conversion et sauvegarde des fichiers audio au format WAV
