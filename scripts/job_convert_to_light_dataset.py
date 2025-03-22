@@ -23,7 +23,7 @@ from tqdm import tqdm
 from loguru import logger
 from shelpers.collectors import get_audio_paths
 
-def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options):
+def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options=None):
     """
     Convertit les fichiers audio d'un dataset Hugging Face en fichiers WAV.
     
@@ -90,8 +90,6 @@ def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options):
     return new_dataset
 
 if __name__ == "__main__":
-
-    dataset = convert_audio_to_wav("path/to/local/dataset")
     
     BUCKET_NAME = "moore-collection"
     DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated"
@@ -104,5 +102,5 @@ if __name__ == "__main__":
     }
     }
 
-    dataset = convert_audio_to_wav(DATASET_PATH, s3_credentials=storage_options)
+    dataset = convert_audio_to_wav(DATASET_PATH, "aduios", storage_options)
     dataset.save_to_disk(OUTPUT_PATH, storage_options=storage_options)
