@@ -42,7 +42,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
     files = list_s3_files(s3_client, bucket_name, folder_to_process)[1:]  # Skip the folder itself
     datasets = []
     for file in files:
-        segmented_audio_folder = f"fasoai-segmented_audios/Sɩngre/{file.split('/')[-1].replace('.json','')}"
+        segmented_audio_folder = f"fasoai-segmented_audios/Sɩngre/{file.split('/')[-1].replace('.json','')}/"
         print(segmented_audio_folder)
         download_folder_from_s3(s3_client, bucket_name, segmented_audio_folder)
         file_path = f"{bucket_name}/{file}"
@@ -55,7 +55,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
         combined_dataset = combined_dataset.cast(features)
         combined_dataset.save_to_disk(
             output_path,
-            storage_options={"key": access_key, "secret": secret_key, "endpoint_url": endpoint_url},
+            storage_options={"key": access_key, "secret": secret_key, client_kwargs={"endpoint_url":endpoint_url}},
         )
         print(f"Dataset saved to {output_path}")
     else:
