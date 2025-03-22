@@ -29,7 +29,8 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
         aws_secret_access_key=secret_key,
         endpoint_url=endpoint_url,
     )
-    fs = s3fs.S3FileSystem(key=access_key, secret=secret_key, endpoint_url=endpoint_url)
+    
+    fs = s3fs.S3FileSystem(key=access_key, secret=secret_key, client_kwargs={"endpoint_url":endpoint_url})
 
     features = Features({
         "audio": Audio(sampling_rate=48000),
