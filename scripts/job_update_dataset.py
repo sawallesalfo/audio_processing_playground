@@ -4,7 +4,7 @@ from loguru import logger
 
 def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_path, storage_options, hf_token, commit_message):
     """
-    Charge, vérifie et fusionne deux datasets audio, puis pousse le résultat sur le Hub Hugging Face.
+    Charge, vérifie et fusionne deux datasets audio, puis pousse le résultat sur le Hub Hugging Face
 
     Args:
         current_dataset_path (str): Chemin du dataset actuel sur Hugging Face Hub.
