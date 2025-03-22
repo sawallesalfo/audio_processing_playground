@@ -22,7 +22,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
     endpoint_url = os.getenv("AWS_ENDPOINT_URL_S3")
 
     if not all([access_key, secret_key, endpoint_url]):
-        raise ValueError("AWS credentials or endpoint URL not set as environment variables.")
+        raise ValueError("AWS credentials or endpoint URL not set as environment variables")
 
     s3_client = boto3.client(
         "s3",
