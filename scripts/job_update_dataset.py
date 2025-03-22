@@ -62,7 +62,7 @@ if __name__ == "__main__":
     BUCKET_NAME = "moore-collection"
     CURRENT_DATASET_PATH = "burkimbia/audio-dataset-aggregated"
 
-    ########################## Change me ######################################"
+    ########################## Change me ######################################
     COMMIT_MESSAGE = "Mise à jour - Chapitre Singre complet aec page 41 and 42" 
     INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_Sɩngre"
     OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
