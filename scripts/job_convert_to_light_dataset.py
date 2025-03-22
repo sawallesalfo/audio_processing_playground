@@ -52,6 +52,8 @@ def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options=None
   
     # Récupération des données du dataset initial
     paths = get_audio_paths(output_dir)
+    logger.info(f"Nombre de fichiers audio détectés : {len(paths)}")
+
     transcripts = dataset["transcript"]
     pages = dataset["page"]
     audio_sequences = dataset["audio_sequence"]
@@ -81,7 +83,7 @@ def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options=None
             "audio_sequence": audio_seq,
             "duration": duration
         })
-    
+    logger.info(f"Nombre d'entrées dans data_dict: {len(data_dict)}")
     logger.info(f"Durée totale des audios : {sum(durations):.2f} secondes")
     
     new_dataset = Dataset.from_list(data_dict).cast(features)
@@ -102,5 +104,5 @@ if __name__ == "__main__":
     }
     }
 
-    dataset = convert_audio_to_wav(DATASET_PATH, "aduios", storage_options)
+    dataset = convert_audio_to_wav(DATASET_PATH, "audios", storage_options)
     dataset.save_to_disk(OUTPUT_PATH, storage_options=storage_options)
