@@ -10,7 +10,7 @@ def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_
         current_dataset_path (str): Chemin du dataset actuel sur Hugging Face Hub.
         incoming_dataset_path (str): Chemin du nouveau dataset à intégrer.
         output_dataset_path (str): Chemin du dataset final (Hub).
-        storage_options (dict): Options pour accéder au stockage distant (ex: S3).
+        storage_options (dict): Options pour accéder au stockage distant
         hf_token (str): Jeton d'authentification Hugging Face.
         commit_message (str): Message de commit pour le push sur le Hub.
 
