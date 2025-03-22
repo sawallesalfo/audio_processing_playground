@@ -5,12 +5,12 @@ on:
     paths:
       - scripts/job_verbatim_to_long_audio.py
     branches:
-      - master                    # Only run on push to the master branch
+      - main                    # Only run on push to the master branch
   pull_request:
     paths:
       - scripts/job_verbatim_to_long_audio.py
     branches:
-      - master                    # Only run on pull requests to the master branch
+      - main                    # Only run on pull requests to the master branch
   # workflow_dispatch:              # Allows manual triggering of the workflow
 
 env:

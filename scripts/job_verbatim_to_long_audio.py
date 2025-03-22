@@ -94,7 +94,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
         )
         print(f"Dataset saved to {output_path}")
     else:
-        print("No datasets were successfully created.")
+        print("No datasets were successfully created")
 
 if __name__ == "__main__":
     
