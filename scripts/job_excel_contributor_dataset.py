@@ -159,6 +159,6 @@ if __name__ == "__main__":
     logger.info("SAVING hugginface")
 
     datasets = concatenate_datasets(dataset_list)
-    datasets.save_to_disk(f"hf_datasets/contribution_dataset_{CHAPTER}",
+    datasets.save_to_disk(f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_{CHAPTER}",
     storage_options={"key": access_key, "secret": secret_key, "endpoint_url": endpoint_url},
 )
