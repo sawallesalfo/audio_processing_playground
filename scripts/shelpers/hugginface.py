@@ -1,6 +1,6 @@
 
 import s3fs
-from datasets import Dataset
+from datasets import Dataset, Audio
 import json
 
 def create_dataset_from_json(json_file_path, fs=s3fs.S3FileSystem):
