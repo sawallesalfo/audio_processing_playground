@@ -5,3 +5,4 @@ datasets
 boto3
 s3fs
 pydub  #audio
+soundfile
