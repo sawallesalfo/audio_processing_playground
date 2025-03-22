@@ -14,7 +14,7 @@ on:
   # workflow_dispatch:              # Allows manual triggering of the workflow
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/moorecollection
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/audio_processing_playground
   IMAGE_TAG: latest
   PYTHONPATH: ${{ github.workspace }}
 
