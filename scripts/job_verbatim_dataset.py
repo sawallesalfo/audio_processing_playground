@@ -4,7 +4,7 @@ import s3fs
 from datasets import concatenate_datasets, Audio, Features, Value
 
 from shelpers.s3 import list_s3_files, download_folder_from_s3
-from shelpers.huggingface import get_audio_lengths, create_dataset_from_json
+from shelpers.hugginface import get_audio_lengths, create_dataset_from_json
 
 def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path: str):
     """
