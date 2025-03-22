@@ -63,9 +63,10 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
     else:
         print("No datasets were successfully created.")
 
+
 if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
     FOLDER_TO_PROCESS = "output_json"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim"
     process_s3_audio_data(BUCKET_NAME, FOLDER_TO_PROCESS, OUTPUT_PATH)
