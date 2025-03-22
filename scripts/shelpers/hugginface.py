@@ -1,8 +1,8 @@
 
-import sf3s
+import s3fs
 from datasets import Dataset
 
-def create_dataset_from_json(json_file_path, fs=sf3s.S3FileSystem):
+def create_dataset_from_json(json_file_path, fs=s3fs.S3FileSystem):
     """
     Create a Hugging Face dataset from a JSON file containing audio paths and transcripts.
     
