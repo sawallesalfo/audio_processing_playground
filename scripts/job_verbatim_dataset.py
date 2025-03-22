@@ -46,7 +46,6 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
             download_folder_from_s3(s3_client, bucket_name, file)
             file_path = f"{bucket_name}/{file.as_posix()}"
             dataset = create_dataset_from_json(file_path, fs)
-            audio_lengths = get_audio_lengths(dataset)  # Assuming this function is needed
             datasets.append(dataset)
         except Exception as e:
             print(f"Error processing file {file}: {e}")
