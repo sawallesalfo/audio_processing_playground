@@ -1,0 +1,35 @@
+# 📌 Ignorer les fichiers de cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 📌 Ignorer les fichiers de checkpoints Jupyter Notebook
+.ipynb_checkpoints/
+
+# 📌 Ignorer les fichiers temporaires et de logs
+*.log
+*.tmp
+.DS_Store
+
+# 📌 Ignorer les fichiers audio (wav, mp3)
+*.wav
+*.mp3
+
+# 📌 Ignorer les checkpoints de frameworks ML
+checkpoint/
+checkpoints/
+*.ckpt
+
+# 📌 Ignorer les fichiers de modèle et poids (ex: PyTorch, TensorFlow)
+*.h5
+*.pth
+*.pt
+*.onnx
+*.tflite
+*.pb
+
+# 📌 Ignorer les fichiers d'environnement virtuel
+venv/
+.env
+*.venv
