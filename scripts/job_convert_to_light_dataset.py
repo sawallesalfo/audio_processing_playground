@@ -63,7 +63,6 @@ def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options):
     pages = dataset["page"]
     audio_sequences = dataset["audio_sequence"]
     
-    # Définition des features du nouveau dataset
     features = Features({
         "audio": Audio(sampling_rate=48000),
         "transcript": Value("string"),
@@ -92,9 +91,7 @@ def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options):
     
     logger.info(f"Durée totale des audios : {sum(durations):.2f} secondes")
     
-    # Création et cast du dataset final
     new_dataset = Dataset.from_list(data_dict).cast(features)
-    
     logger.info(f"Dataset final: {len(new_dataset)} exemples, {new_dataset.data.nbytes/1e6:.2f} MB")
     
     return new_dataset
