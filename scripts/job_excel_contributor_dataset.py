@@ -67,11 +67,13 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
             raise e
 
         segments = get_audio_paths(f"{output_folder}/{sheet_name}", "wav")
+        logger.info(f"count of audio files:  {len(segments)}")
 
         # Filtrage des transcriptions correspondant à cette page et ce chapitre
         sub_transcription_df = dataset[(dataset["page"] == page_id) & (dataset["chapter"] == chapter)]
-        print("hello")
         transcriptions = get_matches(df_sheet, sub_transcription_df)
+        logger.info(f"count of transcription:  {len(transcriptions)}")
+
         audio_sequence = list(range(1, len(transcriptions) + 1))
 
         # Sauvegarde des résultats
