@@ -45,7 +45,6 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
     sheet_names = ["page_1"]
     
     results = []
-    logger.info(f"list of sheets :{sheet_names}")
     for sheet_name in tqdm(sheet_names, desc="📄 Traitement des feuilles"):
         logger.info(f"Sheet :{sheet_name}")
 
