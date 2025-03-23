@@ -29,6 +29,7 @@ def get_matches(segment_data, transcription_df):
         # Normalisation des IDs des versets de début et de fin
         segment_data = segment_data[["debut verset", "fin verset"]].copy()
         segment_data.loc[:, "fin verset"] = segment_data["fin verset"].apply(lambda x: get_verse_id(x, base_id))
+        print(segment_data)
         segment_data.loc[:, "debut verset"] = segment_data["debut verset"].apply(lambda x: get_verse_id(x, base_id))
     except Exception as e:
         raise ValueError(f"Erreur lors de la normalisation des versets : {e}")
