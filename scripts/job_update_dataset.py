@@ -63,8 +63,8 @@ if __name__ == "__main__":
     CURRENT_DATASET_PATH = "burkimbia/audio-dataset-aggregated"
 
     ########################## Change me ######################################
-    COMMIT_MESSAGE = "Mise à jour - Chapitre 1-Tɩmote" 
-    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_1-Tɩmote"
+    COMMIT_MESSAGE = "Mise à jour - CAjout Yikir (1-3) only" 
+    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_yikri"
     OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
     ############################################################################
 
