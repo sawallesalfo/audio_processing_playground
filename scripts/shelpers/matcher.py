@@ -1,6 +1,24 @@
+def get_verse_id(verse_number, base_id):
+    """
+    Creates a verse ID by maintaining the base prefix and chapter number,
+    then appending the formatted verse number.
+    
+    Parameters:
+    - verse_number (int): The verse number to use
+    - base_id (str): A reference base ID (e.g., "v54001001")
+    
+    Returns:
+    - str: A complete verse ID with the correct chapter and verse format
+    """
+    # Extract the prefix (everything except the last 4 digits)
+    prefix = base_id[:-4]
+    
+    # Extract the chapter number (the first digit of the last 4 digits)
+    chapter = base_id[-4:-3]
+    
+    # Format the verse with leading zeros (3 digits)
+    return f"{prefix}{chapter}{verse_number:03d}"
 
-def get_verse_id(verse_number, base_id="v1041"):
-    return f"{base_id}{verse_number:03d}"
 
 
 def get_matches(segment_data, transcription_df):
@@ -22,15 +40,14 @@ def get_matches(segment_data, transcription_df):
     """
 
     # Extraction du préfixe de l'ID de verset pour normaliser les identifiants
-    base_id = transcription_df.verse_id.iloc[0]
-    base_id = base_id[:-4] if len(base_id) == 9 else base_id[:-3]
+    sample_id = transcription_df.verse_id.iloc[0]
 
     try:
         # Normalisation des IDs des versets de début et de fin
         segment_data = segment_data[["debut verset", "fin verset"]].copy()
-        segment_data.loc[:, "fin verset"] = segment_data["fin verset"].apply(lambda x: get_verse_id(x, base_id))
+        segment_data.loc[:, "fin verset"] = segment_data["fin verset"].apply(lambda x: get_verse_id(x, sample_id))
         print(segment_data)
-        segment_data.loc[:, "debut verset"] = segment_data["debut verset"].apply(lambda x: get_verse_id(x, base_id))
+        segment_data.loc[:, "debut verset"] = segment_data["debut verset"].apply(lambda x: get_verse_id(x, sample_id))
     except Exception as e:
         raise ValueError(f"Erreur lors de la normalisation des versets : {e}")
 
