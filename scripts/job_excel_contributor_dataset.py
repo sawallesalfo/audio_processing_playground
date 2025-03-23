@@ -45,7 +45,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
     results = []
 
     for sheet_name in tqdm(sheet_names, desc="📄 Traitement des feuilles"):
-        print(sheet_name)
+        logger.info(f"Sheet :{sheet_name}")
 
         if sheet_name in audio_files:
             audio_file = audio_files[sheet_name]
@@ -60,6 +60,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
             print(f"⚠️ Aucun fichier audio spécifié pour la feuille '{sheet_name}'")
         
         # Extraction de l'ID de la page
+        logger.info(f"end of sheets processing")
         try:
             page_id = int(sheet_name.replace("page_", ""))
         except ValueError as e:
@@ -73,7 +74,6 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
         sub_transcription_df = dataset[(dataset["page"] == page_id) & (dataset["chapter"] == chapter)]
         transcriptions = get_matches(df_sheet, sub_transcription_df)
         logger.info(f"count of transcription:  {len(transcriptions)}")
-
         audio_sequence = list(range(1, len(transcriptions) + 1))
 
         # Sauvegarde des résultats
