@@ -94,14 +94,17 @@ def generate_audio_dict(page_start, page_end, base_path, subfolder, file_pattern
 if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
-    FOLDER_TO_PROCESS = "output_json"
     OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim"
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
-    CHAPTER= "Sɩngre"
-    EXCEL_FILE= "contributor_files/singre.xlsx"
+    
+    ################################### CHANGE ME ########################
+    CHAPTER= "1-Tɩmote"
+    EXCEL_FILE= "contributor_files/1timotee.xlsx"
+    PAGE_START = 1
+    PAGE_END = 6
+    #######################################################################
     file_pattern = "page_{page}.mp3"
-    PAGE_START = 41
-    PAGE_END = 42
+
     audio_files  = generate_audio_dict(PAGE_START, PAGE_END, "raw_data", CHAPTER, file_pattern)
 
     access_key = os.getenv("AWS_ACCESS_KEY_ID")
