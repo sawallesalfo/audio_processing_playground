@@ -73,6 +73,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
 
         # Filtrage des transcriptions correspondant à cette page et ce chapitre
         sub_transcription_df = dataset[(dataset["page"] == page_id) & (dataset["chapter"] == chapter)]
+        print(sub_transcription_df)
         transcriptions = get_matches(df_sheet, sub_transcription_df)
         logger.info(f"count of transcription:  {len(transcriptions)}")
         audio_sequence = list(range(1, len(transcriptions) + 1))
@@ -104,7 +105,7 @@ if __name__ == "__main__":
     CHAPTER= "1-Tɩmote"
     EXCEL_FILE= "contributor_files/1timotee.xlsx"
     PAGE_START = 1
-    PAGE_END = 6
+    PAGE_END = 1
     #######################################################################
     file_pattern = "page_{page}.mp3"
 
