@@ -54,7 +54,6 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
                 df_sheet = pd.read_excel(excel_file, sheet_name=sheet_name)
                 audio = AudioSegment.from_file(audio_file)
                 segment_audio_from_excel(df_sheet, audio, sheet_name, output_folder)
-                print("flag")
             else:
                 print(f"❌ Fichier audio '{audio_file}' introuvable pour la feuille '{sheet_name}'")
         else:
@@ -101,10 +100,10 @@ if __name__ == "__main__":
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
     
     ################################### CHANGE ME ########################
-    CHAPTER= "1-Tɩmote"
-    EXCEL_FILE= "contributor_files/1timotee.xlsx"
+    CHAPTER= "yikri"
+    EXCEL_FILE= "contributor_files/yikiri.xlsx"
     PAGE_START = 1
-    PAGE_END = 6
+    PAGE_END = 2
     #######################################################################
     file_pattern = "page_{page}.mp3"
 
