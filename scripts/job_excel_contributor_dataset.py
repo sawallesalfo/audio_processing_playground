@@ -41,7 +41,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
     :param output_folder: Dossier où sauvegarder les segments audios.
     """
     wb = openpyxl.load_workbook(excel_file)
-    sheet_names = wb.sheetnames
+    sheet_names = wb.sheetnames[0]
     results = []
     logger.info(f"list of sheets :{sheet_names}")
     for sheet_name in tqdm(sheet_names, desc="📄 Traitement des feuilles"):
