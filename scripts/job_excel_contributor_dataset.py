@@ -42,7 +42,6 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
     """
     wb = openpyxl.load_workbook(excel_file)
     sheet_names = wb.sheetnames
-    sheet_names = ["page_1"]
     
     results = []
     for sheet_name in tqdm(sheet_names, desc="📄 Traitement des feuilles"):
@@ -74,7 +73,6 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
 
         # Filtrage des transcriptions correspondant à cette page et ce chapitre
         sub_transcription_df = dataset[(dataset["page"] == page_id) & (dataset["chapter"] == chapter)]
-        print(sub_transcription_df)
         transcriptions = get_matches(df_sheet, sub_transcription_df)
         logger.info(f"count of transcription:  {len(transcriptions)}")
         audio_sequence = list(range(1, len(transcriptions) + 1))
