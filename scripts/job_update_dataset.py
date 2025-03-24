@@ -56,8 +56,9 @@ def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_
     final_dataset = concatenate_datasets([current_dataset, incoming_dataset.cast(expected_features)])
     logger.info(f"Dataset final après fusion: {len(final_dataset)} lignes")
 
-    total_duration = sum(final_dataset["duration"])
-    logger.info(f"Durée totale des fichiers audio : {total_duration:.2f} secondes")
+    if not VERBATIM:
+        total_duration = sum(final_dataset["duration"])
+        logger.info(f"Durée totale des fichiers audio : {total_duration:.2f} secondes")
 
     # Push sur le Hub
     logger.info(f"Push du dataset final sur {output_dataset_path}...")
