@@ -7,6 +7,7 @@ import openpyxl
 from tqdm import tqdm
 from datasets import concatenate_datasets, Audio, Features, Value, load_dataset, DownloadConfig, Dataset
 
+
 from shelpers.collectors import get_audio_paths
 from shelpers.parser import time_to_milliseconds, extract_audio_identifier, remove_digits_and_numbers
 from shelpers.matcher import get_matches
@@ -44,7 +45,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
     sheet_names = wb.sheetnames
     
     results = []
-    for sheet_name in tqdm(sheet_names, desc="📄 Traitement des feuilles"):
+    for sheet_name in tqdm(sheet_names[PAGE_START-1:], desc="📄 Traitement des feuilles"):
         logger.info(f"Sheet :{sheet_name}")
 
         if sheet_name in audio_files:
@@ -100,10 +101,10 @@ if __name__ == "__main__":
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
     
     ################################### CHANGE ME ########################
-    CHAPTER= "yikri"
-    EXCEL_FILE= "contributor_files/yikiri.xlsx"
+    CHAPTER= "1-Zã"
+    EXCEL_FILE= "contributor_files/1_Za.xlsx"
     PAGE_START = 1
-    PAGE_END = 3
+    PAGE_END = 5
     #######################################################################
     file_pattern = "page_{page}.mp3"
 
