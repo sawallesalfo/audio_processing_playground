@@ -70,10 +70,10 @@ if __name__ == "__main__":
     BUCKET_NAME = "moore-collection"
 
     ########################## Change me ######################################
-    VERBATIM = True
-    CURRENT_DATASET_PATH = "burkimbia/audio-dataset-verbatim"
-    COMMIT_MESSAGE = "Ajout verbatim yikri" 
-    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_yikri"
+    VERBATIM = False 
+    CURRENT_DATASET_PATH = "burkimbia/audio-dataset-aggregated"
+    COMMIT_MESSAGE = "End of yikri" 
+    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_yikri
     OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
     ############################################################################
 
