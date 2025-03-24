@@ -17,6 +17,7 @@ from tqdm import tqdm
 import json
 import boto3
 import s3fs
+from loguru import logger
 
 from shelpers.s3 import list_s3_files, download_folder_from_s3
 from shelpers.hugginface import get_audio_lengths, create_dataset_from_json
