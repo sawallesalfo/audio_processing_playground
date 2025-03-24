@@ -44,8 +44,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
     sheet_names = wb.sheetnames
     
     results = []
-    lenght_flag = (PAGE_END-PAGE_START)
-    for sheet_name in tqdm(sheet_names[:lenght_flag], desc="📄 Traitement des feuilles"):
+    for sheet_name in tqdm(sheet_names[PAGE_START-1:], desc="📄 Traitement des feuilles"):
         logger.info(f"Sheet :{sheet_name}")
 
         if sheet_name in audio_files:
