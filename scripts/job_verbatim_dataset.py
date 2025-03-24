@@ -40,10 +40,10 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
     })
 
     files = list_s3_files(s3_client, bucket_name, folder_to_process)[1:]  # Skip the folder itself
-    logger.info(f"Number of page to process : {len(files}")
+    logger.info(f"Number of page to process : {len(files)}")
     datasets = []
     for file in files:
-        segmented_audio_folder = f"fasoai-segmented_audios/Sɩngre/{file.split('/')[-1].replace('.json','')}/"
+        segmented_audio_folder = f"fasoai-segmented_audios/{CHAPTER}/{file.split('/')[-1].replace('.json','')}/"
         print(segmented_audio_folder)
         download_folder_from_s3(s3_client, bucket_name, segmented_audio_folder)
         file_path = f"{bucket_name}/{file}"
@@ -68,5 +68,6 @@ if __name__ == "__main__":
     ######################### CHANGE ME #################################
     FOLDER_TO_PROCESS = "output_jsons_yikri"
     OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_yikri"
+    CHAPTER = "yikri"
     ########################################################################
     process_s3_audio_data(BUCKET_NAME, FOLDER_TO_PROCESS, OUTPUT_PATH)
