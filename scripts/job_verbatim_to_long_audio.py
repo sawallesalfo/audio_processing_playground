@@ -99,8 +99,8 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
 if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
-    FOLDER_TO_PROCESS = "output_json"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated"
-    BATCH_SIZE= 12
+    FOLDER_TO_PROCESS = "output_json_yikri"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_yikri"
+    BATCH_SIZE= 10
     SILENCE_DURATION = 0.6
     process_s3_audio_data(BUCKET_NAME, FOLDER_TO_PROCESS, OUTPUT_PATH, BATCH_SIZE)
