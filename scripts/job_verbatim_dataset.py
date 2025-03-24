@@ -2,7 +2,7 @@ import os
 import boto3
 import s3fs
 from datasets import concatenate_datasets, Audio, Features, Value
-
+from loguru import logger
 from shelpers.s3 import list_s3_files, download_folder_from_s3
 from shelpers.hugginface import get_audio_lengths, create_dataset_from_json
 
@@ -40,6 +40,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
     })
 
     files = list_s3_files(s3_client, bucket_name, folder_to_process)[1:]  # Skip the folder itself
+    logger.info(f"Number of page to process : {len(files}")
     datasets = []
     for file in files:
         segmented_audio_folder = f"fasoai-segmented_audios/Sɩngre/{file.split('/')[-1].replace('.json','')}/"
@@ -64,6 +65,8 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
 if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
-    FOLDER_TO_PROCESS = "output_json"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim"
+    ######################### CHANGE ME #################################
+    FOLDER_TO_PROCESS = "output_jsons_yikri"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_yikri"
+    ########################################################################
     process_s3_audio_data(BUCKET_NAME, FOLDER_TO_PROCESS, OUTPUT_PATH)
