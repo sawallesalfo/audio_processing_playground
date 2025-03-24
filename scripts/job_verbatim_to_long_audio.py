@@ -76,7 +76,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
     combined_dataset = []
     files = list_s3_files(s3_client, bucket_name, folder_to_process)[1:]  # Skip the folder itself
     for file in tqdm(files):
-        segmented_audio_folder = f"fasoai-segmented_audios/Sɩngre/{file.split('/')[-1].replace('.json','')}/"
+        segmented_audio_folder = f"fasoai-segmented_audios/{CHAPTER}/{file.split('/')[-1].replace('.json','')}/"
         file_path = f"{bucket_name}/{file}"
         dataset = create_dataset_from_json(file_path, fs)
         download_folder_from_s3(s3_client, bucket_name, segmented_audio_folder)
@@ -99,6 +99,7 @@ def process_s3_audio_data(bucket_name: str, folder_to_process: str, output_path:
 if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
+    CHAPTER = "yikri"
     FOLDER_TO_PROCESS = "output_json_yikri"
     OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_yikri"
     BATCH_SIZE= 10
