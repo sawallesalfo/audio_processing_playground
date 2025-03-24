@@ -92,10 +92,11 @@ def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options=None
     return new_dataset
 
 if __name__ == "__main__":
+
     
     BUCKET_NAME = "moore-collection"
-    DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/light-audio-dataset-aggregated"
+    DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_yikri"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/light-audio-dataset-aggregated_yikri"
 
     storage_options = {
         "key": os.getenv("AWS_ACCESS_KEY_ID"),
