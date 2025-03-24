@@ -38,14 +38,21 @@ def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_
     # Vérification du nombre de lignes
     logger.info(f"Nombre de lignes - Dataset actuel: {len(current_dataset)}, Dataset entrant: {len(incoming_dataset)}")
 
-    expected_features = Features({
+    if VERBATIM: 
+        expected_features = Features({
+            "audio": Audio(sampling_rate=48000),
+            "transcript": Value("string"),
+            "audio_sequence": Value("string"),
+            "page": Value("string"),
+        })
+    else:
+        expected_features = Features({
         "audio": Audio(sampling_rate=48000),
         "transcript": Value("string"),
         "page": Value("string"),
         "audio_sequence": Value("string"),
         "duration": Value("float")
     })
-
     final_dataset = concatenate_datasets([current_dataset, incoming_dataset.cast(expected_features)])
     logger.info(f"Dataset final après fusion: {len(final_dataset)} lignes")
 
@@ -62,6 +69,7 @@ if __name__ == "__main__":
     BUCKET_NAME = "moore-collection"
 
     ########################## Change me ######################################
+    VERBATIM = True
     CURRENT_DATASET_PATH = "burkimbia/audio-dataset-verbatim"
     COMMIT_MESSAGE = "Ajout verbatim yikri" 
     INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_yikri"
