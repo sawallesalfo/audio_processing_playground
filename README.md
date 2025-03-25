@@ -15,14 +15,15 @@
 | 2-Zã                 | ✅      |
 | 3-Zã                 | ✅      |
 | 1-Tɩmote             | ✅       |
+| 1-Tesalonik-rãmbã    |   ✅    |
+| 2-Pɩyɛɛr             | ✅      |
+| 2-Tesalonik-rãmbã    | ⏳     |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | Tɩte                | ⏳      |
 | 1-Kibayã             | 🔴      |
-| 2-Tɩmote             | 🔴      |
+| 2-Tɩmote             | ⏳      |
 | 2-Korẽnt-rãmbã       | 🔴      |
-| 2-Pɩyɛɛr             | 🔴      |
-| 2-Tesalonik-rãmbã    | 🔴      |
 | Dãniyɛll            | 🔴      |
 | Ebre-rãmbã           | 🔴      |
 | Efɛɛz-rãmbã          | 🔴      |
@@ -62,4 +63,3 @@
 | zozuwe              | 🔴      |
 | Ɛsdras             | 🔴      |
 | Ɛstɛɛr             | 🔴      |
-| 1-Tesalonik-rãmbã    |   🔴    |
