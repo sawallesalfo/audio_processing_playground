@@ -100,10 +100,10 @@ if __name__ == "__main__":
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
     
     ################################### CHANGE ME ########################
-    CHAPTER= "2-Tesalonik-rãmbã"
-    EXCEL_FILE= "contributor_files/2-Tesalonik.xlsx"
+    CHAPTER= "2-Tɩmote"
+    EXCEL_FILE= "contributor_files/boukare_timote_contribution.xlsx"
     PAGE_START = 1
-    PAGE_END = 3
+    PAGE_END = 4
     #######################################################################
     file_pattern = "page_{page}.mp3"
 
