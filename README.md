@@ -1,3 +1,6 @@
+
+[![Scripts jobs Ccontributor matcher](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_excel_contributor_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_excel_contributor_dataset.yaml)
+
 #  Bible_audio dataset Creation
 
 
@@ -19,7 +22,9 @@
 | Filip-rãmbã         | ✅      |
 | 2-Pɩyɛɛr             | ✅      |
 | aaze                | ✅      |
-| 2-Tesalonik-rãmbã    | ⏳     |
+| 2-Tesalonik-rãmbã    | ✅    |
+| rut                 | ✅      |
+| zak                 | ✅      |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | Tɩte                | ⏳      |
@@ -51,10 +56,8 @@
 | nahum               | 🔴      |
 | neemi               | 🔴      |
 | ooze                | 🔴      |
-| rut                 | 🔴      |
 | sofoni              | 🔴      |
 | wiisgu              | 🔴      |
-| zak                 | 🔴      |
 | zakari              | 🔴      |
 | zeremi              | 🔴      |
 | ziid                | 🔴      |
