@@ -16,6 +16,7 @@
 | 3-Zã                 | ✅      |
 | 1-Tɩmote             | ✅       |
 | 1-Tesalonik-rãmbã    |   ✅    |
+| Filip-rãmbã         | ✅      |
 | 2-Pɩyɛɛr             | ✅      |
 | 2-Tesalonik-rãmbã    | ⏳     |
 | 1-Pɩyɛɛr             | ⏳      |
@@ -28,7 +29,6 @@
 | Ebre-rãmbã           | 🔴      |
 | Efɛɛz-rãmbã          | 🔴      |
 | Ezekɩyɛll           | 🔴      |
-| Filip-rãmbã         | 🔴      |
 | Galat-rãmbã         | 🔴      |
 | Kolos-rãmbã         | 🔴      |
 | Koɛɛg-soaba         | 🔴      |
