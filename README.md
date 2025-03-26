@@ -1,7 +1,9 @@
 
 [![Contributor matching](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_excel_contributor_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_excel_contributor_dataset.yaml)
-
 [![Update hugginface  dataset](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_update_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_update_dataset.yaml)
+[![Scripts jobs audio segmentation](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_verbatim_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_verbatim_dataset.yaml)
+[![Scripts jobs creation light dataset](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_convert_to_light_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_convert_to_light_dataset.yaml)
+[![Scripts jobs audio aggregation](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_verbatim_agg_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_verbatim_agg_dataset.yaml)
 
 #  Bible_audio dataset Creation
 
