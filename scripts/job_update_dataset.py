@@ -72,8 +72,8 @@ if __name__ == "__main__":
     ########################## Change me ######################################
     VERBATIM = False 
     CURRENT_DATASET_PATH = "burkimbia/audio-dataset-aggregated"
-    COMMIT_MESSAGE = "End of 3-ZAN" 
-    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_3-Zã"
+    COMMIT_MESSAGE = "🚀 Add three chapters : 2-Pɩyɛɛr, Filip-rãmbã, 1-Tesalonik-rãmb"
+    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_Filip-rãmbã_1-Tesalonik-rãmbã_2-Pɩyɛɛr"
     OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
     ############################################################################
 
