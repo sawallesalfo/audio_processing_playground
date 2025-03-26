@@ -1,4 +1,4 @@
-name: Scripts jobs audio segmentation
+name: Verbatim dataset creation
 
 on:
   push:
