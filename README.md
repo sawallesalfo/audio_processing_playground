@@ -18,12 +18,13 @@
 | 1-Tesalonik-rãmbã    |   ✅    |
 | Filip-rãmbã         | ✅      |
 | 2-Pɩyɛɛr             | ✅      |
+| aaze                | ✅      |
 | 2-Tesalonik-rãmbã    | ⏳     |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | Tɩte                | ⏳      |
-| 1-Kibayã             | 🔴      |
 | 2-Tɩmote             | ⏳      |
+| 1-Kibayã             | 🔴      |
 | 2-Korẽnt-rãmbã       | 🔴      |
 | Dãniyɛll            | 🔴      |
 | Ebre-rãmbã           | 🔴      |
@@ -37,7 +38,6 @@
 | Yel-bũnã            | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
 | Zowɛll              | 🔴      |
-| aaze                | 🔴      |
 | abdiyaas            | 🔴      |
 | amos                | 🔴      |
 | ezayi               | 🔴      |
