@@ -1,4 +1,4 @@
-name: Scripts jobs Ccontributor matcher
+name: Contributor matcher
 
 on:
   push:
