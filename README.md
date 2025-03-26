@@ -30,9 +30,9 @@
 | 2-Tesalonik-rãmbã    | ✅    |
 | rut                 | ✅      |
 | zak                 | ✅      |
+| Tɩte                | ✅      |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
-| Tɩte                | ⏳      |
 | 1-Kibayã             | 🔴      |
 | 2-Korẽnt-rãmbã       | 🔴      |
 | Dãniyɛll            | 🔴      |
