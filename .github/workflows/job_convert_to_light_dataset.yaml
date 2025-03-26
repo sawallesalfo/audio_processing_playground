@@ -1,4 +1,4 @@
-name: Scripts jobs creation light dataset
+name: Creation of light dataset
 
 on:
   push:
