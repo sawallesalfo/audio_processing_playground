@@ -34,6 +34,7 @@
 | filemo              |  ✅      |
 | ziid                |  ✅      |
 | nahum               |  ✅      |
+| sofoni              | ✅      |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | 1-Kibayã             | 🔴      |
@@ -61,7 +62,6 @@
 | mise                | 🔴      |
 | neemi               | 🔴      |
 | ooze                | 🔴      |
-| sofoni              | 🔴      |
 | wiisgu              | 🔴      |
 | zakari              | 🔴      |
 | zeremi              | 🔴      |
