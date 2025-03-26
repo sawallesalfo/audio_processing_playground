@@ -1,4 +1,4 @@
-name: Scripts jobs creation light dataset
+name: Scripts jobs update hugginface dataset
 
 on:
   push:
