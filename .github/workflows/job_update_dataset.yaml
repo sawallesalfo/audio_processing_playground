@@ -1,4 +1,4 @@
-name: Scripts jobs update hugginface dataset
+name: Update hugginface dataset
 
 on:
   push:
