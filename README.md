@@ -33,6 +33,8 @@
 | sofoni              | ✅      |
 | wiisgu              | ✅      |
 | abdiyaas            |  ✅      |
+| mise                |✅     |
+| Zowɛll              |  ✅    |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | 1-Kibayã             | 🔴      |
@@ -48,7 +50,6 @@
 | Vẽnegre             | 🔴      |
 | Yel-bũnã            | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
-| Zowɛll              | 🔴      |
 | amos                | 🔴      |
 | ezayi               | 🔴      |
 | habakuk             | 🔴      |
@@ -56,7 +57,6 @@
 | mark                | 🔴      |
 | 1-Korẽnt-rãmbã       | 🔴      |
 | matiye              | 🔴      |
-| mise                | 🔴      |
 | neemi               | 🔴      |
 | ooze                | 🔴      |
 | zakari              | 🔴      |
