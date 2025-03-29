@@ -102,7 +102,7 @@ if __name__ == "__main__":
     CHAPTER= "Ezekɩyɛll"
     EXCEL_FILE= "contributor_files/Ezekɩyɛll.xlsx"
     PAGE_START = 1
-    PAGE_END = 30
+    PAGE_END = 10
 
     #######################################################################
     file_pattern = "page_{page}.mp3"
