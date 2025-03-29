@@ -32,6 +32,7 @@
 | nahum               |  ✅      |
 | sofoni              | ✅      |
 | wiisgu              | ✅      |
+| abdiyaas            |  ✅      |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | 1-Kibayã             | 🔴      |
@@ -48,7 +49,6 @@
 | Yel-bũnã            | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
 | Zowɛll              | 🔴      |
-| abdiyaas            | 🔴      |
 | amos                | 🔴      |
 | ezayi               | 🔴      |
 | habakuk             | 🔴      |
