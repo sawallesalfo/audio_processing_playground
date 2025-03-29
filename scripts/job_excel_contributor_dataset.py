@@ -32,7 +32,6 @@ def segment_audio_from_excel(df_sheet, audio, sheet_name, output_folder="segment
         else:
             print(f"⚠️ Erreur: start_time ({start_time}) >= end_time ({end_time})")
 
-
 def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="segments"):
     """
     Traite chaque feuille d'un fichier Excel en utilisant son fichier audio correspondant.
