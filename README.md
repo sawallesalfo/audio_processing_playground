@@ -1,4 +1,3 @@
-
 [![Contributor matching](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_excel_contributor_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_excel_contributor_dataset.yaml)
 [![Update hugginface  dataset](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_update_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_update_dataset.yaml)
 [![Scripts jobs audio segmentation](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_verbatim_dataset.yaml/badge.svg)](https://github.com/sawadogosalif/audio_processing_playground/actions/workflows/job_verbatim_dataset.yaml)
@@ -7,12 +6,9 @@
 
 #  Bible_audio dataset Creation
 
-
-
 ✅ : Terminé  
 ⏳ : En cours  
 🔴 : Pas encore commencé  
-
 
 | Chapitre              | Statut  |
 |-----------------------|---------|
@@ -35,6 +31,7 @@
 | ziid                |  ✅      |
 | nahum               |  ✅      |
 | sofoni              | ✅      |
+| wiisgu              | ✅      |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | 1-Kibayã             | 🔴      |
@@ -62,7 +59,6 @@
 | mise                | 🔴      |
 | neemi               | 🔴      |
 | ooze                | 🔴      |
-| wiisgu              | 🔴      |
 | zakari              | 🔴      |
 | zeremi              | 🔴      |
 | zonas               | 🔴      |
