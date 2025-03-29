@@ -1,4 +1,4 @@
-name: Scripts jobs audio aggregation
+name: Aaudio aggregation
 
 on:
   push:

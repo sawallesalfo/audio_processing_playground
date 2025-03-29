@@ -97,14 +97,14 @@ def generate_audio_dict(page_start, page_end, base_path, subfolder, file_pattern
 if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim"
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
     
     ################################### CHANGE ME ########################
     CHAPTER= "Mise"
     EXCEL_FILE= "contributor_files/Mise_sebre.xlsx"
     PAGE_START = 1
-    PAGE_END = 5
+    PAGE_END = 7
+
     #######################################################################
     file_pattern = "page_{page}.mp3"
 
