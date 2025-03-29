@@ -102,7 +102,7 @@ if __name__ == "__main__":
     CHAPTER= "wiisgu"
     EXCEL_FILE= "contributor_files/wiisgu.xlsx"
     PAGE_START = 1
-    PAGE_END = 3
+    PAGE_END = 5
     #######################################################################
     file_pattern = "page_{page}.mp3"
 
