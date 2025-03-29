@@ -143,6 +143,7 @@ if __name__ == "__main__":
     logger.info("Creating hugginface")
     dataset_list = []
     for result in tqdm(results):
+        logger.info(f"creating hf dataset for page {result['page']}")
         dataset = Dataset.from_dict(result)
         features = Features({
                 "audio": Audio(sampling_rate=48000),
@@ -160,6 +161,7 @@ if __name__ == "__main__":
             durations.append(duration)
         dataset = dataset.add_column("duration", durations)
         dataset_list.append(dataset)
+        
 
     logger.info("SAVING hugginface")
 
