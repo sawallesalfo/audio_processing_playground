@@ -43,8 +43,7 @@ def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="seg
     sheet_names = wb.sheetnames
     
     results = []
-    # for sheet_name in tqdm(sheet_names[PAGE_START-1:], desc="📄 Traitement des feuilles"):
-    for sheet_name in tqdm(sheet_names, desc="📄 Traitement des feuilles"):
+    for sheet_name in tqdm(sheet_names[PAGE_START-1:], desc="📄 Traitement des feuilles"):
         logger.info(f"Sheet :{sheet_name}")
 
         if sheet_name in audio_files:
@@ -99,10 +98,10 @@ if __name__ == "__main__":
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
     
     ################################### CHANGE ME ########################
-    CHAPTER= "Ezekɩyɛll"
-    EXCEL_FILE= "contributor_files/Ezekɩyɛll2.xlsx"
-    PAGE_START = 31
-    PAGE_END = 48
+    CHAPTER= "1-Pɩyɛɛr"
+    EXCEL_FILE= "contributor_files/1Pyerr.xlsx"
+    PAGE_START = 1
+    PAGE_END = 5
 
     #######################################################################
     file_pattern = "page_{page}.mp3"
