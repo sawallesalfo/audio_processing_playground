@@ -72,7 +72,7 @@ if __name__ == "__main__":
     ########################## Change me ######################################
     VERBATIM = False 
     CURRENT_DATASET_PATH = "burkimbia/audio-dataset-aggregated"
-    COMMIT_MESSAGE = "🚀 Add Ezekɩyɛll until page 30 - disclaim previous dataset \nwiisgu_mise_zowell_abdiyaas/"
+    COMMIT_MESSAGE = "🚀 Add Ezekɩyɛll from 31 to end"
     INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_Ezekɩyɛll"
     OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
     ############################################################################
