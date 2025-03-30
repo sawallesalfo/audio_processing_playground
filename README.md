@@ -35,6 +35,9 @@
 | abdiyaas            |  ✅      |
 | mise                |✅     |
 | Zowɛll              |  ✅    |
+| Yel-bũnã            | ✅      |
+| Ezekɩyɛll           | ✅      |
+| ezayi               | ⏳      |
 | 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | 1-Kibayã             | 🔴      |
@@ -42,16 +45,13 @@
 | Dãniyɛll            | 🔴      |
 | Ebre-rãmbã           | 🔴      |
 | Efɛɛz-rãmbã          | 🔴      |
-| Ezekɩyɛll           | 🔴      |
 | Galat-rãmbã         | 🔴      |
 | Kolos-rãmbã         | 🔴      |
 | Koɛɛg-soaba         | 🔴      |
 | Salomo-yɩɩllã       | 🔴      |
 | Vẽnegre             | 🔴      |
-| Yel-bũnã            | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
 | amos                | 🔴      |
-| ezayi               | 🔴      |
 | habakuk             | 🔴      |
 | malaki              | 🔴      |
 | mark                | 🔴      |
