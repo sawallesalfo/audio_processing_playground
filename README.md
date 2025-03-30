@@ -21,6 +21,7 @@
 | 2-Tɩmote             | ✅       |
 | 1-Tesalonik-rãmbã    |   ✅    |
 | Filip-rãmbã         | ✅      |
+| 1-Pɩyɛɛr             | ✅     |
 | 2-Pɩyɛɛr             | ✅      |
 | aaze                | ✅      |
 | 2-Tesalonik-rãmbã    | ✅    |
@@ -38,7 +39,6 @@
 | Yel-bũnã            | ✅      |
 | Ezekɩyɛll           | ✅      |
 | ezayi               | ⏳      |
-| 1-Pɩyɛɛr             | ⏳      |
 | 2-Kibayã             | ⏳      |
 | 1-Kibayã             | ⏳            |
 | 2-Korẽnt-rãmbã       | 🔴      |
