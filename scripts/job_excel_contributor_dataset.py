@@ -122,7 +122,6 @@ if __name__ == "__main__":
         endpoint_url=endpoint_url,
     )
     
-
     logger.info("Reading dataset")
     dataset = load_dataset(DATA_FILE, split="train", download_config=DownloadConfig(token=os.environ["HF_TOKEN"])).to_pandas()
     dataset[["chapter", "page"]] = dataset["moore_source_url"].apply(
