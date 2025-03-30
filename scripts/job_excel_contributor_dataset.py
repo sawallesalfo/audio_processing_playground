@@ -99,9 +99,9 @@ if __name__ == "__main__":
     
     ################################### CHANGE ME ########################
     CHAPTER= "Ezekɩyɛll"
-    EXCEL_FILE= "contributor_files/Ezekɩyɛll.xlsx"
-    PAGE_START = 1
-    PAGE_END = 30
+    EXCEL_FILE= "contributor_files/Ezekɩyɛll2.xlsx"
+    PAGE_START = 31
+    PAGE_END = 48
 
     #######################################################################
     file_pattern = "page_{page}.mp3"
