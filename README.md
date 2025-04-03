@@ -38,11 +38,11 @@
 | Zowɛll              |  ✅    |
 | Yel-bũnã            | ✅      |
 | Ezekɩyɛll           | ✅      |
-| ezayi               | ⏳      |
-| 2-Kibayã             | ⏳      |
-| 1-Kibayã             | ⏳            |
-| 2-Korẽnt-rãmbã       | 🔴      |
-| Dãniyɛll            | 🔴      |
+| ezayi               | ✅      |
+| 2-Kibayã             | ✅     |
+| 1-Kibayã             |  ✅           |
+| 2-Korẽnt-rãmbã       | ⏳      |
+| Dãniyɛll            | ⏳     |
 | Ebre-rãmbã           | 🔴      |
 | Efɛɛz-rãmbã          | 🔴      |
 | Galat-rãmbã         | 🔴      |
