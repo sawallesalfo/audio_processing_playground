@@ -33,7 +33,6 @@ def segment_audio_from_excel(df_sheet, audio, sheet_name, output_folder="segment
         else:
             print(f"⚠️ Erreur: start_time ({start_time}) >= end_time ({end_time})")
 
-
 def infer_matching(dataset, chapter, excel_file, audio_files, output_folder="segments"):
     """
     Traite chaque feuille d'un fichier Excel en utilisant son fichier audio correspondant.
@@ -124,7 +123,6 @@ if __name__ == "__main__":
         endpoint_url=endpoint_url,
     )
     
-
     logger.info("Reading dataset")
     dataset = load_dataset(DATA_FILE, split="train", download_config=DownloadConfig(token=os.environ["HF_TOKEN"])).to_pandas()
     dataset[["chapter", "page"]] = dataset["moore_source_url"].apply(
@@ -144,6 +142,7 @@ if __name__ == "__main__":
     logger.info("Creating hugginface")
     dataset_list = []
     for result in tqdm(results):
+        logger.info(f"creating hf dataset for page {result['page']}")
         dataset = Dataset.from_dict(result)
         features = Features({
                 "audio": Audio(sampling_rate=48000),
@@ -161,9 +160,9 @@ if __name__ == "__main__":
             durations.append(duration)
         dataset = dataset.add_column("duration", durations)
         dataset_list.append(dataset)
+        
 
     logger.info("SAVING hugginface")
-
     datasets = concatenate_datasets(dataset_list)
     datasets.save_to_disk(f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_{CHAPTER}",
     storage_options={
