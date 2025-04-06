@@ -41,8 +41,10 @@
 | ezayi               | ✅      |
 | 2-Kibayã             | ✅     |
 | 1-Kibayã             |  ✅           |
-| 2-Korẽnt-rãmbã       | ⏳      |
+| 2-Korẽnt-rãmbã       | ✅      |
+| habakuk             | ✅      |
 | Dãniyɛll            | ⏳     |
+| amos                | ⏳      |
 | Ebre-rãmbã           | 🔴      |
 | Efɛɛz-rãmbã          | 🔴      |
 | Galat-rãmbã         | 🔴      |
@@ -51,8 +53,6 @@
 | Salomo-yɩɩllã       | 🔴      |
 | Vẽnegre             | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
-| amos                | 🔴      |
-| habakuk             | 🔴      |
 | malaki              | 🔴      |
 | mark                | 🔴      |
 | 1-Korẽnt-rãmbã       | 🔴      |
