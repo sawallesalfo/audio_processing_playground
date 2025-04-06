@@ -7,6 +7,7 @@ import openpyxl
 from tqdm import tqdm
 from datasets import concatenate_datasets, Audio, Features, Value, load_dataset, DownloadConfig, Dataset
 
+
 from shelpers.collectors import get_audio_paths
 from shelpers.parser import time_to_milliseconds, extract_audio_identifier, remove_digits_and_numbers
 from shelpers.matcher import get_matches
@@ -98,10 +99,10 @@ if __name__ == "__main__":
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
     
     ################################### CHANGE ME ########################
-    CHAPTER= "1-Kibayã"
-    EXCEL_FILE= "contributor_files/1-kibaya.xlsx"
+    CHAPTER= "2-Korẽnt-rãmbã"
+    EXCEL_FILE= "contributor_files/2-Korẽnt-rãmbã.xlsx"
     PAGE_START = 1
-    PAGE_END = 29
+    PAGE_END = 13
 
     #######################################################################
     file_pattern = "page_{page}.mp3"
