@@ -27,7 +27,7 @@ def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_
     )
     # Chargement du dataset entrant depuis un stockage
     logger.info("Chargement du dataset entrant depuis le stockage...")
-    incoming_dataset = load_from_disk(incoming_dataset_path, storage_options=storage_options)
+    # incoming_dataset = load_from_disk(incoming_dataset_path, storage_options=storage_options)
 
     # # Vérification des colonnes
     # if not current_dataset.features.keys()==incoming_dataset.features.keys():
