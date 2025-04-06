@@ -27,42 +27,42 @@ def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_
     )
     # Chargement du dataset entrant depuis un stockage
     logger.info("Chargement du dataset entrant depuis le stockage...")
-    # incoming_dataset = load_from_disk(incoming_dataset_path, storage_options=storage_options)
+    incoming_dataset = load_from_disk(incoming_dataset_path, storage_options=storage_options)
 
-    # # Vérification des colonnes
-    # if not current_dataset.features.keys()==incoming_dataset.features.keys():
-    #     raise ValueError("Les colonnes du dataset entrant ne correspondent pas aux colonnes attendues.")
+    # Vérification des colonnes
+    if not current_dataset.features.keys()==incoming_dataset.features.keys():
+        raise ValueError("Les colonnes du dataset entrant ne correspondent pas aux colonnes attendues.")
     # logger.info("Vérification des colonnes réussie ✅")
 
 
-    # # Vérification du nombre de lignes
-    # logger.info(f"Nombre de lignes - Dataset actuel: {len(current_dataset)}, Dataset entrant: {len(incoming_dataset)}")
+    # Vérification du nombre de lignes
+    logger.info(f"Nombre de lignes - Dataset actuel: {len(current_dataset)}, Dataset entrant: {len(incoming_dataset)}")
 
-    # if VERBATIM: 
-    #     expected_features = Features({
-    #         "audio": Audio(sampling_rate=48000),
-    #         "transcript": Value("string"),
-    #         "audio_sequence": Value("string"),
-    #         "page": Value("string"),
-    #     })
-    # else:
-    #     expected_features = Features({
-    #     "audio": Audio(sampling_rate=48000),
-    #     "transcript": Value("string"),
-    #     "page": Value("string"),
-    #     "audio_sequence": Value("string"),
-    #     "duration": Value("float")
-    # })
-    # final_dataset = concatenate_datasets([current_dataset, incoming_dataset.cast(expected_features)])
-    # logger.info(f"Dataset final après fusion: {len(final_dataset)} lignes")
+    if VERBATIM: 
+        expected_features = Features({
+            "audio": Audio(sampling_rate=48000),
+            "transcript": Value("string"),
+            "audio_sequence": Value("string"),
+            "page": Value("string"),
+        })
+    else:
+        expected_features = Features({
+        "audio": Audio(sampling_rate=48000),
+        "transcript": Value("string"),
+        "page": Value("string"),
+        "audio_sequence": Value("string"),
+        "duration": Value("float")
+    })
+    final_dataset = concatenate_datasets([current_dataset, incoming_dataset.cast(expected_features)])
+    logger.info(f"Dataset final après fusion: {len(final_dataset)} lignes")
 
-    # if not VERBATIM:
-    #     total_duration = sum(final_dataset["duration"])
-    #     logger.info(f"Durée totale des fichiers audio : {total_duration:.2f} secondes")
+    if not VERBATIM:
+        total_duration = sum(final_dataset["duration"])
+        logger.info(f"Durée totale des fichiers audio : {total_duration:.2f} secondes")
 
-    # # Push sur le Hub
-    # logger.info(f"Push du dataset final sur {output_dataset_path}...")
-    current_dataset.push_to_hub(output_dataset_path, commit_message=commit_message)
+    # Push sur le Hub
+    logger.info(f"Push du dataset final sur {output_dataset_path}...")
+    final_dataset.push_to_hub(output_dataset_path, commit_message=commit_message)
     logger.info("Push terminé avec succès ✅")
 
 if __name__ == "__main__":
@@ -71,11 +71,10 @@ if __name__ == "__main__":
 
     ########################## Change me ######################################
     VERBATIM = False 
-    CURRENT_DATASET_PATH = "burkimbia/audio-dataset-aggregated"
+    CURRENT_DATASET_PATH = "sawadogosalif/MooreFRCollectionsAudios"
     COMMIT_MESSAGE = "cook 2-Kibayã 👨‍🍳"
     INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_2-Kibayã"
-    # OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
-    OUTPUT_DATASET_PATH = "sawadogosalif/MooreFRCollectionsAudios"
+    OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
 
     ############################################################################
 
