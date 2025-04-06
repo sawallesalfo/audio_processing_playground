@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     ########################## Change me ######################################
     VERBATIM = False 
-    CURRENT_DATASET_PATH = "burkimbia/dataset_verbatimmbia/audio-dataset-aggregated"
+    CURRENT_DATASET_PATH = "burkimbia/audio-dataset-aggregated"
     COMMIT_MESSAGE = "cook 2-Kibayã 👨‍🍳"
     INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_2-Kibayã"
     OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
