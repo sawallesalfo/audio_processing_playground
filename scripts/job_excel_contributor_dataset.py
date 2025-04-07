@@ -7,6 +7,7 @@ import openpyxl
 from tqdm import tqdm
 from datasets import concatenate_datasets, Audio, Features, Value, load_dataset, DownloadConfig, Dataset
 
+
 from shelpers.collectors import get_audio_paths
 from shelpers.parser import time_to_milliseconds, extract_audio_identifier, remove_digits_and_numbers
 from shelpers.matcher import get_matches
@@ -100,8 +101,9 @@ if __name__ == "__main__":
     ################################### CHANGE ME ########################
     CHAPTER= "Dãniyɛll"
     EXCEL_FILE= "contributor_files/Dãniyɛll.xlsx"
-    PAGE_START = 1
-    PAGE_END = 13
+    PAGE_START = 7
+    PAGE_END = 7
+
 
     #######################################################################
     file_pattern = "page_{page}.mp3"
