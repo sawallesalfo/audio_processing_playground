@@ -32,7 +32,7 @@ def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_
     # Vérification des colonnes
     if not current_dataset.features.keys()==incoming_dataset.features.keys():
         raise ValueError("Les colonnes du dataset entrant ne correspondent pas aux colonnes attendues.")
-    logger.info("Vérification des colonnes réussie ✅")
+    # logger.info("Vérification des colonnes réussie ✅")
 
 
     # Vérification du nombre de lignes
@@ -71,10 +71,11 @@ if __name__ == "__main__":
 
     ########################## Change me ######################################
     VERBATIM = False 
-    CURRENT_DATASET_PATH = "burkimbia/audio-dataset-aggregated"
-    COMMIT_MESSAGE = "🚀 Add dataset_verbatim"
-    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/dataset_verbatim"
+    CURRENT_DATASET_PATH = "sawadogosalif/MooreFRCollectionsAudios"
+    COMMIT_MESSAGE = "cook 2-Kibayã 👨‍🍳"
+    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_2-Kibayã"
     OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
+
     ############################################################################
 
     storage_options = {
