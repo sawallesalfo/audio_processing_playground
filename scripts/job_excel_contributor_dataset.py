@@ -101,8 +101,8 @@ if __name__ == "__main__":
     ################################### CHANGE ME ########################
     CHAPTER= "Dãniyɛll"
     EXCEL_FILE= "contributor_files/Dãniyɛll.xlsx"
-    PAGE_START = 1
-    PAGE_END = 12
+    PAGE_START = 7
+    PAGE_END = 7
 
 
     #######################################################################
