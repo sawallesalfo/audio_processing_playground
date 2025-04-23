@@ -43,8 +43,8 @@
 | 1-Kibayã             |  ✅           |
 | 2-Korẽnt-rãmbã       | ✅      |
 | habakuk             | ✅      |
-| Dãniyɛll            | ⏳     |
-| amos                | ⏳      |
+| Dãniyɛll            | ✅     |
+| amos                | ✅      |
 | Ebre-rãmbã           | 🔴      |
 | Efɛɛz-rãmbã          | 🔴      |
 | Galat-rãmbã         | 🔴      |
