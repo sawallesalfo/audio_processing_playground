@@ -100,7 +100,7 @@ if __name__ == "__main__":
     
     ################################### CHANGE ME ########################
     CHAPTER= "maliki"
-    EXCEL_FILE= "contributor_files/maliki.xlsx"
+    EXCEL_FILE= "contributor_files/malaki.xlsx"
     PAGE_START = 1
     PAGE_END = 4
 
