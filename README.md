@@ -47,7 +47,9 @@
 | Vẽnegre             | ✅      |
 | Ɛstɛɛr             | ✅       |
 | malaki              | ✅        |
+| Ɛsdras             | ✅       |
 | amos                | ⏳        |
+| ooze                | ⏳        |
 | Ebre-rãmbã           | 🔴      |
 | Efɛɛz-rãmbã          | 🔴      |
 | Galat-rãmbã         | 🔴      |
@@ -59,10 +61,8 @@
 | 1-Korẽnt-rãmbã       | 🔴      |
 | matiye              | 🔴      |
 | neemi               | 🔴      |
-| ooze                | ⏳        |
 | zakari              | 🔴      |
 | zeremi              | 🔴      |
 | zonas               | 🔴      |
 | zoob                | 🔴      |
 | zozuwe              | 🔴      |
-| Ɛsdras             | ⏳        |
