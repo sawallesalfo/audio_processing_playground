@@ -73,7 +73,7 @@ if __name__ == "__main__":
     VERBATIM = False 
     CURRENT_DATASET_PATH = "sawadogosalif/MooreFRCollectionsAudios"
     COMMIT_MESSAGE = "cook Dãniyɛll 👨‍🍳"
-    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/contribution_dataset_Dãniyɛll"
+    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/light-verbatim_esteer"
     OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
 
     ############################################################################
