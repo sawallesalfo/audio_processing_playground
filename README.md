@@ -44,6 +44,9 @@
 | 2-Korẽnt-rãmbã       | ✅      |
 | habakuk             | ✅      |
 | Dãniyɛll            | ✅     |
+| Vẽnegre             | ✅      |
+| Ɛstɛɛr             | ✅       |
+| malaki              | ✅        |
 | amos                | ⏳        |
 | Ebre-rãmbã           | 🔴      |
 | Efɛɛz-rãmbã          | 🔴      |
@@ -51,9 +54,7 @@
 | Kolos-rãmbã         | 🔴      |
 | Koɛɛg-soaba         | 🔴      |
 | Salomo-yɩɩllã       | 🔴      |
-| Vẽnegre             | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
-| malaki              | ⏳        |
 | mark                | 🔴      |
 | 1-Korẽnt-rãmbã       | 🔴      |
 | matiye              | 🔴      |
@@ -65,4 +66,3 @@
 | zoob                | 🔴      |
 | zozuwe              | 🔴      |
 | Ɛsdras             | ⏳        |
-| Ɛstɛɛr             | ⏳        |
