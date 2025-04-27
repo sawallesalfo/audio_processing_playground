@@ -95,8 +95,8 @@ if __name__ == "__main__":
 
     
     BUCKET_NAME = "moore-collection"
-    DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_yikri"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/light-audio-dataset-aggregated_yikri"
+    DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_esteer"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/light-verbatim_esteer"
 
     storage_options = {
         "key": os.getenv("AWS_ACCESS_KEY_ID"),
