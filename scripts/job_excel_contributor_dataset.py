@@ -102,7 +102,7 @@ if __name__ == "__main__":
     CHAPTER= "Vẽnegre"
     EXCEL_FILE= "contributor_files/Venegr sebre.xlsx"
     PAGE_START = 1
-    PAGE_END = 12
+    PAGE_END = 22
 
 
     #######################################################################
