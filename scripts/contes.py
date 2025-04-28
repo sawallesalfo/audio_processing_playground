@@ -282,5 +282,6 @@ if __name__ == "__main__":
                 logger.info(f"Dataset sauvegardé dans {output_dir}")
         break
     logger.info("Scraping terminé")
-    concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True,token=os.getenv("HF_TOKEN")
+    os.environ["HF_TOKEN"] =     os.environ["HF_TOKEN"] 
+    concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True
 )
