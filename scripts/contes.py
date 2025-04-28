@@ -280,8 +280,6 @@ if __name__ == "__main__":
                 output_dir = f"dataset_{os.path.basename(BASE_URL).replace('.html', '')}"
                 dataset.save_to_disk(output_dir)
                 logger.info(f"Dataset sauvegardé dans {output_dir}")
-        break
     logger.info("Scraping terminé")
-    os.environ["HF_TOKEN"] =     os.environ["HF_TOKEN"] 
-    concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True
+    concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True, token=os.environ["HF_TOKEN"] 
 )
