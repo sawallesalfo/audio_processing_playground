@@ -276,10 +276,6 @@ if __name__ == "__main__":
             dataset = build_dataset(all_recs)
             if dataset:
                 datasets.append(dataset)
-                # Sauvegarde locale du dataset
-                output_dir = f"dataset_{os.path.basename(BASE_URL).replace('.html', '')}"
-                dataset.save_to_disk(output_dir)
-                logger.info(f"Dataset sauvegardé dans {output_dir}")
     logger.info("Scraping terminé")
     concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True, token=os.environ["HF_TOKEN"] 
 )
