@@ -7,7 +7,7 @@ import requests
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from pydub import AudioSegment
-from datasets import Dataset, Features, Value, Audio
+from datasets import Dataset, Features, Value, Audio, concatenate_datasets
 from loguru import logger
 
 # -------------------------------------------------------
