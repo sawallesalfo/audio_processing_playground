@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# -------------------------------------------------------
-# Imports
-# -------------------------------------------------------
+
 import os
 import re
 import requests
@@ -285,5 +283,4 @@ if __name__ == "__main__":
                 logger.info(f"Dataset sauvegardé dans {output_dir}")
     break
     logger.info("Scraping terminé")
-  from datasets import Dataset, Features, Value, Audio, concatenate_datasets
-  concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True,)
+    concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True,)
