@@ -10,19 +10,11 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from pydub import AudioSegment
 from datasets import Dataset, Features, Value, Audio
-import logging
-
-# Configuration du logging simple
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 # -------------------------------------------------------
 # Configuration principale
 # -------------------------------------------------------
-BASE_URL = "https://media.ipsapps.org/mos/ora/co2/01-B001-001.html"
 SAMPLING_RATE = 48000
 MAX_RETRIES = 3
 RETRY_DELAY = 2  # secondes entre chaque nouvelle tentative
@@ -291,6 +283,7 @@ if __name__ == "__main__":
                 output_dir = f"dataset_{os.path.basename(BASE_URL).replace('.html', '')}"
                 dataset.save_to_disk(output_dir)
                 logger.info(f"Dataset sauvegardé dans {output_dir}")
+    break
     logger.info("Scraping terminé")
   from datasets import Dataset, Features, Value, Audio, concatenate_datasets
   concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True,)
