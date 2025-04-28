@@ -220,7 +220,6 @@ def crawl_and_collect(base_url: str) -> list:
         else:
             logger.warning(f"Aucun audio trouvé pour {url}")
 
-        # Détecter la navigation suivante
         soup = BeautifulSoup(html, "html.parser")
         next_ch = soup.find("a", title="Next Chapter")
         next_bk = soup.find("a", title="Next Book")
@@ -281,6 +280,6 @@ if __name__ == "__main__":
                 output_dir = f"dataset_{os.path.basename(BASE_URL).replace('.html', '')}"
                 dataset.save_to_disk(output_dir)
                 logger.info(f"Dataset sauvegardé dans {output_dir}")
-    break
+        break
     logger.info("Scraping terminé")
     concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True,)
