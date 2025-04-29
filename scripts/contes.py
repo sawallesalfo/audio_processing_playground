@@ -3,6 +3,13 @@ from datasets import concatenate_datasets
 from loguru import logger
 from mooreburkina.utils import build_dataset, crawl_and_collect
 
+def compute_duration(example):
+    duration = round(len(example["audio"]["array"]) / example["audio"]["sampling_rate"],2)
+    example["duration"] = duration
+    return example
+
+# 3. Apply the function
+dataset = dataset.map(compute_duration)
 if __name__ == "__main__":
     datasets = []
     BASE_URLS = [
@@ -22,5 +29,7 @@ if __name__ == "__main__":
             if dataset:
                 datasets.append(dataset)
     logger.info("Scraping terminé")
-    concatenate_datasets(datasets).push_to_hub("sawadogosalif/contes", private=True, token=os.environ["HF_TOKEN"] 
+    datasets = concatenate_datasets(datasets)
+    datasets = datasets.map(compute_duration, num_proc=4)
+    datasets.push_to_hub("sawadogosalif/contes", private=True, token=os.environ["HF_TOKEN"] 
 )
