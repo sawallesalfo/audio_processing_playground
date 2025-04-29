@@ -1,5 +1,6 @@
 import os
 from datasets import concatenate_datasets
+
 from mooreburkina import build_dataset
 
 if __name__ == "__main__":
