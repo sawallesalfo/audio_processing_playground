@@ -1,7 +1,7 @@
 import os
 from datasets import concatenate_datasets
 
-from mooreburkina import build_dataset
+from mooreburkina.utils import build_dataset, crawl_and_collect
 
 if __name__ == "__main__":
     datasets = []
