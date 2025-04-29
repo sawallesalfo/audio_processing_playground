@@ -9,6 +9,7 @@ from mooreburkina.utils import build_dataset, crawl_and_collect
 from langdetect import detect
 from datasets import load_dataset, Dataset
 
+
 def is_french(text: str) -> bool:
     text = text.strip()
     try:
