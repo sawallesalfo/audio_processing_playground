@@ -28,6 +28,6 @@ if __name__ == "__main__":
                 datasets.append(dataset)
     logger.info("Scraping terminé")
     datasets = concatenate_datasets(datasets)
-    datasets = datasets.map(compute_duration, num_proc=4)
+    datasets = datasets.map(compute_duration)
     datasets.push_to_hub("sawadogosalif/contes", private=True, token=os.environ["HF_TOKEN"] 
 )
