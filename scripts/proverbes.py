@@ -30,7 +30,7 @@ def extraire_id(texte):
 
 def calculate_duration(audio_array, sampling_rate):
     """Calcule la durée de l'audio en secondes."""
-    return len(audio_array) / sampling_rate
+    return round(len(audio_array) / sampling_rate, 2)
 
 def find_language_and_group_segments(dataset):
     change_indices = [0]
