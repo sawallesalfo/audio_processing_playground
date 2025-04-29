@@ -8,3 +8,4 @@ pydub  #audio
 soundfile
 librosa
 bs4
+langdetect
