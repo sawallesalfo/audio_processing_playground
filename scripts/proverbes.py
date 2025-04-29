@@ -86,7 +86,7 @@ def find_language_and_group_segments(dataset):
 if __name__ == "__main__":
     datasets = []
     BASE_URLS = [
-        "https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)
+        f"https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)
     ]
     for BASE_URL in BASE_URLS:
         logger.info(f"=== Début du scraping pour {BASE_URL} ===")
