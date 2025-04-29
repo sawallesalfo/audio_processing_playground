@@ -83,7 +83,7 @@ def parse_texts(html: str, timings: list) -> dict:
         el = soup.find(id=element_id)
 
         if el:
-            texts[t["label"]] = el.get_text(strip=True)
+            texts[t["label"]] = el.get_text(separator=" ", strip=True)
         else:
             logger.warning(f"Élément avec ID {element_id} non trouvé dans le HTML")
             texts[t["label"]] = ""
