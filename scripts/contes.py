@@ -1,6 +1,7 @@
 import os
 from datasets import concatenate_datasets
 from loguru import logger
+import numpy as np
 from mooreburkina.utils import build_dataset, crawl_and_collect
 
 def compute_duration(example):
@@ -29,5 +30,14 @@ if __name__ == "__main__":
     logger.info("Scraping terminé")
     datasets = concatenate_datasets(datasets)
     datasets = datasets.map(compute_duration)
+
+        
+    # Afficher quelques statistiques sur les durées
+    durations = datasets['duration']
+    logger.info(f"Durée totale des audios: {sum(durations):.2f} secondes")
+    logger.info(f"Durée moyenne: {np.mean(durations):.2f} secondes")
+    logger.info(f"Durée minimale: {min(durations):.2f} secondes")
+    logger.info(f"Durée maximale: {max(durations):.2f} secondes")
+
     datasets.push_to_hub("sawadogosalif/contes", private=True, token=os.environ["HF_TOKEN"] 
 )
