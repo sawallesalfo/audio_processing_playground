@@ -1,6 +1,6 @@
 import os
 from datasets import concatenate_datasets
-
+from loguru import logger
 from mooreburkina.utils import build_dataset, crawl_and_collect
 
 if __name__ == "__main__":
