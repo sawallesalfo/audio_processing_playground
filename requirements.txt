@@ -9,4 +9,4 @@ soundfile
 librosa
 bs4
 langdetect
-resemble-enhance==0.0.2.dev240104122303
+resemble-enhance
