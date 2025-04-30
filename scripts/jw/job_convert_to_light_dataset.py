@@ -15,13 +15,18 @@ Assurez-vous d'avoir installé les dépendances via pip (par exemple, `pip insta
 """
 
 import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
 import logging
 from datasets import Dataset, Features, Value, Audio, load_from_disk
 import soundfile as sf
 from pydub import AudioSegment
 from tqdm import tqdm
 from loguru import logger
-from ..shelpers.collectors import get_audio_paths
+from shelpers.collectors import get_audio_paths
 
 def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options=None):
     """
