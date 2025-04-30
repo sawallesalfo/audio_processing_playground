@@ -6,6 +6,8 @@ WORKDIR /app
 
 COPY requirements.txt .
 
+RUN pip install --upgrade torch
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Install system dependencies: ffmpeg and git
