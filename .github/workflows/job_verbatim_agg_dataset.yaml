@@ -3,12 +3,12 @@ name: Aaudio aggregation
 on:
   push:
     paths:
-      - scripts/job_verbatim_to_long_audio.py
+      - scripts/jw/job_verbatim_to_long_audio.py
     branches:
       - main                    # Only run on push to the master branch
   pull_request:
     paths:
-      - scripts/job_verbatim_to_long_audio.py
+      - scripts/jw/job_verbatim_to_long_audio.py
     branches:
       - main                    # Only run on pull requests to the master branch
   # workflow_dispatch:              # Allows manual triggering of the workflow
@@ -37,4 +37,4 @@ jobs:
           mkdir -p /app/scripts/downloaded_audio && chmod 777 /app/scripts/downloaded_audio && ls -ld /app/scripts/downloaded_audio"
 
       - name: Run Python script inside Docker
-        run: docker run --rm -v ${{ github.workspace }}:/app -w /app --env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --env AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }}  ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} /bin/bash -c "python /app/scripts/job_verbatim_to_long_audio.py"
+        run: docker run --rm -v ${{ github.workspace }}:/app -w /app --env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --env AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }}  ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} /bin/bash -c "python /app/scripts/jw/job_verbatim_to_long_audio.py"
