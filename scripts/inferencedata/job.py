@@ -19,7 +19,7 @@ def transcribe(example):
     try:
         res = client.predict(
             handle_file(tmp_path),
-            apply_enhance=True,
+            apply_enhance=False,
             api_name="/transcribe_and_update"
         )
         example["text_transcript"] = res
