@@ -21,7 +21,7 @@ import soundfile as sf
 from pydub import AudioSegment
 from tqdm import tqdm
 from loguru import logger
-from shelpers.collectors import get_audio_paths
+from ..shelpers.collectors import get_audio_paths
 
 def convert_audio_to_wav(dataset_path, output_dir="audios", storage_options=None):
     """
