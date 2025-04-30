@@ -16,24 +16,28 @@ from mooreburkina.utils import build_dataset, crawl_and_collect
 MIN_SILENCE_LEN = 1000  # ms
 SILENCE_THRESH   = -40  # dBFS
 KEEP_SILENCE     = 200  # ms
+import torchaudio
 
 def clean_audio(example):
-    # 1️⃣ Denoising
-    # ———— Convert device to a torch.device
+    # 0️⃣ Récupérer le chemin du fichier audio
+    path = example["audio"]["path"]
+    print("path", path)
+
+    # 1️⃣ Charger avec torchaudio et convertir en mono
+    wav, sr = torchaudio.load(path)  
+    wav = wav.mean(dim=0)  # float32 Tensor [time]
+
+    # 2️⃣ Préparer le device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    wav = wav.to(device)
 
-    # ———— Turn the NumPy array into a float32 Torch tensor on the right device
-    audio_np = example["audio"]["array"]
-    sr       = example["audio"]["sampling_rate"]
-    audio_t  = torch.from_numpy(audio_np).float().to(device)
+    # 3️⃣ Denoising (denoise retourne un seul Tensor)
+    denoised_t, sr = denoise(wav, sr, device=device)
 
-    # ———— Call denoise with a proper torch.Tensor
-    denoised_t, sr  = denoise(audio_t, sr, device=device)
-
-    # ———— Bring it back to CPU NumPy for Pydub
+    # 4️⃣ Repasser en CPU + NumPy pour Pydub
     denoised_np = denoised_t.detach().cpu().numpy()
 
-    # 2️⃣ To AudioSegment
+    # 5️⃣ Créer un AudioSegment à partir des int16
     denoised_int16 = (denoised_np * 32767).astype(np.int16)
     seg = AudioSegment(
         denoised_int16.tobytes(),
@@ -42,7 +46,7 @@ def clean_audio(example):
         channels=1
     )
 
-    # 3️⃣ Split on long silences
+    # 6️⃣ Split sur les silences
     chunks = silence.split_on_silence(
         seg,
         min_silence_len=MIN_SILENCE_LEN,
@@ -51,8 +55,8 @@ def clean_audio(example):
     )
     seg_clean = sum(chunks) if chunks else seg
 
-    # 4️⃣ Back to normalized float32 NumPy
-    arr = np.array(seg_clean.get_array_of_samples()).astype(np.float32) / 32767.0
+    # 7️⃣ Retour au float32 normalisé
+    arr = np.array(seg_clean.get_array_of_samples(), dtype=np.float32) / 32767.0
 
     return {
         "clean": {
@@ -60,6 +64,7 @@ def clean_audio(example):
             "sampling_rate": sr
         }
     }
+
 
 
 def is_french(text: str) -> bool:
