@@ -9,4 +9,4 @@ soundfile
 librosa
 bs4
 langdetect
-resemble-enhance
+git+https://github.com/resemble-ai/resemble-enhance.git
