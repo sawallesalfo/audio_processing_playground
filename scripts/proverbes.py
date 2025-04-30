@@ -22,7 +22,6 @@ import tempfile
 import soundfile as sf
 
 def clean_audio(example):
-    # — Déterminer le device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # — Extraire les données audio
@@ -141,7 +140,6 @@ if __name__ == "__main__":
         if recs:
             ds = build_dataset(recs)
             if ds: datasets.append(ds)
-        break
     ds_full = concatenate_datasets(datasets)
 
     ds_full = ds_full.map(lambda x: {"group": extraire_id(x["id"])})
