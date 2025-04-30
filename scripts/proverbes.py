@@ -17,16 +17,24 @@ MIN_SILENCE_LEN = 1000  # ms
 SILENCE_THRESH   = -40  # dBFS
 KEEP_SILENCE     = 200  # ms
 
-
 def clean_audio(example):
     # 1️⃣ Denoising
-    audio = example["audio"]["array"]
-    sr    = example["audio"]["sampling_rate"]
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    denoised = denoise(audio, sr, device=device)
+    # ———— Convert device to a torch.device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # ———— Turn the NumPy array into a float32 Torch tensor on the right device
+    audio_np = example["audio"]["array"]
+    sr       = example["audio"]["sampling_rate"]
+    audio_t  = torch.from_numpy(audio_np).float().to(device)
+
+    # ———— Call denoise with a proper torch.Tensor
+    denoised_t = denoise(audio_t, sr, device=device)
+
+    # ———— Bring it back to CPU NumPy for Pydub
+    denoised_np = denoised_t.detach().cpu().numpy()
 
     # 2️⃣ To AudioSegment
-    denoised_int16 = (denoised * 32767).astype(np.int16)
+    denoised_int16 = (denoised_np * 32767).astype(np.int16)
     seg = AudioSegment(
         denoised_int16.tobytes(),
         frame_rate=sr,
@@ -34,7 +42,7 @@ def clean_audio(example):
         channels=1
     )
 
-    # 3️⃣ Split sur les silences trop longs
+    # 3️⃣ Split on long silences
     chunks = silence.split_on_silence(
         seg,
         min_silence_len=MIN_SILENCE_LEN,
@@ -43,7 +51,7 @@ def clean_audio(example):
     )
     seg_clean = sum(chunks) if chunks else seg
 
-    # 4️⃣ Revenir à np.ndarray float32 normalisé
+    # 4️⃣ Back to normalized float32 NumPy
     arr = np.array(seg_clean.get_array_of_samples()).astype(np.float32) / 32767.0
 
     return {
