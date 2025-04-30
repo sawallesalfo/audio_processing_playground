@@ -3,12 +3,12 @@ name: Creation proverbes dataset
 on:
   push:
     paths:
-      - scripts/proverbes.py
+      - scripts/jw/proverbes.py
     branches:
       - main                    # Only run on push to the master branch
   pull_request:
     paths:
-      - scripts/proverbes.py
+      - scripts/jw/proverbes.py
     branches:
       - main                    # Only run on pull requests to the master branch
   # workflow_dispatch:              # Allows manual triggering of the workflow
@@ -33,4 +33,4 @@ jobs:
         run: docker pull ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
       - name: Run Python script inside Docker
-        run: docker run --rm -v ${{ github.workspace }}:/app -w /app --env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --env AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --env HF_TOKEN=${{ secrets.HF_TOKEN }} --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }}  ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} /bin/bash -c "python /app/scripts/proverbes.py"
+        run: docker run --rm -v ${{ github.workspace }}:/app -w /app --env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --env AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --env HF_TOKEN=${{ secrets.HF_TOKEN }} --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }}  ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} /bin/bash -c "python /app/scripts/jw/proverbes.py"
