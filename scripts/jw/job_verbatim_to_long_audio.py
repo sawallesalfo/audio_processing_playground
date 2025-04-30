@@ -8,9 +8,13 @@ concatenates audio segments with silence between them, and uploads the aggregate
 dataset to the Hugging Face Hub. It handles batches of 13 audio segments at a time
 and joins their transcripts with commas. 
 """
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 import numpy as np
-import os
 from datasets import Features, Value, Audio, Dataset, concatenate_datasets
 from pathlib import Path
 from tqdm import tqdm
