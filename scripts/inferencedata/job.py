@@ -9,7 +9,7 @@ client = Client(
     hf_token=os.environ["HF_TOKEN"]
 )
 
-ds = load_dataset("sawadogosalif/contes", split="train").select(range(5))
+ds = load_dataset("sawadogosalif/proverbes_clean", split="train")
 
 def transcribe(example):
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
@@ -34,4 +34,4 @@ def transcribe(example):
     return example
 
 dataset = ds.map(transcribe)
-dataset.push_to_hub("sawadogosalif/contes", token=os.environ["HF_TOKEN"])
+dataset.push_to_hub("sawadogosalif/proverbes_clean", token=os.environ["HF_TOKEN"])
