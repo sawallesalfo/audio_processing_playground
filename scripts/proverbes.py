@@ -28,7 +28,7 @@ def clean_audio(example):
     audio_t  = torch.from_numpy(audio_np).float().to(device)
 
     # ———— Call denoise with a proper torch.Tensor
-    denoised_t = denoise(audio_t, sr, device=device)
+    denoised_t? sr  = denoise(audio_t, sr, device=device)
 
     # ———— Bring it back to CPU NumPy for Pydub
     denoised_np = denoised_t.detach().cpu().numpy()
