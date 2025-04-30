@@ -18,26 +18,31 @@ SILENCE_THRESH   = -40  # dBFS
 KEEP_SILENCE     = 200  # ms
 import torchaudio
 
+import tempfile
+import soundfile as sf
+
 def clean_audio(example):
-    # 0️⃣ Récupérer le chemin du fichier audio
-    path = example["audio"]["path"]
-    print("path", path)
-
-    # 1️⃣ Charger avec torchaudio et convertir en mono
-    wav, sr = torchaudio.load(path)  
-    wav = wav.mean(dim=0)  # float32 Tensor [time]
-
-    # 2️⃣ Préparer le device
+    # — Déterminer le device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    wav = wav.to(device)
 
-    # 3️⃣ Denoising (denoise retourne un seul Tensor)
-    denoised_t, sr = denoise(wav, sr, device=device)
+    # — Extraire les données audio
+    audio_np = example["audio"]["array"]
+    sr       = example["audio"]["sampling_rate"]
 
-    # 4️⃣ Repasser en CPU + NumPy pour Pydub
-    denoised_np = denoised_t.detach().cpu().numpy()
+    # 1️⃣ Écrire temporairement en .wav
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
+        sf.write(tmpfile.name, audio_np, sr)
+        tmp_wav_path = tmpfile.name
 
-    # 5️⃣ Créer un AudioSegment à partir des int16
+    # 2️⃣ Charger avec torchaudio
+    wav, sr = torchaudio.load(tmp_wav_path)  # wav : (1, n) ou (2, n)
+    wav = wav.mean(dim=0)  # mono
+
+    # 3️⃣ Débruitage
+    denoised, sr = denoise(wav.to(device), sr, device=device)
+    denoised_np = denoised.cpu().numpy()
+
+    # 4️⃣ Conversion en AudioSegment pour découpage
     denoised_int16 = (denoised_np * 32767).astype(np.int16)
     seg = AudioSegment(
         denoised_int16.tobytes(),
@@ -46,7 +51,7 @@ def clean_audio(example):
         channels=1
     )
 
-    # 6️⃣ Split sur les silences
+    # 5️⃣ Split on silence
     chunks = silence.split_on_silence(
         seg,
         min_silence_len=MIN_SILENCE_LEN,
@@ -55,8 +60,8 @@ def clean_audio(example):
     )
     seg_clean = sum(chunks) if chunks else seg
 
-    # 7️⃣ Retour au float32 normalisé
-    arr = np.array(seg_clean.get_array_of_samples(), dtype=np.float32) / 32767.0
+    # 6️⃣ Retour en float32 normalisé
+    arr = np.array(seg_clean.get_array_of_samples()).astype(np.float32) / 32767.0
 
     return {
         "clean": {
