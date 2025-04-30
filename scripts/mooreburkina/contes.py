@@ -2,7 +2,7 @@ import os
 from datasets import concatenate_datasets
 from loguru import logger
 import numpy as np
-from .utils import build_dataset, crawl_and_collect
+from utils import build_dataset, crawl_and_collect
 
 def compute_duration(example):
     duration = round(len(example["audio"]["array"]) / example["audio"]["sampling_rate"],2)
