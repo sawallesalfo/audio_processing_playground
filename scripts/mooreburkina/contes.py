@@ -9,6 +9,7 @@ def compute_duration(example):
     example["duration"] = duration
     return example
 
+
 if __name__ == "__main__":
     datasets = []
     BASE_URLS = [
