@@ -48,10 +48,10 @@
 | Ɛstɛɛr             | ✅       |
 | malaki              | ✅        |
 | Ɛsdras             | ✅       |
-| amos                | ⏳        |
+| amos                | ✅        |
+| Efɛɛz-rãmbã          | ✅     |
 | ooze                | ⏳        |
 | Ebre-rãmbã           | 🔴      |
-| Efɛɛz-rãmbã          | 🔴      |
 | Galat-rãmbã         | 🔴      |
 | Kolos-rãmbã         | 🔴      |
 | Koɛɛg-soaba         | 🔴      |
