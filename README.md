@@ -53,13 +53,13 @@
 | ooze                | ⏳        |
 | mark                | ⏳      |
 | Ebre-rãmbã           | ⏳      |
+| matiye              | ⏳      |
 | Galat-rãmbã         | 🔴      |
 | Kolos-rãmbã         | 🔴      |
 | Koɛɛg-soaba         | 🔴      |
 | Salomo-yɩɩllã       | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
 | 1-Korẽnt-rãmbã       | 🔴      |
-| matiye              | 🔴      |
 | neemi               | 🔴      |
 | zakari              | 🔴      |
 | zeremi              | 🔴      |
