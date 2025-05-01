@@ -51,13 +51,13 @@
 | amos                | ✅        |
 | Efɛɛz-rãmbã          | ✅     |
 | ooze                | ⏳        |
-| Ebre-rãmbã           | 🔴      |
+| mark                | ⏳      |
+| Ebre-rãmbã           | ⏳      |
 | Galat-rãmbã         | 🔴      |
 | Kolos-rãmbã         | 🔴      |
 | Koɛɛg-soaba         | 🔴      |
 | Salomo-yɩɩllã       | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
-| mark                | 🔴      |
 | 1-Korẽnt-rãmbã       | 🔴      |
 | matiye              | 🔴      |
 | neemi               | 🔴      |
