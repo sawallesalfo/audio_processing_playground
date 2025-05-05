@@ -70,8 +70,8 @@ if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
     ######################### CHANGE ME #################################
-    FOLDER_TO_PROCESS = "output_jsons_Ɛsdras"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_esdras"
-    CHAPTER = "Ɛsdras"
+    FOLDER_TO_PROCESS = "output_jsons_zakari"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_zakari"
+    CHAPTER = "zakari"
     ########################################################################
     process_s3_audio_data(BUCKET_NAME, FOLDER_TO_PROCESS, OUTPUT_PATH)
