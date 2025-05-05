@@ -50,9 +50,10 @@
 | Ɛsdras             | ✅       |
 | amos                | ✅        |
 | Efɛɛz-rãmbã          | ✅     |
+| zakari              | ✅      |
+| Ebre-rãmbã           | ✅      |
 | ooze                | ⏳        |
 | mark                | ⏳      |
-| Ebre-rãmbã           | ⏳      |
 | matiye              | ⏳      |
 | Galat-rãmbã         | 🔴      |
 | Kolos-rãmbã         | 🔴      |
@@ -61,7 +62,6 @@
 | Yɩɩn-sõamyã        | 🔴      |
 | 1-Korẽnt-rãmbã       | 🔴      |
 | neemi               | 🔴      |
-| zakari              | 🔴      |
 | zeremi              | 🔴      |
 | zonas               | 🔴      |
 | zoob                | 🔴      |
