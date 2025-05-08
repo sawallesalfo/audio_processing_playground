@@ -40,11 +40,10 @@ if __name__ == "__main__":
     logger.info(f"Durée minimale: {min(durations):.2f} secondes")
     logger.info(f"Durée maximale: {max(durations):.2f} secondes")
     
-   storage_options = {
+    storage_options = {
         "key": os.getenv("AWS_ACCESS_KEY_ID"),
         "secret": os.getenv("AWS_SECRET_ACCESS_KEY"),
         "client_kwargs": {"endpoint_url": os.getenv("AWS_ENDPOINT_URL_S3")}
     }
-
     OUTPUT_DATASET_PATH = "s3://burkimbia/audios/cooked/mooreburkina/contes"
     datasets.save_to_disk(OUTPUT_DATASET_PATH, storage_options=storage_options)
