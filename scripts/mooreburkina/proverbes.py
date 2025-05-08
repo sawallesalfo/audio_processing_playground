@@ -155,11 +155,11 @@ if __name__ == "__main__":
 
     # 6. Stats & push
     logger.info(f"Durée totale nettoyée : {sum(ds_cleaned['duration']):.2f}s")
-    ds_cleaned.push_to_hub(
-        "sawadogosalif/proverbes_clean",
-        private=True, token=os.environ["HF_TOKEN"]
-    )
-    ds_full.push_to_hub(
-        "sawadogosalif/proverbes",
-        private=True, token=os.environ["HF_TOKEN"]
-    )
+
+    storage_options = {
+        "key": os.getenv("AWS_ACCESS_KEY_ID"),
+        "secret": os.getenv("AWS_SECRET_ACCESS_KEY"),
+        "client_kwargs": {"endpoint_url": os.getenv("AWS_ENDPOINT_URL_S3")}
+    }
+    OUTPUT_DATASET_PATH = "s3://burkimbia/audios/cooked/mooreburkina/proverbes"
+    ds_cleaned.save_to_disk(OUTPUT_DATASET_PATH, storage_options=storage_options)
