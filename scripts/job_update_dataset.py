@@ -62,7 +62,7 @@ def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_
 
     # Push sur le Hub
     logger.info(f"Push du dataset final sur {output_dataset_path}...")
-    final_dataset.save_to_disk(output_dataset_path, commit_message=commit_message)
+    final_dataset.save_to_disk(output_dataset_path)
     logger.info("Push terminé avec succès ✅")
 
 if __name__ == "__main__":
