@@ -62,7 +62,7 @@ def process_dataset(current_dataset_path, incoming_dataset_path, output_dataset_
 
     # Push sur le Hub
     logger.info(f"Push du dataset final sur {output_dataset_path}...")
-    final_dataset.push_to_hub(output_dataset_path, commit_message=commit_message)
+    final_dataset.save_to_disk(output_dataset_path, commit_message=commit_message)
     logger.info("Push terminé avec succès ✅")
 
 if __name__ == "__main__":
@@ -73,8 +73,8 @@ if __name__ == "__main__":
     VERBATIM = False 
     CURRENT_DATASET_PATH = "sawadogosalif/MooreFRCollectionsAudios"
     COMMIT_MESSAGE = "add ebre ramba 👨‍🍳"
-    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/light-verbatim_Ebre"
-    OUTPUT_DATASET_PATH = CURRENT_DATASET_PATH
+    INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/light-verbatim_zakari"
+    OUTPUT_DATASET_PATH = s3://burkimbia/audios/bible-jw
 
     ############################################################################
 
