@@ -3,7 +3,7 @@ name: Creation proverbes dataset
 on:
   push:
     paths:
-      - scripts//proverbes.py
+      - scripts/mooreburkina/proverbes.py
     branches:
       - main                    # Only run on push to the master branch
   pull_request:
