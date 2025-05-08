@@ -155,7 +155,6 @@ if __name__ == "__main__":
 
     # 6. Stats & push
     logger.info(f"Durée totale nettoyée : {sum(ds_cleaned['duration']):.2f}s")
-
     storage_options = {
         "key": os.getenv("AWS_ACCESS_KEY_ID"),
         "secret": os.getenv("AWS_SECRET_ACCESS_KEY"),
