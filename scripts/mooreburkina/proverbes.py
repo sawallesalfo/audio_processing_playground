@@ -12,7 +12,6 @@ from langdetect import detect
 
 from mooreburkina.utils import build_dataset, crawl_and_collect
 
-
 MIN_SILENCE_LEN = 1000  # ms
 SILENCE_THRESH   = -40  # dBFS
 KEEP_SILENCE     = 200  # ms
