@@ -74,7 +74,7 @@ if __name__ == "__main__":
     CURRENT_DATASET_PATH = "sawadogosalif/MooreFRCollectionsAudios"
     COMMIT_MESSAGE = "add ebre ramba 👨‍🍳"
     INCOMING_DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/light-verbatim_zakari"
-    OUTPUT_DATASET_PATH = s3://burkimbia/audios/cooked/bible-jw
+    OUTPUT_DATASET_PATH = "s3://burkimbia/audios/cooked/bible-jw"
 
     ############################################################################
 
