@@ -52,9 +52,9 @@
 | Efɛɛz-rãmbã          | ✅     |
 | zakari              | ✅      |
 | Ebre-rãmbã           | ✅      |
+| matiye              | ✅      |
 | ooze                | ⏳        |
 | mark                | ⏳      |
-| matiye              | ⏳      |
 | Galat-rãmbã         | 🔴      |
 | Kolos-rãmbã         | 🔴      |
 | Koɛɛg-soaba         | 🔴      |
