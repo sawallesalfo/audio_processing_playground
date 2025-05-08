@@ -56,8 +56,8 @@
 | sofoni              | ✅      |
 | ooze                | ⏳        |
 | mark                | ⏳      |
-| Galat-rãmbã         | 🔴      |
-| Kolos-rãmbã         | 🔴      |
+| Galat-rãmbã         | ⏳      |
+| Kolos-rãmbã         | ⏳      |
 | Koɛɛg-soaba         | 🔴      |
 | Salomo-yɩɩllã       | 🔴      |
 | Yɩɩn-sõamyã        | 🔴      |
