@@ -23,6 +23,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Delete huge unnecessary tools folder
+        run: rm -rf /opt/hostedtoolcache
+        # https://github.com/orgs/community/discussions/25678
+        # TO FIX NO SPACE LEFT ERROR
+        
       - name: Checkout code
         uses: actions/checkout@v3
 
