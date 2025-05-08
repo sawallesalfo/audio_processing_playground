@@ -103,10 +103,10 @@ if __name__ == "__main__":
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
     
     ################################### CHANGE ME ########################
-    CHAPTER= "Efɛɛz-rãmbã"
-    EXCEL_FILE= "contributor_files/efez_ramba.xlsx"
+    CHAPTER= "matiye"
+    EXCEL_FILE= "contributor_files/MATIYE.xlsx"
     PAGE_START = 1
-    PAGE_END = 6
+    PAGE_END = 28
 
 
     #######################################################################
