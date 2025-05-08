@@ -53,6 +53,7 @@
 | zakari              | ✅      |
 | Ebre-rãmbã           | ✅      |
 | matiye              | ✅      |
+| sofoni              | ✅      |
 | ooze                | ⏳        |
 | mark                | ⏳      |
 | Galat-rãmbã         | 🔴      |
