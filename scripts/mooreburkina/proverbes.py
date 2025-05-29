@@ -182,7 +182,9 @@ if __name__ == "__main__":
     else:
         logger.error("No datasets were successfully created")
         exit(1)
-
+    
+    logger.info("saving datasets")
+    ds_combined.save_to_disk("s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw", storage_options=storage_options)
     logger.info(f"Combined dataset: {len(ds_combined)} samples")
     logger.info(f"Rachidat dataset: {len(ds_full_rachida)} samples")
     logger.info(f"Thimote dataset: {len(ds_full_thimote)} samples")
