@@ -215,7 +215,7 @@ def process_saved_datasets():
     # Load Thimote if exists
     try:
         thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
-        ds_thimote = load_dataset(thimote_raw_path, storage_options=storage_options)["train"]
+        ds_thimote = load_from_disk(thimote_raw_path, storage_options=storage_options)
         logger.info(f"Loaded Thimote dataset: {len(ds_thimote)} samples")
         
         # Process Thimote
@@ -234,7 +234,7 @@ def process_saved_datasets():
     # Load Rachida if exists
     try:
         rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
-        ds_rachida = load_dataset(rachida_raw_path, storage_options=storage_options)["train"]
+        ds_rachida = load_from_disk(rachida_raw_path, storage_options=storage_options)
         logger.info(f"Loaded Rachida dataset: {len(ds_rachida)} samples")
         
         # Process Rachida
