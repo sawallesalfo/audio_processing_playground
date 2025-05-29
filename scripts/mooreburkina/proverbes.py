@@ -131,19 +131,37 @@ def add_duration_to_dataset(example):
 
 
 if __name__ == "__main__":
-    BASE_URLS = [f"https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)]
+    # THIMOTE
+    BASE_URLS_THIMOTE = [f"https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)]
     datasets = []
-    for url in BASE_URLS:
+    for url in BASE_URLS_THIMOTE:
         logger.info(f"=== Scraping {url} ===")
         recs = crawl_and_collect(url)
         if recs:
             ds = build_dataset(recs)
             if ds: datasets.append(ds)
-    ds_full = concatenate_datasets(datasets)
+    ds_full_thimote = concatenate_datasets(datasets)
 
-    ds_full = ds_full.map(lambda x: {"group": extraire_id(x["id"])})
-    ds_full = ds_full.map(lambda x: {"french_map": is_french(x["text"])})
-    ds_full = ds_full.map(add_duration_to_dataset)
+    ds_full_thimote = ds_full_thimote.map(lambda x: {"group": extraire_id(x["id"])})
+    ds_full_thimote = ds_full_thimote.map(lambda x: {"french_map": is_french(x["text"])})
+    ds_full_thimote = ds_full_thimote.map(add_duration_to_dataset)
+&
+    # RACHIDA
+    BASE_URL_RACHIDA = "https://media.ipsapps.org/mos/ora/prv-v10/"
+    datasets = []
+    for i in range(1, 22):  # 01 to 21
+        url = f"{BASE_URL_RACHIDA}{i:02d}-B{i:03d}-001.html"
+        logger.info(f"=== Scraping Rachida {url} ===")
+        recs = crawl_and_collect(url)
+        if recs:
+            ds = build_dataset(recs)
+            if ds: datasets.append(ds)
+    ds_full_rachida = concatenate_datasets(datasets)
+
+    ds_full_rachida = ds_full_rachida.map(lambda x: {"group": extraire_id(x["id"])})
+    ds_full_rachida = ds_full_rachida.map(lambda x: {"french_map": is_french(x["text"])})
+    ds_full_rachida = ds_full_rachida.map(add_duration_to_dataset)
+    
 
     ds_segments = find_language_and_group_segments(ds_full)
 
