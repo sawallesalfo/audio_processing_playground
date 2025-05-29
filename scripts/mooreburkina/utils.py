@@ -159,7 +159,6 @@ def segment_audio(audio_path: str, timings: list, texts: dict, out_dir: str) -> 
                 "audio": out_path
             })
 
-            logger.info(f"Segment créé: {seg_name}")
         except Exception as e:
             logger.error(f"Erreur lors de l'export du segment {seg_name}: {e}")
 
