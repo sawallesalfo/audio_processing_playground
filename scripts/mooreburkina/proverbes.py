@@ -132,20 +132,20 @@ def add_duration_to_dataset(example):
 
 if __name__ == "__main__":
     # THIMOTE
-    BASE_URLS_THIMOTE = [f"https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)]
-    datasets = []
-    for url in BASE_URLS_THIMOTE:
-        logger.info(f"=== Scraping {url} ===")
-        recs = crawl_and_collect(url)
-        if recs:
-            ds = build_dataset(recs)
-            if ds: datasets.append(ds)
-    ds_full_thimote = concatenate_datasets(datasets)
+    # BASE_URLS_THIMOTE = [f"https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)]
+    # datasets = []
+    # for url in BASE_URLS_THIMOTE:
+    #     logger.info(f"=== Scraping {url} ===")
+    #     recs = crawl_and_collect(url)
+    #     if recs:
+    #         ds = build_dataset(recs)
+    #         if ds: datasets.append(ds)
+    # ds_full_thimote = concatenate_datasets(datasets)
 
-    ds_full_thimote = ds_full_thimote.map(lambda x: {"group": extraire_id(x["id"])})
-    ds_full_thimote = ds_full_thimote.map(lambda x: {"french_map": is_french(x["text"])})
-    ds_full_thimote = ds_full_thimote.map(add_duration_to_dataset)
-&
+    # ds_full_thimote = ds_full_thimote.map(lambda x: {"group": extraire_id(x["id"])})
+    # ds_full_thimote = ds_full_thimote.map(lambda x: {"french_map": is_french(x["text"])})
+    # ds_full_thimote = ds_full_thimote.map(add_duration_to_dataset)
+    
     # RACHIDA
     BASE_URL_RACHIDA = "https://media.ipsapps.org/mos/ora/prv-v10/"
     datasets = []
@@ -161,7 +161,12 @@ if __name__ == "__main__":
     ds_full_rachida = ds_full_rachida.map(lambda x: {"group": extraire_id(x["id"])})
     ds_full_rachida = ds_full_rachida.map(lambda x: {"french_map": is_french(x["text"])})
     ds_full_rachida = ds_full_rachida.map(add_duration_to_dataset)
-    
+
+    logger.info("concatenate dataset")
+    ds_full_thimote = concatenate_datasets([ds_full_rachida, ds_full_thimote])
+    logger.info(f"Dataset 1 (Thimoté): {len(ds1)} samples")
+    logger.info(f"Dataset 2 (Rachida): {len(ds2)} samples") 
+    logger.info(f"Combined dataset: {len(ds_combined)} samples")
 
     ds_segments = find_language_and_group_segments(ds_full)
 
