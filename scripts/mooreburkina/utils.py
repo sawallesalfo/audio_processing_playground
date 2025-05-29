@@ -103,7 +103,6 @@ def download_audio(audio_url: str, folder: str = "audio") -> str:
         logger.info(f"Fichier audio déjà téléchargé: {dest}")
         return dest
 
-    logger.info(f"Téléchargement de {audio_url}")
     try:
         resp = requests.get(audio_url, stream=True, timeout=30)
         resp.raise_for_status()
