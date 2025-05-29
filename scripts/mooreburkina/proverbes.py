@@ -1,5 +1,6 @@
 import os
 import re
+import gc
 from loguru import logger
 
 import torch
@@ -19,6 +20,13 @@ import torchaudio
 
 import tempfile
 import soundfile as sf
+
+# S3 storage options
+storage_options = {
+    "key": os.getenv("AWS_ACCESS_KEY_ID"),
+    "secret": os.getenv("AWS_SECRET_ACCESS_KEY"),
+    "client_kwargs": {"endpoint_url": os.getenv("AWS_ENDPOINT_URL_S3")}
+}
 
 def clean_audio(example):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -128,79 +136,181 @@ def add_duration_to_dataset(example):
     return {"duration": len(arr) / sr}
 
 
-if __name__ == "__main__":
-    # THIMOTE
+def crawl_and_save_thimote():
+    """Crawl Thimote data and save immediately"""
+    logger.info("=== PHASE 1: Crawling THIMOTE data ===")
     BASE_URLS_THIMOTE = [f"https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)]
     datasets = []
+    
     for url in BASE_URLS_THIMOTE:
-        logger.info(f"=== Scraping {url} ===")
+        logger.info(f"Scraping {url}")
         recs = crawl_and_collect(url)
         if recs:
             ds = build_dataset(recs)
-            if ds: datasets.append(ds)
+            if ds: 
+                datasets.append(ds)
+                # Clear memory after each URL
+                del recs, ds
+                gc.collect()
     
     if datasets:
+        logger.info("Combining Thimote datasets")
         ds_full_thimote = concatenate_datasets(datasets)
-        # Add processing for Thimote dataset
-        ds_full_thimote = ds_full_thimote.map(lambda x: {"group": extraire_id(x["id"])})
-        ds_full_thimote = ds_full_thimote.map(lambda x: {"french_map": is_french(x["text"])})
-        ds_full_thimote = ds_full_thimote.map(add_duration_to_dataset)
-        ds_full_thimote = ds_full_thimote.add_column("Genre", ["Homme"]*len(ds_full_thimote))
-        ds_full_thimote = ds_full_thimote.add_column("Auteurs", ["Thimote"]*len(ds_full_thimote))
+        logger.info(f"Thimote dataset: {len(ds_full_thimote)} samples")
+        
+        thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
+        ds_full_thimote.save_to_disk(thimote_raw_path, storage_options=storage_options)
+        logger.info(f"Saved Thimote raw dataset to {thimote_raw_path}")
+        
+        del datasets, ds_full_thimote
+        gc.collect()
+        return True
     else:
-        ds_full_thimote = None
-    
-    # RACHIDA
+        logger.warning("No Thimote datasets were created")
+        return False
+
+
+def crawl_and_save_rachida():
+    """Crawl Rachida data and save immediately"""
+    logger.info("=== PHASE 2: Crawling RACHIDA data ===")
     BASE_URL_RACHIDA = "https://media.ipsapps.org/mos/ora/prv-v10/"
     datasets = []
+    
     for i in range(1, 22):  # 01 to 21
         url = f"{BASE_URL_RACHIDA}{i:02d}-B{i:03d}-001.html"
-        logger.info(f"=== Scraping Rachida {url} ===")
+        logger.info(f"Scraping Rachida {url}")
         recs = crawl_and_collect(url)
         if recs:
             ds = build_dataset(recs)
-            if ds: datasets.append(ds)
+            if ds: 
+                datasets.append(ds)
+                # Clear memory after each URL
+                del recs, ds
+                gc.collect()
     
     if datasets:
+        logger.info("Combining Rachida datasets")
         ds_full_rachida = concatenate_datasets(datasets)
-        ds_full_rachida = ds_full_rachida.add_column("Genre", ["Femme"]*len(ds_full_rachida))
-        ds_full_rachida = ds_full_rachida.add_column("Auteurs", ["Rachida"]*len(ds_full_rachida))
-        ds_full_rachida = ds_full_rachida.map(lambda x: {"group": extraire_id(x["id"])})
-        ds_full_rachida = ds_full_rachida.map(lambda x: {"french_map": is_french(x["text"])})
-        ds_full_rachida = ds_full_rachida.map(add_duration_to_dataset)
+        logger.info(f"Rachida dataset: {len(ds_full_rachida)} samples")
+        
+        rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
+        ds_full_rachida.save_to_disk(rachida_raw_path, storage_options=storage_options)
+        logger.info(f"Saved Rachida raw dataset to {rachida_raw_path}")
+        
+        del datasets, ds_full_rachida
+        gc.collect()
+        return True
     else:
-        ds_full_rachida = None
+        logger.warning("No Rachida datasets were created")
+        return False
 
-    # Combine datasets
-    logger.info("Combining datasets")
-    if ds_full_thimote is not None and ds_full_rachida is not None:
-        ds_combined = concatenate_datasets([ds_full_rachida, ds_full_thimote])
-    elif ds_full_rachida is not None:
-        ds_combined = ds_full_rachida
-    elif ds_full_thimote is not None:
-        ds_combined = ds_full_thimote
-    else:
-        logger.error("No datasets were successfully created")
-        exit(1)
+
+def process_saved_datasets():
+    """Load saved datasets and process them"""
+    logger.info("=== PHASE 3: Processing saved datasets ===")
     
-    logger.info("saving datasets")
-    ds_combined.save_to_disk("s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw", storage_options=storage_options)
-    logger.info(f"Combined dataset: {len(ds_combined)} samples")
-    logger.info(f"Rachidat dataset: {len(ds_full_rachida)} samples")
-    logger.info(f"Thimote dataset: {len(ds_full_thimote)} samples")
-
+    # Load datasets from disk
+    datasets_to_combine = []
+    
+    # Load Thimote if exists
+    try:
+        thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
+        ds_thimote = load_dataset(thimote_raw_path, storage_options=storage_options)["train"]
+        logger.info(f"Loaded Thimote dataset: {len(ds_thimote)} samples")
+        
+        # Process Thimote
+        ds_thimote = ds_thimote.map(lambda x: {"group": extraire_id(x["id"])})
+        ds_thimote = ds_thimote.map(lambda x: {"french_map": is_french(x["text"])})
+        ds_thimote = ds_thimote.map(add_duration_to_dataset)
+        ds_thimote = ds_thimote.add_column("Genre", ["Homme"]*len(ds_thimote))
+        ds_thimote = ds_thimote.add_column("Auteurs", ["Thimote"]*len(ds_thimote))
+        
+        datasets_to_combine.append(ds_thimote)
+        logger.info("Processed Thimote dataset")
+        
+    except Exception as e:
+        logger.warning(f"Could not load Thimote dataset: {e}")
+    
+    # Load Rachida if exists
+    try:
+        rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
+        ds_rachida = load_dataset(rachida_raw_path, storage_options=storage_options)["train"]
+        logger.info(f"Loaded Rachida dataset: {len(ds_rachida)} samples")
+        
+        # Process Rachida
+        ds_rachida = ds_rachida.add_column("Genre", ["Femme"]*len(ds_rachida))
+        ds_rachida = ds_rachida.add_column("Auteurs", ["Rachida"]*len(ds_rachida))
+        ds_rachida = ds_rachida.map(lambda x: {"group": extraire_id(x["id"])})
+        ds_rachida = ds_rachida.map(lambda x: {"french_map": is_french(x["text"])})
+        ds_rachida = ds_rachida.map(add_duration_to_dataset)
+        
+        datasets_to_combine.append(ds_rachida)
+        logger.info("Processed Rachida dataset")
+        
+    except Exception as e:
+        logger.warning(f"Could not load Rachida dataset: {e}")
+    
+    if not datasets_to_combine:
+        logger.error("No datasets could be loaded for processing")
+        return False
+    
+    # Combine datasets
+    logger.info("Combining processed datasets")
+    ds_combined = concatenate_datasets(datasets_to_combine)
+    
+    # Save combined raw dataset
+    combined_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw"
+    ds_combined.save_to_disk(combined_raw_path, storage_options=storage_options)
+    logger.info(f"Saved combined raw dataset: {len(ds_combined)} samples")
+    
+    # Clear memory before segmentation
+    del datasets_to_combine
+    gc.collect()
+    
+    # Group segments
+    logger.info("Grouping language segments")
     ds_segments = find_language_and_group_segments(ds_combined)
-
-    ds_cleaned = ds_segments.cast_column("audio", Audio(sampling_rate=16000)) \
-                             .map(clean_audio)
-
+    
+    # Clear memory
+    del ds_combined
+    gc.collect()
+    
+    # Audio cleaning
+    logger.info("Starting audio cleaning process")
+    ds_segments = ds_segments.cast_column("audio", Audio(sampling_rate=16000))
+    ds_cleaned = ds_segments.map(clean_audio, batch_size=1)  # Process one at a time to save memory
+    
+    # Clear memory
+    del ds_segments
+    gc.collect()
+    
     ds_cleaned = ds_cleaned.cast_column("clean", Audio(sampling_rate=16000))
+    
+    logger.info(f"Total cleaned duration: {sum(ds_cleaned['duration']):.2f}s")
+    
+    # Save final dataset
+    final_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes"
+    ds_cleaned.save_to_disk(final_path, storage_options=storage_options)
+    logger.info(f"Saved final cleaned dataset to {final_path}")
+    
+    return True
 
-    logger.info(f"Durée totale nettoyée : {sum(ds_cleaned['duration']):.2f}s")
-    storage_options = {
-        "key": os.getenv("AWS_ACCESS_KEY_ID"),
-        "secret": os.getenv("AWS_SECRET_ACCESS_KEY"),
-        "client_kwargs": {"endpoint_url": os.getenv("AWS_ENDPOINT_URL_S3")}
-    }
-    OUTPUT_DATASET_PATH = "s3://burkimbia/audios/cooked/mooreburkina/proverbes"
-    ds_cleaned.save_to_disk(OUTPUT_DATASET_PATH, storage_options=storage_options)
+
+if __name__ == "__main__":
+    try:
+        thimote_success = crawl_and_save_thimote()
+        rachida_success = crawl_and_save_rachida()    
+        if not thimote_success and not rachida_success:
+            logger.error("Both crawling phases failed")
+            exit(1)
+        
+        process_success = process_saved_datasets()
+        if process_success:
+            logger.info("Pipeline completed successfully!")
+        else:
+            logger.error("Processing phase failed")
+            exit(1)
+            
+    except Exception as e:
+        logger.error(f"Pipeline failed with error: {e}")
+        exit(1)
