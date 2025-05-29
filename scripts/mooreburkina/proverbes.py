@@ -7,7 +7,7 @@ import torch
 import numpy as np
 from pydub import AudioSegment, silence
 
-from datasets import load_dataset, Dataset, Audio, concatenate_datasets
+from datasets import load_from_disk, Dataset, Audio, concatenate_datasets
 from resemble_enhance.enhancer.inference import denoise
 from langdetect import detect
 
