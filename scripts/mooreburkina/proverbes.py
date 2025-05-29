@@ -27,20 +27,16 @@ def clean_audio(example):
     audio_np = example["audio"]["array"]
     sr       = example["audio"]["sampling_rate"]
 
-    # 1️⃣ Écrire temporairement en .wav
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
         sf.write(tmpfile.name, audio_np, sr)
         tmp_wav_path = tmpfile.name
 
-    # 2️⃣ Charger avec torchaudio
     wav, sr = torchaudio.load(tmp_wav_path)  # wav : (1, n) ou (2, n)
     wav = wav.mean(dim=0)  # mono
 
-    # 3️⃣ Débruitage
     denoised, sr = denoise(wav.to(device), sr, device=device)
     denoised_np = denoised.cpu().numpy()
 
-    # 4️⃣ Conversion en AudioSegment pour découpage
     denoised_int16 = (denoised_np * 32767).astype(np.int16)
     seg = AudioSegment(
         denoised_int16.tobytes(),
