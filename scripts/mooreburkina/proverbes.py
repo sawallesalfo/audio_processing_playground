@@ -298,11 +298,11 @@ def process_saved_datasets():
 
 if __name__ == "__main__":
     try:
-        thimote_success = crawl_and_save_thimote()
-        rachida_success = crawl_and_save_rachida()    
-        if not thimote_success and not rachida_success:
-            logger.error("Both crawling phases failed")
-            exit(1)
+        #thimote_success = crawl_and_save_thimote()
+        #rachida_success = crawl_and_save_rachida()    
+        # if not thimote_success and not rachida_success:
+        #     logger.error("Both crawling phases failed")
+        #     exit(1)
         
         process_success = process_saved_datasets()
         if process_success:
