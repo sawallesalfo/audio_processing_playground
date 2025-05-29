@@ -61,13 +61,15 @@ def clean_audio(example):
     # 6️⃣ Retour en float32 normalisé
     arr = np.array(seg_clean.get_array_of_samples()).astype(np.float32) / 32767.0
 
+    # Clean up temporary file
+    os.unlink(tmp_wav_path)
+
     return {
         "clean": {
             "array": arr,
             "sampling_rate": sr
         }
     }
-
 
 
 def is_french(text: str) -> bool:
@@ -132,19 +134,25 @@ def add_duration_to_dataset(example):
 
 if __name__ == "__main__":
     # THIMOTE
-    # BASE_URLS_THIMOTE = [f"https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)]
-    # datasets = []
-    # for url in BASE_URLS_THIMOTE:
-    #     logger.info(f"=== Scraping {url} ===")
-    #     recs = crawl_and_collect(url)
-    #     if recs:
-    #         ds = build_dataset(recs)
-    #         if ds: datasets.append(ds)
-    # ds_full_thimote = concatenate_datasets(datasets)
-
-    # ds_full_thimote = ds_full_thimote.map(lambda x: {"group": extraire_id(x["id"])})
-    # ds_full_thimote = ds_full_thimote.map(lambda x: {"french_map": is_french(x["text"])})
-    # ds_full_thimote = ds_full_thimote.map(add_duration_to_dataset)
+    BASE_URLS_THIMOTE = [f"https://media.ipsapps.org/mos/ora/p{i}/01-001-001.html" for i in range(1, 12)]
+    datasets = []
+    for url in BASE_URLS_THIMOTE:
+        logger.info(f"=== Scraping {url} ===")
+        recs = crawl_and_collect(url)
+        if recs:
+            ds = build_dataset(recs)
+            if ds: datasets.append(ds)
+    
+    if datasets:
+        ds_full_thimote = concatenate_datasets(datasets)
+        # Add processing for Thimote dataset
+        ds_full_thimote = ds_full_thimote.map(lambda x: {"group": extraire_id(x["id"])})
+        ds_full_thimote = ds_full_thimote.map(lambda x: {"french_map": is_french(x["text"])})
+        ds_full_thimote = ds_full_thimote.map(add_duration_to_dataset)
+        ds_full_thimote = ds_full_thimote.add_column("Genre", ["Homme"]*len(ds_full_thimote))
+        ds_full_thimote = ds_full_thimote.add_column("Auteurs", ["Thimote"]*len(ds_full_thimote))
+    else:
+        ds_full_thimote = None
     
     # RACHIDA
     BASE_URL_RACHIDA = "https://media.ipsapps.org/mos/ora/prv-v10/"
@@ -156,26 +164,40 @@ if __name__ == "__main__":
         if recs:
             ds = build_dataset(recs)
             if ds: datasets.append(ds)
-    ds_full_rachida = concatenate_datasets(datasets)
+    
+    if datasets:
+        ds_full_rachida = concatenate_datasets(datasets)
+        ds_full_rachida = ds_full_rachida.add_column("Genre", ["Femme"]*len(ds_full_rachida))
+        ds_full_rachida = ds_full_rachida.add_column("Auteurs", ["Rachida"]*len(ds_full_rachida))
+        ds_full_rachida = ds_full_rachida.map(lambda x: {"group": extraire_id(x["id"])})
+        ds_full_rachida = ds_full_rachida.map(lambda x: {"french_map": is_french(x["text"])})
+        ds_full_rachida = ds_full_rachida.map(add_duration_to_dataset)
+    else:
+        ds_full_rachida = None
 
-    ds_full_rachida = ds_full_rachida.map(lambda x: {"group": extraire_id(x["id"])})
-    ds_full_rachida = ds_full_rachida.map(lambda x: {"french_map": is_french(x["text"])})
-    ds_full_rachida = ds_full_rachida.map(add_duration_to_dataset)
+    # Combine datasets
+    logger.info("Combining datasets")
+    if ds_full_thimote is not None and ds_full_rachida is not None:
+        ds_combined = concatenate_datasets([ds_full_rachida, ds_full_thimote])
+    elif ds_full_rachida is not None:
+        ds_combined = ds_full_rachida
+    elif ds_full_thimote is not None:
+        ds_combined = ds_full_thimote
+    else:
+        logger.error("No datasets were successfully created")
+        exit(1)
 
-    logger.info("concatenate dataset")
-    ds_full_thimote = concatenate_datasets([ds_full_rachida, ds_full_thimote])
-    logger.info(f"Dataset 1 (Thimoté): {len(ds1)} samples")
-    logger.info(f"Dataset 2 (Rachida): {len(ds2)} samples") 
     logger.info(f"Combined dataset: {len(ds_combined)} samples")
+    logger.info(f"Rachidat dataset: {len(ds_full_rachida)} samples")
+    logger.info(f"Thimote dataset: {len(ds_full_thimote)} samples")
 
-    ds_segments = find_language_and_group_segments(ds_full)
+    ds_segments = find_language_and_group_segments(ds_combined)
 
     ds_cleaned = ds_segments.cast_column("audio", Audio(sampling_rate=16000)) \
                              .map(clean_audio)
 
     ds_cleaned = ds_cleaned.cast_column("clean", Audio(sampling_rate=16000))
 
-    # 6. Stats & push
     logger.info(f"Durée totale nettoyée : {sum(ds_cleaned['duration']):.2f}s")
     storage_options = {
         "key": os.getenv("AWS_ACCESS_KEY_ID"),
