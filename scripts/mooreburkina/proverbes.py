@@ -252,7 +252,7 @@ def process_saved_datasets():
             ds_rachida_tmps.append(ds_rachida_tmp)
             del ds_rachida_tmp
             gc.collect()
-        ds_rachida = concatenate(ds_rachida_tmps)
+        ds_rachida = concatenate_datasets(ds_rachida_tmps)
         logger.info("Grouping language segments")
         ds_rachida = find_language_and_group_segments(ds_rachida)
         logger.info("Processed Rachida dataset")
