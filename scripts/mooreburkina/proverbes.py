@@ -224,8 +224,8 @@ def process_saved_datasets():
         ds_thimote = ds_thimote.map(add_duration_to_dataset)
         ds_thimote = ds_thimote.add_column("Genre", ["Homme"]*len(ds_thimote))
         ds_thimote = ds_thimote.add_column("Auteurs", ["Thimote"]*len(ds_thimote))
-        
-        datasets_to_combine.append(ds_thimote)
+        logger.info("Grouping language segments")
+        ds_thimote = find_language_and_group_segments(ds_thimote)
         logger.info("Processed Thimote dataset")
         
     except Exception as e:
@@ -233,6 +233,7 @@ def process_saved_datasets():
     
     # Load Rachida if exists
     try:
+        ds_rachida_tmps = []
         rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
         ds_rachida = load_from_disk(rachida_raw_path, storage_options=storage_options)
         logger.info(f"Loaded Rachida dataset: {len(ds_rachida)} samples")
@@ -248,9 +249,12 @@ def process_saved_datasets():
             end = min(i + 100, len(ds_rachida))  # Avoid going out of bounds
             logger.info(f"Processing Rachida segment {start} to {end}")
             ds_rachida_tmp = ds_rachida.select(range(start, end)).map(add_duration_to_dataset, num_proc=4)
-            datasets_to_combine.append(ds_rachida_tmp)
+            ds_rachida_tmps.append(ds_rachida_tmp)
             del ds_rachida_tmp
             gc.collect()
+        ds_rachida = concatenate(ds_rachida_tmps)
+        logger.info("Grouping language segments")
+        ds_rachida = find_language_and_group_segments(ds_rachida)
         logger.info("Processed Rachida dataset")
         
     except Exception as e:
@@ -262,7 +266,7 @@ def process_saved_datasets():
     
     # Combine datasets
     logger.info("Combining processed datasets")
-    ds_combined = concatenate_datasets(datasets_to_combine)
+    ds_combined = concatenate_datasets([ds_thimote, ds_rachida])
     
     # Save combined raw dataset
     combined_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw"
@@ -270,33 +274,18 @@ def process_saved_datasets():
     logger.info(f"Saved combined raw dataset: {len(ds_combined)} samples")
     
     # Clear memory before segmentation
-    del datasets_to_combine
     gc.collect()
-    
-    # Group segments
-    logger.info("Grouping language segments")
-    ds_segments = find_language_and_group_segments(ds_combined)
-    
-    # Clear memory
-    del ds_combined
-    gc.collect()
-    
     # Audio cleaning
     logger.info("Starting audio cleaning process")
-    ds_segments = ds_segments.cast_column("audio", Audio(sampling_rate=16000))
-    ds_cleaned = ds_segments.map(clean_audio, batch_size=1)  # Process one at a time to save memory
+    ds_combined = ds_combined.cast_column("audio", Audio(sampling_rate=16000))
+    ds_combined = ds_combined.map(clean_audio, batch_size=1)  # Process one at a time to save memory    
+    ds_combined = ds_combined.cast_column("clean", Audio(sampling_rate=16000))
     
-    # Clear memory
-    del ds_segments
-    gc.collect()
-    
-    ds_cleaned = ds_cleaned.cast_column("clean", Audio(sampling_rate=16000))
-    
-    logger.info(f"Total cleaned duration: {sum(ds_cleaned['duration']):.2f}s")
+    logger.info(f"Total cleaned duration: {sum(ds_combined['duration']):.2f}s")
     
     # Save final dataset
     final_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes"
-    ds_cleaned.save_to_disk(final_path, storage_options=storage_options)
+    ds_combined.save_to_disk(final_path, storage_options=storage_options)
     logger.info(f"Saved final cleaned dataset to {final_path}")
     
     return True
