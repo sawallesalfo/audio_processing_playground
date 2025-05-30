@@ -242,7 +242,13 @@ def process_saved_datasets():
         ds_rachida = ds_rachida.add_column("Auteurs", ["Rachida"]*len(ds_rachida))
         ds_rachida = ds_rachida.map(lambda x: {"group": extraire_id(x["id"])})
         ds_rachida = ds_rachida.map(lambda x: {"french_map": is_french(x["text"])})
-        ds_rachida = ds_rachida.map(add_duration_to_dataset)
+
+        for i in range(0, len(ds_rachida), 100):
+            start = i
+            end = min(i + 100, len(ds_rachida))  # Avoid going out of bounds
+            logger.info(f"Processing Rachida segment {start} to {end}")
+            ds_rachida_tmp = ds_rachida.select(range(start, end)).map(add_duration_to_dataset)
+            datasets_to_combine.append(ds_rachida_tmp)
         
         datasets_to_combine.append(ds_rachida)
         logger.info("Processed Rachida dataset")
