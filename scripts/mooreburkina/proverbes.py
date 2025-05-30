@@ -260,7 +260,7 @@ def process_saved_datasets():
             logger.info(f"Grouping language segments {start} to {end}")
             start = i
             end = min(i + 1000, len(ds_rachida))
-            ds_rachida_tmp = find_language_and_group_segments(ds_rachida.select(range(start, end)))
+            ds_rachida_tmp.append(find_language_and_group_segments(ds_rachida.select(range(start, end))))
         ds_rachida = concatenate_datasets(ds_rachida_tmps)
         logger.info("Processed Rachida dataset")
         
