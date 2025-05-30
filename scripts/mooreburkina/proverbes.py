@@ -243,6 +243,8 @@ def process_saved_datasets():
         ds_rachida = ds_rachida.add_column("Auteurs", ["Rachida"]*len(ds_rachida))
         ds_rachida = ds_rachida.map(lambda x: {"group": extraire_id(x["id"])})
         ds_rachida = ds_rachida.map(lambda x: {"french_map": is_french(x["text"])})
+        
+        # Let's do loop to avaoid error 137
 
         for i in range(0, len(ds_rachida), 100):
             start = i
@@ -253,8 +255,13 @@ def process_saved_datasets():
             del ds_rachida_tmp
             gc.collect()
         ds_rachida = concatenate_datasets(ds_rachida_tmps)
-        logger.info("Grouping language segments")
-        ds_rachida = find_language_and_group_segments(ds_rachida)
+        ds_rachida_tmps = []
+        for i in range(0, len(ds_rachida), 1000):
+            logger.info(f"Grouping language segments {start} to {end}")
+            start = i
+            end = min(i + 1000, len(ds_rachida))
+            ds_rachida_tmp = find_language_and_group_segments(ds_rachida.select(range(start, end)))
+        ds_rachida = concatenate_datasets(ds_rachida_tmps)
         logger.info("Processed Rachida dataset")
         
     except Exception as e:
