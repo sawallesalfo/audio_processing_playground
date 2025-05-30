@@ -247,10 +247,10 @@ def process_saved_datasets():
             start = i
             end = min(i + 100, len(ds_rachida))  # Avoid going out of bounds
             logger.info(f"Processing Rachida segment {start} to {end}")
-            ds_rachida_tmp = ds_rachida.select(range(start, end)).map(add_duration_to_dataset)
+            ds_rachida_tmp = ds_rachida.select(range(start, end)).map(add_duration_to_dataset, num_proc=4)
             datasets_to_combine.append(ds_rachida_tmp)
-        
-        datasets_to_combine.append(ds_rachida)
+            del ds_rachida_tmp
+            gc.collect()
         logger.info("Processed Rachida dataset")
         
     except Exception as e:
