@@ -209,93 +209,104 @@ def process_saved_datasets():
     """Load saved datasets and process them"""
     logger.info("=== PHASE 3: Processing saved datasets ===")
     
-    # Load datasets from disk
-    datasets_to_combine = []
-    
-    # # Load Thimote if exists
-    # try:
-    #     thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
-    #     ds_thimote = load_from_disk(thimote_raw_path, storage_options=storage_options)
-    #     logger.info(f"Loaded Thimote dataset: {len(ds_thimote)} samples")
-        
-    #     # Process Thimote
-    #     ds_thimote = ds_thimote.map(lambda x: {"group": extraire_id(x["id"])})
-    #     ds_thimote = ds_thimote.map(lambda x: {"french_map": is_french(x["text"])})
-    #     ds_thimote = ds_thimote.map(add_duration_to_dataset)
-    #     ds_thimote = ds_thimote.add_column("Genre", ["Homme"]*len(ds_thimote))
-    #     ds_thimote = ds_thimote.add_column("Auteurs", ["Thimote"]*len(ds_thimote))
-    #     logger.info("Grouping language segments")
-    #     ds_thimote = find_language_and_group_segments(ds_thimote)
-    #     logger.info("Processed Thimote dataset")
-        
-    # except Exception as e:
-    #     logger.warning(f"Could not load Thimote dataset: {e}")
-    
-    # # Load Rachida if exists
-    # try:
-    #     ds_rachida_tmps = []
-    #     rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
-    #     ds_rachida = load_from_disk(rachida_raw_path, storage_options=storage_options)
-    #     logger.info(f"Loaded Rachida dataset: {len(ds_rachida)} samples")
-        
-    #     # Process Rachida
-    #     ds_rachida = ds_rachida.add_column("Genre", ["Femme"]*len(ds_rachida))
-    #     ds_rachida = ds_rachida.add_column("Auteurs", ["Rachida"]*len(ds_rachida))
-    #     ds_rachida = ds_rachida.map(lambda x: {"group": extraire_id(x["id"])})
-    #     ds_rachida = ds_rachida.map(lambda x: {"french_map": is_french(x["text"])})
-        
-    #     # Let's do loop to avaoid error 137
-
-    #     for i in range(0, len(ds_rachida), 100):
-    #         start = i
-    #         end = min(i + 100, len(ds_rachida))  # Avoid going out of bounds
-    #         logger.info(f"Processing Rachida segment {start} to {end}")
-    #         ds_rachida_tmp = ds_rachida.select(range(start, end)).map(add_duration_to_dataset, num_proc=4)
-    #         ds_rachida_tmps.append(ds_rachida_tmp)
-    #         del ds_rachida_tmp
-    #         gc.collect()
-    #     ds_rachida = concatenate_datasets(ds_rachida_tmps)
-    #     ds_rachida_tmps = []
-    #     for i in range(0, len(ds_rachida), 400):
-    #         logger.info(f"Grouping language segments {start} to {end}")
-    #         start = i
-    #         end = min(i + 400, len(ds_rachida))
-    #         ds_rachida_tmps.append(find_language_and_group_segments(ds_rachida.select(range(start, end))))
-    #         gc.collect()
-    #     ds_rachida = concatenate_datasets(ds_rachida_tmps)
-    #     logger.info("Processed Rachida dataset")
-        
-    # except Exception as e:
-    #     logger.warning(f"Could not load Rachida dataset: {e}")
-    #     return False
-    
-    # # Combine datasets
-    # logger.info("Combining processed datasets")
-    # ds_combined = concatenate_datasets([ds_thimote, ds_rachida])
-    
-    # # Save combined raw dataset
-    # combined_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw"
-    # ds_combined.save_to_disk(combined_raw_path, storage_options=storage_options)
-    # logger.info(f"Saved combined raw dataset: {len(ds_combined)} samples")
-    
     # Clear memory before segmentation
     gc.collect()
-    # Audio cleaning
+    
+    # Load the combined raw dataset
     combined_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw"
     ds_combined = load_from_disk(combined_raw_path, storage_options=storage_options)
-    logger.info("Starting audio cleaning process")
-    ds_combined = ds_combined.cast_column("audio", Audio(sampling_rate=16000))
-    ds_combined = ds_combined.map(clean_audio, batch_size=8)  # Process one at a time to save memory    
-    ds_combined = ds_combined.cast_column("clean", Audio(sampling_rate=16000))
+    logger.info(f"Loaded combined dataset: {len(ds_combined)} samples")
     
-    logger.info(f"Total cleaned duration: {sum(ds_combined['duration']):.2f}s")
+    # Split dataset into two parts to handle memory issues
+    total_samples = len(ds_combined)
+    mid_point = total_samples // 2
     
-    # Save final dataset
-    final_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes"
-    ds_combined.save_to_disk(final_path, storage_options=storage_options)
-    logger.info(f"Saved final cleaned dataset to {final_path}")
+    logger.info(f"Splitting dataset into two parts: Part 1 (0-{mid_point}), Part 2 ({mid_point}-{total_samples})")
     
+    # Process Part 1
+    logger.info("=== Processing Part 1 ===")
+    ds_part1 = ds_combined.select(range(0, mid_point))
+    logger.info(f"Part 1 size: {len(ds_part1)} samples")
+    
+    # Clean audio for Part 1
+    logger.info("Starting audio cleaning process for Part 1")
+    ds_part1 = ds_part1.cast_column("audio", Audio(sampling_rate=16000))
+    ds_part1 = ds_part1.map(clean_audio, batch_size=4)  # Reduced batch size for memory
+    ds_part1 = ds_part1.cast_column("clean", Audio(sampling_rate=16000))
+    
+    logger.info(f"Part 1 cleaned duration: {sum(ds_part1['duration']):.2f}s")
+    
+    # Save Part 1
+    part1_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_1"
+    ds_part1.save_to_disk(part1_path, storage_options=storage_options)
+    logger.info(f"Saved Part 1 cleaned dataset to {part1_path}")
+    
+    # Clear memory after Part 1
+    del ds_part1
+    gc.collect()
+    torch.cuda.empty_cache() if torch.cuda.is_available() else None
+    
+    # Process Part 2
+    logger.info("=== Processing Part 2 ===")
+    ds_part2 = ds_combined.select(range(mid_point, total_samples))
+    logger.info(f"Part 2 size: {len(ds_part2)} samples")
+    
+    # Clean audio for Part 2
+    logger.info("Starting audio cleaning process for Part 2")
+    ds_part2 = ds_part2.cast_column("audio", Audio(sampling_rate=16000))
+    ds_part2 = ds_part2.map(clean_audio, batch_size=4)  # Reduced batch size for memory
+    ds_part2 = ds_part2.cast_column("clean", Audio(sampling_rate=16000))
+    
+    logger.info(f"Part 2 cleaned duration: {sum(ds_part2['duration']):.2f}s")
+    
+    # Save Part 2
+    part2_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_2"
+    ds_part2.save_to_disk(part2_path, storage_options=storage_options)
+    logger.info(f"Saved Part 2 cleaned dataset to {part2_path}")
+    
+    # Calculate total duration
+    total_duration = sum(ds_part2['duration']) + sum(ds_combined.select(range(0, mid_point))['duration'])
+    logger.info(f"Total cleaned duration across both parts: {total_duration:.2f}s")
+    
+    # Clear memory
+    del ds_part2, ds_combined
+    gc.collect()
+    torch.cuda.empty_cache() if torch.cuda.is_available() else None
+    
+    logger.info("Successfully split and processed dataset into two parts")
     return True
+
+
+def combine_parts_if_needed():
+    """Optional function to combine the parts back together if memory allows later"""
+    logger.info("=== COMBINING PARTS (Optional) ===")
+    
+    try:
+        # Load both parts
+        part1_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_1"
+        part2_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_2"
+        
+        ds_part1 = load_from_disk(part1_path, storage_options=storage_options)
+        ds_part2 = load_from_disk(part2_path, storage_options=storage_options)
+        
+        logger.info(f"Loaded Part 1: {len(ds_part1)} samples")
+        logger.info(f"Loaded Part 2: {len(ds_part2)} samples")
+        
+        # Combine
+        ds_combined = concatenate_datasets([ds_part1, ds_part2])
+        logger.info(f"Combined dataset: {len(ds_combined)} samples")
+        
+        # Save combined
+        final_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes"
+        ds_combined.save_to_disk(final_path, storage_options=storage_options)
+        logger.info(f"Saved final combined dataset to {final_path}")
+        
+        return True
+        
+    except Exception as e:
+        logger.error(f"Could not combine parts: {e}")
+        logger.info("Parts remain separate - you can use them individually")
+        return False
 
 
 if __name__ == "__main__":
@@ -308,7 +319,13 @@ if __name__ == "__main__":
         
         process_success = process_saved_datasets()
         if process_success:
-            logger.info("Pipeline completed successfully!")
+            logger.info("Split processing completed successfully!")
+            
+            combine_success = combine_parts_if_needed()
+            if combine_success:
+                logger.info("Pipeline completed successfully with combined dataset!")
+            else:
+                logger.info("Pipeline completed successfully with split datasets!")
         else:
             logger.error("Processing phase failed")
             exit(1)
