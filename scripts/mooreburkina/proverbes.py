@@ -267,9 +267,6 @@ def process_saved_datasets():
         
     except Exception as e:
         logger.warning(f"Could not load Rachida dataset: {e}")
-    
-    if not datasets_to_combine:
-        logger.error("No datasets could be loaded for processing")
         return False
     
     # Combine datasets
