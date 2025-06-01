@@ -32,7 +32,6 @@ enriched_path = f"{path_1}_enriched"
 tagged_path = f"{path_1}_tagged"
 final_path = f"{path_1}_final"
 
-# Change to dataspeech directory
 os.chdir("dataspeech")
 
 # Prep speaker names dict
@@ -43,7 +42,7 @@ storage_options = {
       "secret": os.environ["AWS_SECRET_ACCESS_KEY"],
       "client_kwargs": {"endpoint_url": os.environ["AWS_ENDPOINT_URL_S3"]}
   }
-dataset = load_from_disk(path_1, storage_options=storage_options)['train'].select_columns([speaker_id_colum])
+dataset = load_from_disk(path_1, storage_options=storage_options).select_columns([speaker_id_colum])
 speaker_dict = {sid: sid for sid in dataset.unique(speaker_id_colum)}
 with open("speakers.json", "w") as f:
    json.dump(speaker_dict, f)
