@@ -5,7 +5,7 @@ import subprocess
 path_1 = "s3://burkimbia/audios/cooked/mooreburkina/contes"
 
 # Change to dataspeech directory and run the command
-os.chdir("dataspeech")
+os.chdir("scripts/dataspeech")
 
 # Build command as a list
 command = [
