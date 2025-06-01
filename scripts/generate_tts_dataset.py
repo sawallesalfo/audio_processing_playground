@@ -3,6 +3,8 @@ import os
 import subprocess
 import shutil
 import tempfile
+import json
+from datasets import load_dataset
 
 # Set up cache directories in a writable location
 cache_dir = "/tmp/cache"
@@ -32,6 +34,14 @@ final_path = f"{path_1}_final"
 
 # Change to dataspeech directory
 os.chdir("dataspeech")
+
+# Prep speaker names dict
+speaker_id_colum = "auteur"
+speaker_ids_to_name_json= "./speakers.json"
+dataset = load_from_disk(path_1, storage_options=storage_options)['train'].select_columns([speaker_id_colum])
+speaker_dict = {sid: sid for sid in dataset.unique(speaker_id_colum)}
+with open("speakers.json", "w") as f:
+   json.dump(speaker_dict, f)
 
 # STEP 1: Run DataSpeech to enrich the dataset with audio metadata
 print("="*60)
@@ -78,8 +88,8 @@ command_step2 = [
     "--output_dir", tagged_path,
     "--cpu_num_workers", "2",
     "--apply_squim_quality_estimation",
-    # Since your dataset has multiple speakers and genders, we include pitch computation
-    "--speaker_id_column_name", "auteur",
+    # Since  dataset has multiple speakers and genders, we include pitch computation
+    "--speaker_id_column_name", speaker_id_colum,
     "--gender_column_name", "genre",
     "--pitch_std_tolerance", "2.0",
     "--speaking_rate_std_tolerance", "4.0",
@@ -113,7 +123,8 @@ command_step3 = [
     "--aws_secret_access_key", os.environ["AWS_SECRET_ACCESS_KEY"],
     "--aws_endpoint_url", os.environ["AWS_ENDPOINT_URL_S3"],
     "--output_dir", final_path,
-    "--speaker_id_column", "auteur"
+    "--speaker_id_column", speaker_id_colum,
+    "--speaker_ids_to_name_json", speaker_ids_to_name_json,
     "--per_device_eval_batch_size", "5", 
     "--attn_implementation","sdpa", 
     "--dataloader_num_workers", "2", 
@@ -141,7 +152,7 @@ print(f"Step 2 - Tagged dataset: {tagged_path}")
 print(f"Step 3 - Final dataset with descriptions: {final_path}")
 print("="*60)
 print("\nPipeline Summary:")
-print("1. ✓ Annotated Jenny dataset with continuous speech characteristics")
+print("1. ✓ Annotated  dataset with continuous speech characteristics")
 print("2. ✓ Mapped annotations to text bins characterizing speech")
 print("3. ✓ Created natural language descriptions from text bins")
 print("="*60)
