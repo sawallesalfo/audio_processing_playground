@@ -6,13 +6,13 @@ on:
       - requirements.txt
       - Dockerfile.speech
     branches:
-      - master
+      - main
   pull_request:
     paths:
       - requirements.txt
       - Dockerfile.speech
     branches:
-      - master  # Only run for pull requests targeting main
+      - main  # Only run for pull requests targeting main
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 env:
