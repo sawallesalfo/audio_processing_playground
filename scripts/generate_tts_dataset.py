@@ -38,6 +38,11 @@ os.chdir("dataspeech")
 # Prep speaker names dict
 speaker_id_colum = "auteur"
 speaker_ids_to_name_json= "./speakers.json"
+storage_options = {
+      "key": os.environ["AWS_ACCESS_KEY_ID"],
+      "secret": os.environ["AWS_SECRET_ACCESS_KEY"],
+      "client_kwargs": {"endpoint_url": os.environ["AWS_ENDPOINT_URL_S3"]}
+  }
 dataset = load_from_disk(path_1, storage_options=storage_options)['train'].select_columns([speaker_id_colum])
 speaker_dict = {sid: sid for sid in dataset.unique(speaker_id_colum)}
 with open("speakers.json", "w") as f:
