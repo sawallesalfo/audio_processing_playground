@@ -113,10 +113,11 @@ command_step3 = [
     "--aws_secret_access_key", os.environ["AWS_SECRET_ACCESS_KEY"],
     "--aws_endpoint_url", os.environ["AWS_ENDPOINT_URL_S3"],
     "--output_dir", final_path,
-    "--per_device_eval_batch_size", 5, \
+    "--speaker_id_column", "auteur"
+    "--per_device_eval_batch_size", "5", \
     "--attn_implementation","sdpa", \
-    "--dataloader_num_workers", 2, \
-    "--preprocessing_num_workers", 2
+    "--dataloader_num_workers", "2", \
+    "--preprocessing_num_workers", "2"
 ]
 
 print(f"Creating natural language descriptions for dataset: {tagged_path}")
