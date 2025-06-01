@@ -223,33 +223,39 @@ def process_saved_datasets():
     
     logger.info(f"Splitting dataset into two parts: Part 1 (0-{mid_point}), Part 2 ({mid_point}-{total_samples})")
     
-    # Process Part 1
-    logger.info("=== Processing Part 1 ===")
-    ds_part1 = ds_combined.select(range(0, mid_point))
-    logger.info(f"Part 1 size: {len(ds_part1)} samples")
+    # # Process Part 1
+    # logger.info("=== Processing Part 1 ===")
+    # ds_part1 = ds_combined.select(range(0, mid_point))
+    # logger.info(f"Part 1 size: {len(ds_part1)} samples")
     
-    # Clean audio for Part 1
-    logger.info("Starting audio cleaning process for Part 1")
-    ds_part1 = ds_part1.cast_column("audio", Audio(sampling_rate=16000))
-    ds_part1 = ds_part1.map(clean_audio, batch_size=4)  # Reduced batch size for memory
-    ds_part1 = ds_part1.cast_column("clean", Audio(sampling_rate=16000))
+    # # Clean audio for Part 1
+    # logger.info("Starting audio cleaning process for Part 1")
+    # ds_part1 = ds_part1.cast_column("audio", Audio(sampling_rate=16000))
+    # ds_part1 = ds_part1.map(clean_audio, batch_size=4)  # Reduced batch size for memory
+    # ds_part1 = ds_part1.cast_column("clean", Audio(sampling_rate=16000))
     
-    logger.info(f"Part 1 cleaned duration: {sum(ds_part1['duration']):.2f}s")
+    # logger.info(f"Part 1 cleaned duration: {sum(ds_part1['duration']):.2f}s")
     
     # Save Part 1
-    part1_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_1"
-    ds_part1.save_to_disk(part1_path, storage_options=storage_options)
-    logger.info(f"Saved Part 1 cleaned dataset to {part1_path}")
+    # part1_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_1"
+    # ds_part1.save_to_disk(part1_path, storage_options=storage_options)
+    # logger.info(f"Saved Part 1 cleaned dataset to {part1_path}")
     
-    # Clear memory after Part 1
-    del ds_part1
-    gc.collect()
-    torch.cuda.empty_cache() if torch.cuda.is_available() else None
+    # # Clear memory after Part 1
+    # del ds_part1
+    # gc.collect()
+    # torch.cuda.empty_cache() if torch.cuda.is_available() else None
     
     # Process Part 2
     logger.info("=== Processing Part 2 ===")
+        
+
     ds_part2 = ds_combined.select(range(mid_point, total_samples))
     logger.info(f"Part 2 size: {len(ds_part2)} samples")
+    # Clear memory
+    del ds_combined
+    gc.collect()
+    torch.cuda.empty_cache() if torch.cuda.is_available() else None
     
     # Clean audio for Part 2
     logger.info("Starting audio cleaning process for Part 2")
