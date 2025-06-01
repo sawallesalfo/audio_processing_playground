@@ -116,19 +116,19 @@ print("="*60)
 
 command_step3 = [
     "python", "./scripts/run_prompt_creation.py", 
-    "--dataset_name", tagged_path,
-    "--from_disk",
-    "--model_name_or_path", "google/gemma-2-2b-it" 
-    "--aws_access_key_id", os.environ["AWS_ACCESS_KEY_ID"],
-    "--aws_secret_access_key", os.environ["AWS_SECRET_ACCESS_KEY"],
-    "--aws_endpoint_url", os.environ["AWS_ENDPOINT_URL_S3"],
-    "--output_dir", final_path,
     "--speaker_id_column", speaker_id_colum,
     "--speaker_ids_to_name_json", speaker_ids_to_name_json,
-    "--per_device_eval_batch_size", "5", 
-    "--attn_implementation","sdpa", 
+    "--dataset_name", tagged_path,
+    "--output_dir", final_path,
+    "--from_disk",
+    "--model_name_or_path", "google/gemma-2-2b-it" 
+   "--per_device_eval_batch_size", "5", 
+   "--attn_implementation","sdpa", 
     "--dataloader_num_workers", "2", 
-    "--preprocessing_num_workers", "2"
+    "--preprocessing_num_workers", "2",
+    "--aws_access_key_id", os.environ["AWS_ACCESS_KEY_ID"],
+    "--aws_secret_access_key", os.environ["AWS_SECRET_ACCESS_KEY"],
+    "--aws_endpoint_url", os.environ["AWS_ENDPOINT_URL_S3"]
 ]
 
 print(f"Creating natural language descriptions for dataset: {tagged_path}")
