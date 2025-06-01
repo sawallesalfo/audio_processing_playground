@@ -2,18 +2,28 @@
 import os
 import subprocess
 import shutil
+import tempfile
 
-# Clone dataspeech repository if it doesn't exist
-if not os.path.exists("dataspeech"):
-    print("Cloning dataspeech repository...")
-    try:
-        subprocess.run(["git", "clone", "https://github.com/sawallesalfo/dataspeech.git"], check=True)
-        print("Repository cloned successfully!")
-    except subprocess.CalledProcessError as e:
-        print(f"Error cloning repository: {e}")
-        exit(1)
-else:
-    print("Dataspeech repository already exists, skipping clone...")
+# Set up cache directories in a writable location
+cache_dir = "/tmp/cache"
+config_dir = "/tmp/config"
+
+# Create cache directories
+os.makedirs(cache_dir, exist_ok=True)
+os.makedirs(config_dir, exist_ok=True)
+os.makedirs(f"{cache_dir}/torch/hub/torchaudio/models", exist_ok=True)
+os.makedirs(f"{config_dir}/matplotlib", exist_ok=True)
+
+# Set environment variables for cache directories
+os.environ["TORCH_HOME"] = f"{cache_dir}/torch"
+os.environ["HF_HOME"] = f"{cache_dir}/huggingface"
+os.environ["TRANSFORMERS_CACHE"] = f"{cache_dir}/transformers"
+os.environ["MPLCONFIGDIR"] = f"{config_dir}/matplotlib"
+os.environ["FONTCONFIG_PATH"] = f"{config_dir}/fontconfig"
+os.environ["XDG_CACHE_HOME"] = cache_dir
+
+print(f"Cache directories set up in: {cache_dir}")
+print(f"Config directories set up in: {config_dir}")
 
 
 path_1 = "s3://burkimbia/audios/cooked/mooreburkina/contes"
@@ -39,7 +49,7 @@ command = [
 # Run the dataspeech command
 print(f"Running dataspeech with dataset: {path_1}")
 try:
-    result = subprocess.run(command, check=True)
+    result = subprocess.run(command, check=True, env=os.environ.copy())
     print(f"Success! Output saved to: {path_1}_enriched")
 except subprocess.CalledProcessError as e:
     print(f"Error running dataspeech: {e}")
