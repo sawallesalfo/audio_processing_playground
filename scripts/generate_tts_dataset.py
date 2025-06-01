@@ -105,7 +105,7 @@ print("STEP 3: Creating natural language descriptions from text bins")
 print("="*60)
 
 command_step3 = [
-    "python", "./scripts/metadata_to_text.py", 
+    "python", "./scripts/run_prompt_creation.py", 
     "--dataset_name", tagged_path,
     "--from_disk",
     "--aws_access_key_id", os.environ["AWS_ACCESS_KEY_ID"],
