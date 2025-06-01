@@ -1,4 +1,4 @@
-name: Creation proverbes dataset
+name: Generate TTS dataset
 
 on:
   push:
