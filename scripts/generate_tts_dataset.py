@@ -4,7 +4,7 @@ import subprocess
 import shutil
 import tempfile
 import json
-from datasets import load_dataset
+from datasets import load_from_disk
 
 # Set up cache directories in a writable location
 cache_dir = "/tmp/cache"
