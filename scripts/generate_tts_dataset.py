@@ -108,15 +108,15 @@ command_step3 = [
     "python", "./scripts/run_prompt_creation.py", 
     "--dataset_name", tagged_path,
     "--from_disk",
-    "--model_name_or_path", "google/gemma-2-2b-it" \
+    "--model_name_or_path", "google/gemma-2-2b-it" 
     "--aws_access_key_id", os.environ["AWS_ACCESS_KEY_ID"],
     "--aws_secret_access_key", os.environ["AWS_SECRET_ACCESS_KEY"],
     "--aws_endpoint_url", os.environ["AWS_ENDPOINT_URL_S3"],
     "--output_dir", final_path,
     "--speaker_id_column", "auteur"
-    "--per_device_eval_batch_size", "5", \
-    "--attn_implementation","sdpa", \
-    "--dataloader_num_workers", "2", \
+    "--per_device_eval_batch_size", "5", 
+    "--attn_implementation","sdpa", 
+    "--dataloader_num_workers", "2", 
     "--preprocessing_num_workers", "2"
 ]
 
