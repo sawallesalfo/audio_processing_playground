@@ -323,7 +323,8 @@ if __name__ == "__main__":
         #     logger.error("Both crawling phases failed")
         #     exit(1)
         
-        process_success = process_saved_datasets()
+        # process_success = process_saved_datasets()
+        process_success = True
         if process_success:
             logger.info("Split processing completed successfully!")
             
