@@ -1,11 +1,33 @@
 #!/usr/bin/env python3
 import os
 import subprocess
+import shutil
+
+# Clone dataspeech repository if it doesn't exist
+if not os.path.exists("dataspeech"):
+    print("Cloning dataspeech repository...")
+    try:
+        subprocess.run(["git", "clone", "https://github.com/sawallesalfo/dataspeech.git"], check=True)
+        print("Repository cloned successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"Error cloning repository: {e}")
+        exit(1)
+else:
+    print("Dataspeech repository already exists, skipping clone...")
+
+# Install requirements
+print("Installing dataspeech requirements...")
+try:
+    subprocess.run(["pip", "install", "--quiet", "-r", "./dataspeech/requirements.txt"], check=True)
+    print("Requirements installed successfully!")
+except subprocess.CalledProcessError as e:
+    print(f"Error installing requirements: {e}")
+    exit(1)
 
 path_1 = "s3://burkimbia/audios/cooked/mooreburkina/contes"
 
 # Change to dataspeech directory and run the command
-os.chdir("scripts/dataspeech")
+os.chdir("dataspeech")
 
 # Build command as a list
 command = [
@@ -22,6 +44,8 @@ command = [
     "--apply_squim_quality_estimation"
 ]
 
+# Run the dataspeech command
+print(f"Running dataspeech with dataset: {path_1}")
 try:
     result = subprocess.run(command, check=True)
     print(f"Success! Output saved to: {path_1}_enriched")
