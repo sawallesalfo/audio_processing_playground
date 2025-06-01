@@ -1,5 +1,4 @@
 name: Generate TTS dataset
-
 on:
   push:
     paths:
@@ -36,14 +35,16 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/app \
             -w /app \
+            --user $(id -u):$(id -g) \
             --env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
             --env AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
             --env HF_TOKEN=${{ secrets.HF_TOKEN }} \
             --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }} \
             ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
             /bin/bash -c "
-              cd /app/scripts && \
+              mkdir -p /tmp/dataspeech && \
+              cd /tmp/dataspeech && \
               git clone https://github.com/sawallesalfo/dataspeech.git && \
-              cd /scripts && \
+              cd /app/scripts && \
               python generate_tts_dataset.py
             "
