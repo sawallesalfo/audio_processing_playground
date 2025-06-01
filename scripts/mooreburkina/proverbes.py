@@ -221,7 +221,7 @@ def process_saved_datasets():
     #     ds_thimote = ds_thimote.map(lambda x: {"group": extraire_id(x["id"])})
     #     ds_thimote = ds_thimote.map(lambda x: {"french_map": is_french(x["text"])})
     #     ds_thimote = ds_thimote.map(add_duration_to_dataset)
-    #     ds_thimote = ds_thimote.add_column("Genre", ["Homme"]*len(ds_thimote))
+    #     ds_thimote = ds_thimote.add_column("Genre", ["male"]*len(ds_thimote))
     #     ds_thimote = ds_thimote.add_column("Auteurs", ["Thimote"]*len(ds_thimote))
     #     logger.info("Grouping language segments")
     #     ds_thimote = find_language_and_group_segments(ds_thimote)
@@ -238,7 +238,7 @@ def process_saved_datasets():
     #     logger.info(f"Loaded Rachida dataset: {len(ds_rachida)} samples")
         
     #     # Process Rachida
-    #     ds_rachida = ds_rachida.add_column("Genre", ["Femme"]*len(ds_rachida))
+    #     ds_rachida = ds_rachida.add_column("Genre", ["female"]*len(ds_rachida))
     #     ds_rachida = ds_rachida.add_column("Auteurs", ["Rachida"]*len(ds_rachida))
     #     ds_rachida = ds_rachida.map(lambda x: {"group": extraire_id(x["id"])})
     #     ds_rachida = ds_rachida.map(lambda x: {"french_map": is_french(x["text"])})
