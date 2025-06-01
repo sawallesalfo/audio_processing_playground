@@ -21,7 +21,7 @@ if __name__ == "__main__":
         "https://media.ipsapps.org/mos/ora/vol5//01-B021-001.html"
     ]
     READERS_NAMES = ["Patrick OUEDRAOGO", "Patrick OUEDRAOGO", "Ruth Ouedraogo", "Ruth Ouedraogo", "Ruth Ouedraogo"]
-    GENRES = ["masculin", "masculin", "féminin", "féminin", "féminin"]  
+    GENRES = ["male", "male", "female", "female", "female"]  
 
     for BASE_URL, READER_NAME, GENRE in zip(BASE_URLS, READERS_NAMES, GENRES):
         logger.info(f"=== Début du scraping pour {BASE_URL} ===")
