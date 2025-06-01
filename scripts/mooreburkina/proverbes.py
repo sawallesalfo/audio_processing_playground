@@ -208,6 +208,75 @@ def crawl_and_save_rachida():
 def process_saved_datasets():
     """Load saved datasets and process them"""
     logger.info("=== PHASE 3: Processing saved datasets ===")
+        # Load datasets from disk
+    datasets_to_combine = []
+    
+    # # Load Thimote if exists
+    # try:
+    #     thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
+    #     ds_thimote = load_from_disk(thimote_raw_path, storage_options=storage_options)
+    #     logger.info(f"Loaded Thimote dataset: {len(ds_thimote)} samples")
+        
+    #     # Process Thimote
+    #     ds_thimote = ds_thimote.map(lambda x: {"group": extraire_id(x["id"])})
+    #     ds_thimote = ds_thimote.map(lambda x: {"french_map": is_french(x["text"])})
+    #     ds_thimote = ds_thimote.map(add_duration_to_dataset)
+    #     ds_thimote = ds_thimote.add_column("Genre", ["Homme"]*len(ds_thimote))
+    #     ds_thimote = ds_thimote.add_column("Auteurs", ["Thimote"]*len(ds_thimote))
+    #     logger.info("Grouping language segments")
+    #     ds_thimote = find_language_and_group_segments(ds_thimote)
+    #     logger.info("Processed Thimote dataset")
+        
+    # except Exception as e:
+    #     logger.warning(f"Could not load Thimote dataset: {e}")
+    
+    # # Load Rachida if exists
+    # try:
+    #     ds_rachida_tmps = []
+    #     rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
+    #     ds_rachida = load_from_disk(rachida_raw_path, storage_options=storage_options)
+    #     logger.info(f"Loaded Rachida dataset: {len(ds_rachida)} samples")
+        
+    #     # Process Rachida
+    #     ds_rachida = ds_rachida.add_column("Genre", ["Femme"]*len(ds_rachida))
+    #     ds_rachida = ds_rachida.add_column("Auteurs", ["Rachida"]*len(ds_rachida))
+    #     ds_rachida = ds_rachida.map(lambda x: {"group": extraire_id(x["id"])})
+    #     ds_rachida = ds_rachida.map(lambda x: {"french_map": is_french(x["text"])})
+        
+    #     # Let's do loop to avaoid error 137
+
+    #     for i in range(0, len(ds_rachida), 100):
+    #         start = i
+    #         end = min(i + 100, len(ds_rachida))  # Avoid going out of bounds
+    #         logger.info(f"Processing Rachida segment {start} to {end}")
+    #         ds_rachida_tmp = ds_rachida.select(range(start, end)).map(add_duration_to_dataset, num_proc=4)
+    #         ds_rachida_tmps.append(ds_rachida_tmp)
+    #         del ds_rachida_tmp
+    #         gc.collect()
+    #     ds_rachida = concatenate_datasets(ds_rachida_tmps)
+    #     ds_rachida_tmps = []
+    #     for i in range(0, len(ds_rachida), 400):
+    #         logger.info(f"Grouping language segments {start} to {end}")
+    #         start = i
+    #         end = min(i + 400, len(ds_rachida))
+    #         ds_rachida_tmps.append(find_language_and_group_segments(ds_rachida.select(range(start, end))))
+    #         gc.collect()
+    #     ds_rachida = concatenate_datasets(ds_rachida_tmps)
+    #     logger.info("Processed Rachida dataset")
+        
+    # except Exception as e:
+    #     logger.warning(f"Could not load Rachida dataset: {e}")
+    #     return False
+    
+    # # Combine datasets
+    # logger.info("Combining processed datasets")
+    # ds_combined = concatenate_datasets([ds_thimote, ds_rachida])
+    
+    # # Save combined raw dataset
+    # combined_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw"
+    # ds_combined.save_to_disk(combined_raw_path, storage_options=storage_options)
+    # logger.info(f"Saved combined raw dataset: {len(ds_combined)} samples")
+    
     
     # Clear memory before segmentation
     gc.collect()
