@@ -42,9 +42,7 @@ jobs:
             --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }} \
             ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
             /bin/bash -c "
-              mkdir -p /tmp/dataspeech && \
-              cd /tmp/dataspeech && \
-              git clone https://github.com/sawallesalfo/dataspeech.git && \
               cd /app/scripts && \
+              git clone https://github.com/sawallesalfo/dataspeech.git && \
               python generate_tts_dataset.py
             "
