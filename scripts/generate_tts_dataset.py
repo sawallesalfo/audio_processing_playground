@@ -15,14 +15,6 @@ if not os.path.exists("dataspeech"):
 else:
     print("Dataspeech repository already exists, skipping clone...")
 
-# Install requirements
-print("Installing dataspeech requirements...")
-try:
-    subprocess.run(["pip", "install", "--quiet", "-r", "./dataspeech/requirements.txt"], check=True)
-    print("Requirements installed successfully!")
-except subprocess.CalledProcessError as e:
-    print(f"Error installing requirements: {e}")
-    exit(1)
 
 path_1 = "s3://burkimbia/audios/cooked/mooreburkina/contes"
 
