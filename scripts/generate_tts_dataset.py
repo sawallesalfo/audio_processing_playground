@@ -82,6 +82,7 @@ print("\n" + "="*60)
 print("STEP 2: Converting metadata to text tags")
 print("="*60)
 
+
 command_step2 = [
     "python", "./scripts/metadata_to_text.py",
     enriched_path,
@@ -98,6 +99,7 @@ command_step2 = [
     "--pitch_std_tolerance", "2.0",
     "--speaking_rate_std_tolerance", "4.0",
     "--snr_std_tolerance", "3.5",
+    "--max_new_tokens", "1",
     "--reverberation_std_tolerance", "4.0",
     "--speech_monotony_std_tolerance", "4.0"
 ]
