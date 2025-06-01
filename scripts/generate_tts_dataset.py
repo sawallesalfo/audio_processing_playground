@@ -8,13 +8,12 @@ import tempfile
 cache_dir = "/tmp/cache"
 config_dir = "/tmp/config"
 
-# Create cache directories
+#  cache directories
 os.makedirs(cache_dir, exist_ok=True)
 os.makedirs(config_dir, exist_ok=True)
 os.makedirs(f"{cache_dir}/torch/hub/torchaudio/models", exist_ok=True)
 os.makedirs(f"{config_dir}/matplotlib", exist_ok=True)
 
-# Set environment variables for cache directories
 os.environ["TORCH_HOME"] = f"{cache_dir}/torch"
 os.environ["HF_HOME"] = f"{cache_dir}/huggingface"
 os.environ["TRANSFORMERS_CACHE"] = f"{cache_dir}/transformers"
@@ -25,8 +24,11 @@ os.environ["XDG_CACHE_HOME"] = cache_dir
 print(f"Cache directories set up in: {cache_dir}")
 print(f"Config directories set up in: {config_dir}")
 
+# Dataset paths
 path_1 = "s3://burkimbia/audios/cooked/mooreburkina/contes"
 enriched_path = f"{path_1}_enriched"
+tagged_path = f"{path_1}_tagged"
+final_path = f"{path_1}_final"
 
 # Change to dataspeech directory
 os.chdir("dataspeech")
@@ -66,9 +68,6 @@ print("\n" + "="*60)
 print("STEP 2: Converting metadata to text tags")
 print("="*60)
 
-# Output path for the final tagged dataset
-tagged_path = f"{path_1}_tagged"
-
 command_step2 = [
     "python", "./scripts/metadata_to_text.py",
     enriched_path,
@@ -100,10 +99,43 @@ except KeyError as e:
     print(f"Missing environment variable: {e}")
     exit(1)
 
+# STEP 3: Create natural language descriptions from text bins
 print("\n" + "="*60)
-print("PIPELINE COMPLETED SUCCESSFULLY!")
+print("STEP 3: Creating natural language descriptions from text bins")
+print("="*60)
+
+command_step3 = [
+    "python", "your_script.py",  # Replace with the actual script name for step 3
+    "--dataset_name", tagged_path,
+    "--from_disk",
+    "--aws_access_key_id", os.environ["AWS_ACCESS_KEY_ID"],
+    "--aws_secret_access_key", os.environ["AWS_SECRET_ACCESS_KEY"],
+    "--aws_endpoint_url", os.environ["AWS_ENDPOINT_URL_S3"],
+    "--output_dir", final_path
+]
+
+print(f"Creating natural language descriptions for dataset: {tagged_path}")
+try:
+    result = subprocess.run(command_step3, check=True, env=os.environ.copy())
+    print(f"Step 3 Success! Final dataset with descriptions saved to: {final_path}")
+except subprocess.CalledProcessError as e:
+    print(f"Error in Step 3 - creating natural language descriptions: {e}")
+    exit(1)
+except KeyError as e:
+    print(f"Missing environment variable: {e}")
+    exit(1)
+
+# Final summary
+print("\n" + "="*60)
+print("COMPLETE PIPELINE FINISHED SUCCESSFULLY!")
 print("="*60)
 print(f"Original dataset: {path_1}")
-print(f"Enriched dataset: {enriched_path}")
-print(f"Final tagged dataset: {tagged_path}")
+print(f"Step 1 - Enriched dataset: {enriched_path}")
+print(f"Step 2 - Tagged dataset: {tagged_path}")
+print(f"Step 3 - Final dataset with descriptions: {final_path}")
+print("="*60)
+print("\nPipeline Summary:")
+print("1. ✓ Annotated Jenny dataset with continuous speech characteristics")
+print("2. ✓ Mapped annotations to text bins characterizing speech")
+print("3. ✓ Created natural language descriptions from text bins")
 print("="*60)
