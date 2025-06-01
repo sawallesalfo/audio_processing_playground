@@ -1,0 +1,36 @@
+name: Creation proverbes dataset
+
+on:
+  push:
+    paths:
+      - scripts/generate_tts_dataset.py
+    branches:
+      - main                    # Only run on push to the master branch
+  pull_request:
+    paths:
+      - scripts/generate_tts_dataset.py
+    branches:
+      - main                    # Only run on pull requests to the master branch
+  # workflow_dispatch:              # Allows manual triggering of the workflow
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/data_speech
+  IMAGE_TAG: latest
+  PYTHONPATH: ${{ github.workspace }}
+
+jobs:
+  run-jobs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Pull Docker image
+        run: docker pull ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+      - name: Run Python script inside Docker
+        run: docker run --rm -v ${{ github.workspace }}:/app -w /app --env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --env AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --env HF_TOKEN=${{ secrets.HF_TOKEN }} --env AWS_ENDPOINT_URL_S3=${{ secrets.AWS_ENDPOINT_URL_S3 }}  ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} /bin/bash -c "python /app/scripts/generate_tts_dataset.py"
