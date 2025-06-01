@@ -125,7 +125,7 @@ command_step3 = [
     "--dataset_name", tagged_path,
     "--output_dir", final_path,
     "--from_disk",
-    "--model_name_or_path", "google/gemma-2-2b-it" 
+    "--model_name_or_path", "google/gemma-2-2b-it",
    "--per_device_eval_batch_size", "5", 
    "--attn_implementation","sdpa", 
     "--dataloader_num_workers", "2", 
