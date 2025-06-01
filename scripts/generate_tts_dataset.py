@@ -99,7 +99,6 @@ command_step2 = [
     "--pitch_std_tolerance", "2.0",
     "--speaking_rate_std_tolerance", "4.0",
     "--snr_std_tolerance", "3.5",
-    "--max_new_tokens", "1",
     "--reverberation_std_tolerance", "4.0",
     "--speech_monotony_std_tolerance", "4.0"
 ]
@@ -132,6 +131,7 @@ command_step3 = [
    "--attn_implementation","sdpa", 
     "--dataloader_num_workers", "2", 
     "--preprocessing_num_workers", "2",
+    "--max_new_tokens", "1",
     "--aws_access_key_id", os.environ["AWS_ACCESS_KEY_ID"],
     "--aws_secret_access_key", os.environ["AWS_SECRET_ACCESS_KEY"],
     "--aws_endpoint_url", os.environ["AWS_ENDPOINT_URL_S3"]
