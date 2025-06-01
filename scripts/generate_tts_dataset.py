@@ -22,7 +22,7 @@ os.environ["TRANSFORMERS_CACHE"] = f"{cache_dir}/transformers"
 os.environ["MPLCONFIGDIR"] = f"{config_dir}/matplotlib"
 os.environ["FONTCONFIG_PATH"] = f"{config_dir}/fontconfig"
 os.environ["XDG_CACHE_HOME"] = cache_dir
-os.environ["SAFETENSORS_FAST_GPU"] = 1
+os.environ["SAFETENSORS_FAST_GPU"] = "1"
 print(f"Cache directories set up in: {cache_dir}")
 print(f"Config directories set up in: {config_dir}")
 
