@@ -211,11 +211,11 @@ def crawl_and_save_rachida():
 def process_saved_datasets():
     """Load saved datasets and process them"""
     logger.info("=== PHASE 3: Processing saved datasets ===")
-        # Load datasets from disk
+    # Load datasets from disk
     datasets_to_combine = []
     
-    # # Load Thimote if exists
-    # try:
+    # Load Thimote if exists
+    try:
         thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
         ds_thimote = load_from_disk(thimote_raw_path, storage_options=storage_options)
         logger.info(f"Loaded Thimote dataset: {len(ds_thimote)} samples")
@@ -229,14 +229,15 @@ def process_saved_datasets():
         logger.info("Grouping language segments")
         ds_thimote = find_language_and_group_segments(ds_thimote)
         logger.info("filtering moore sample")
-        logger.info("dataset lenght before: {len(ds_thimote)}")
+        logger.info(f"dataset length before: {len(ds_thimote)}")
         ds_thimote = ds_thimote.filter(lambda x: is_french(x["text"])==False)
-        logger.info("dataset lenght after: {len(ds_thimote)}")
+        logger.info(f"dataset length after: {len(ds_thimote)}")
 
         logger.info("Processed Thimote dataset")
         
     except Exception as e:
         logger.warning(f"Could not load Thimote dataset: {e}")
+        ds_thimote = None
     
     # Load Rachida if exists
     try:
@@ -251,8 +252,7 @@ def process_saved_datasets():
         ds_rachida = ds_rachida.map(lambda x: {"group": extraire_id(x["id"])})
         ds_rachida = ds_rachida.map(lambda x: {"french_map": is_french(x["text"])})
 
-    #     # Let's do loop to avaoid error 137
-
+        # Let's do loop to avoid error 137
         for i in range(0, len(ds_rachida), 100):
             start = i
             end = min(i + 100, len(ds_rachida))  # Avoid going out of bounds
@@ -264,9 +264,9 @@ def process_saved_datasets():
         ds_rachida = concatenate_datasets(ds_rachida_tmps)
         ds_rachida_tmps = []
         for i in range(0, len(ds_rachida), 400):
-            logger.info(f"Grouping language segments {start} to {end}")
             start = i
             end = min(i + 400, len(ds_rachida))
+            logger.info(f"Grouping language segments {start} to {end}")
             ds_rachida_tmp = find_language_and_group_segments(ds_rachida.select(range(start, end)))
             ds_rachida_tmp = ds_rachida_tmp.filter(lambda x: is_french(x["text"])==False)
             ds_rachida_tmps.append(ds_rachida_tmp)
@@ -277,25 +277,29 @@ def process_saved_datasets():
         
     except Exception as e:
         logger.warning(f"Could not load Rachida dataset: {e}")
+        ds_rachida = None
+    
+    # Combine datasets if both exist
+    if ds_thimote is not None and ds_rachida is not None:
+        logger.info("Combining processed datasets")
+        ds_combined = concatenate_datasets([ds_thimote, ds_rachida])
+    elif ds_thimote is not None:
+        logger.info("Using only Thimote dataset")
+        ds_combined = ds_thimote
+    elif ds_rachida is not None:
+        logger.info("Using only Rachida dataset")
+        ds_combined = ds_rachida
+    else:
+        logger.error("No datasets available to process")
         return False
     
-    # # Combine datasets
-    # logger.info("Combining processed datasets")
-    # ds_combined = concatenate_datasets([ds_thimote, ds_rachida])
-    
-    # # Save combined raw dataset
+    # Save combined raw dataset
     combined_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw"
     ds_combined.save_to_disk(combined_raw_path, storage_options=storage_options)
     logger.info(f"Saved combined raw dataset: {len(ds_combined)} samples")
     
-    
     # Clear memory before segmentation
     gc.collect()
-    
-    # Load the combined raw dataset
-    combined_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw"
-    ds_combined = load_from_disk(combined_raw_path, storage_options=storage_options)
-    logger.info(f"Loaded combined dataset: {len(ds_combined)} samples")
     
     # Split dataset into two parts to handle memory issues
     total_samples = len(ds_combined)
@@ -316,10 +320,13 @@ def process_saved_datasets():
     
     logger.info(f"Part 1 cleaned duration: {sum(ds_part1['duration']):.2f}s")
     
-    Save Part 1
+    # Save Part 1
     part1_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_1"
     ds_part1.save_to_disk(part1_path, storage_options=storage_options)
     logger.info(f"Saved Part 1 cleaned dataset to {part1_path}")
+    
+    # Store part1 duration before deleting
+    part1_duration = sum(ds_part1['duration'])
     
     # Clear memory after Part 1
     del ds_part1
@@ -328,10 +335,9 @@ def process_saved_datasets():
     
     # Process Part 2
     logger.info("=== Processing Part 2 ===")
-        
-
     ds_part2 = ds_combined.select(range(mid_point, total_samples))
     logger.info(f"Part 2 size: {len(ds_part2)} samples")
+    
     # Clear memory
     del ds_combined
     gc.collect()
@@ -351,11 +357,11 @@ def process_saved_datasets():
     logger.info(f"Saved Part 2 cleaned dataset to {part2_path}")
     
     # Calculate total duration
-    total_duration = sum(ds_part2['duration']) + sum(ds_combined.select(range(0, mid_point))['duration'])
+    total_duration = sum(ds_part2['duration']) + part1_duration
     logger.info(f"Total cleaned duration across both parts: {total_duration:.2f}s")
     
     # Clear memory
-    del ds_part2, ds_combined
+    del ds_part2
     gc.collect()
     torch.cuda.empty_cache() if torch.cuda.is_available() else None
     
@@ -404,7 +410,6 @@ if __name__ == "__main__":
         #     exit(1)
         
         process_success = process_saved_datasets()
-        process_success = True
         if process_success:
             logger.info("Split processing completed successfully!")
             
