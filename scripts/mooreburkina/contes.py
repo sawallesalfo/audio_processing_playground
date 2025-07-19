@@ -9,7 +9,6 @@ def compute_duration(example):
     example["duration"] = duration
     return example
 
-
 if __name__ == "__main__":
     datasets = []
     logger.info("=== Début du scraping des contes en mooré ===")
