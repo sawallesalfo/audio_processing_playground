@@ -103,11 +103,11 @@ if __name__ == "__main__":
     
     ################################### CHANGE ME ########################
 
-    CHAPTER= "mise"
-    EXCEL_FILE= "contributor_files/Mise_sebre.xlsx"
 
+    CHAPTER= "2-Korẽnt-rãmbã"
+    EXCEL_FILE= "contributor_files/2-Korẽnt-rãmbã.xlsx"
     PAGE_START = 1
-    PAGE_END = 7
+    PAGE_END = 13
     ####################
     #######################################################################
     file_pattern = "page_{page}.mp3"
