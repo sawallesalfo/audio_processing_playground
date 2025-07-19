@@ -111,7 +111,6 @@ if __name__ == "__main__":
 
     #######################################################################
     file_pattern = "page_{page}.mp3"
-
     audio_files  = generate_audio_dict(PAGE_START, PAGE_END, "raw_data", CHAPTER, file_pattern)
 
     access_key = os.getenv("AWS_ACCESS_KEY_ID")
