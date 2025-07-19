@@ -104,11 +104,11 @@ if __name__ == "__main__":
     
     ################################### CHANGE ME ########################
 
-    CHAPTER= "Vẽnegre"
-    EXCEL_FILE= "contributor_files/Venegr sebre.xlsx"
-    PAGE_START = 1
-    PAGE_END = 22
 
+    CHAPTER= "amos"
+    EXCEL_FILE= "contributor_files/Amos.xlsx"
+    PAGE_START = 1
+    PAGE_END = 9
     #######################################################################
     file_pattern = "page_{page}.mp3"
     audio_files  = generate_audio_dict(PAGE_START, PAGE_END, "raw_data", CHAPTER, file_pattern)
