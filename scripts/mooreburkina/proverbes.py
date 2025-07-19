@@ -9,7 +9,6 @@ from pydub import AudioSegment, silence
 from datasets import load_from_disk, Dataset, Audio, concatenate_datasets
 from resemble_enhance.enhancer.inference import denoise
 from langdetect import detect
-
 from utils import build_dataset, crawl_and_collect
 
 MIN_SILENCE_LEN = 1000  # ms
