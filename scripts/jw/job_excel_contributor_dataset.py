@@ -102,11 +102,10 @@ if __name__ == "__main__":
     DATA_FILE = "sawadogosalif/MooreFRCollections_BibleOnlyText"
     
     ################################### CHANGE ME ########################
-
-    CHAPTER= "Mise"
-    EXCEL_FILE= "contributor_files/Mise_sebre.xlsx"
+    CHAPTER= "Zowɛll"
+    EXCEL_FILE= "contributor_files/Zowell_sebre.xlsx"
     PAGE_START = 1
-    PAGE_END = 1
+    PAGE_END = 3
     #######################################################################
     file_pattern = "page_{page}.mp3"
     audio_files  = generate_audio_dict(PAGE_START, PAGE_END, "raw_data", CHAPTER, file_pattern)
