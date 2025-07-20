@@ -72,6 +72,6 @@ if __name__ == "__main__":
     ######################### CHANGE ME #################################
     FOLDER_TO_PROCESS = "output_jsons_esdras"
     OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_esdras"
-    CHAPTER = "zakari"
+    CHAPTER = "ɛsdras"
     ########################################################################
     process_s3_audio_data(BUCKET_NAME, FOLDER_TO_PROCESS, OUTPUT_PATH)
