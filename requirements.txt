@@ -11,4 +11,6 @@ bs4
 langdetect
 spleeter
 noisereduce
+torch
+torchaudio
 # git+https://github.com/sawadogosalif/resemble-enhance.git
