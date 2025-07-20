@@ -87,6 +87,14 @@ def extraire_id(texte):
 def calculate_duration(audio_array, sr):
     return round(len(audio_array) / sr, 2)
 
+def add_duration(example):
+    """Wrapper function to add duration to dataset examples"""
+    audio_array = example["audio"]["array"]
+    sr = example["audio"]["sampling_rate"]
+    duration = calculate_duration(audio_array, sr)
+    example["duration"] = duration
+    return example
+
 def remove_duplicates(dataset):
     """Supprime les doublons basés sur le texte en gardant la première occurrence."""
     seen_texts = {}
@@ -162,7 +170,8 @@ def process_saved_devinettes():
         
         # Process dataset
         ds = ds.map(lambda x: {"group": extraire_id(x["id"])})
-        ds = ds.map(calculate_duration)
+        # Fix: Use the wrapper function instead of calling calculate_duration directly
+        ds = ds.map(add_duration)
         
         # Clean audio
         logger.info("Starting audio cleaning process")
@@ -183,10 +192,10 @@ def process_saved_devinettes():
 
 if __name__ == "__main__":
     try:
-        crawl_success = crawl_and_save_devinettes()
-        if not crawl_success:
-            logger.error("Crawling phase failed")
-            exit(1)
+        # crawl_success = crawl_and_save_devinettes()
+        # if not crawl_success:
+        #     logger.error("Crawling phase failed")
+        #     exit(1)
             
         process_success = process_saved_devinettes()
         if process_success:
