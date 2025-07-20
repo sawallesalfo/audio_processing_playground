@@ -9,4 +9,6 @@ soundfile
 librosa
 bs4
 langdetect
+spleeter
+noisereduce
 git+https://github.com/sawadogosalif/resemble-enhance.git
