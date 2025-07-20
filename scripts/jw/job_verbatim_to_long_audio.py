@@ -107,9 +107,9 @@ if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
     ##############################CHANGE ME ######################################
-    CHAPTER = "Ɛsdras"
+    CHAPTER = "Ɛstɛɛr"
     FOLDER_TO_PROCESS = "output_jsons_esteer"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_Ɛsdras"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_Ɛstɛɛr"
     BATCH_SIZE= 7
     SILENCE_DURATION = 0.6
     #######################################################################################
