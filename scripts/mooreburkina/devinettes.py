@@ -113,7 +113,7 @@ def process_saved_devinettes():
     logger.info("=== Processing Devinettes dataset ===")
     try:
         raw_path = "s3://burkimbia/audios/cooked/mooreburkina/devinettes_raw"
-        ds = load_from_disk(raw_path, storage_options=storage_options).select(range(20))
+        ds = load_from_disk(raw_path, storage_options=storage_options)
 
         ds = ds.map(lambda x: {"group": extraire_id(x["id"])})
         ds = ds.map(add_duration)
