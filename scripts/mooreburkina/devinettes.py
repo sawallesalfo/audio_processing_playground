@@ -118,6 +118,7 @@ def crawl_and_save_devinettes():
     logger.info(f"Nombre total d'URLs à traiter: {len(BASE_URLS)}")
     datasets = []
     
+    
     for volume, url in BASE_URLS:
         logger.info(f"Scraping Devinettes {volume} - {url}")
         recs = crawl_and_collect(url)
