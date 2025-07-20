@@ -113,7 +113,8 @@ def crawl_and_save_devinettes():
     for i in range(1, 20):  # de 1 à 19
         volume_num = str(i).zfill(2)  # Pad avec des zéros: 1 -> 01, 2 -> 02, etc.
         volume_name = f"devin_{volume_num}"
-        url = f"https://media.ipsapps.org/mos/ora/devin/{volume_num}-B{volume_num}-001.html"
+        b_num = str(i).zfill(3)  # 1 -> 001, 18 -> 018, 19 -> 019
+        url = f"https://media.ipsapps.org/mos/ora/devin/{volume_num}-B{b_num}-001.html"
         BASE_URLS.append((volume_name, url))
     
     logger.info(f"Nombre total d'URLs à traiter: {len(BASE_URLS)}")
