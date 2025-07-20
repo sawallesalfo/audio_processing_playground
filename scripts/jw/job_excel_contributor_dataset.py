@@ -103,7 +103,7 @@ if __name__ == "__main__":
     
     ################################### CHANGE ME ########################
     CHAPTER= "ezayi"
-    EXCEL_FILE= "contributor_files/1timotee.xlsx"
+    EXCEL_FILE= "contributor_files/esayi.xlsx"
     PAGE_START = 1
     PAGE_END = 66
     #######################################################################
