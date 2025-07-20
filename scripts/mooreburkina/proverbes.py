@@ -7,7 +7,6 @@ import numpy as np
 from pydub import AudioSegment, silence
 
 from datasets import load_from_disk, Dataset, Audio, concatenate_datasets
-from resemble_enhance.enhancer.inference import denoise
 from langdetect import detect
 from utils import build_dataset, crawl_and_collect
 
@@ -31,19 +30,38 @@ def clean_audio(example):
 
     # — Extraire les données audio
     audio_np = example["audio"]["array"]
-    sr       = example["audio"]["sampling_rate"]
+    sr = example["audio"]["sampling_rate"]
 
+    # 1. Créer un fichier temporaire pour l'audio d'entrée
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
         sf.write(tmpfile.name, audio_np, sr)
-        tmp_wav_path = tmpfile.name
+        input_wav_path = tmpfile.name
 
-    wav, sr = torchaudio.load(tmp_wav_path)  # wav : (1, n) ou (2, n)
-    wav = wav.mean(dim=0)  # mono
+    # 2. Utiliser Spleeter pour séparer la voix de la musique
+    from spleeter.separator import Separator
+    separator = Separator('spleeter:2stems')
+    
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        separator.separate_to_file(input_wav_path, tmpdirname)
+        # Récupérer le fichier vocals.wav généré par Spleeter
+        vocals_path = os.path.join(tmpdirname, os.path.splitext(os.path.basename(input_wav_path))[0], "vocals.wav")
+        # Charger le fichier vocal
+        vocals_wav, sr = librosa.load(vocals_path, sr=None)
 
-    denoised, sr = denoise(wav.to(device), sr, device=device)
-    denoised_np = denoised.cpu().numpy()
+        # 3. Appliquer noise reduce sur la voix isolée
+        import noisereduce as nr
+        vocals_denoised = nr.reduce_noise(y=vocals_wav, sr=sr)
+        
+        # Sauvegarder temporairement pour resemble-enhance
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
+            sf.write(tmpfile.name, vocals_denoised, sr)
+            denoised_path = tmpfile.name
 
-    denoised_int16 = (denoised_np * 32767).astype(np.int16)
+    # Supprimer le fichier d'entrée original
+    os.unlink(input_wav_path)
+
+    # Convertir le signal débruité en format pour pydub
+    denoised_int16 = (vocals_denoised * 32767).astype(np.int16)
     seg = AudioSegment(
         denoised_int16.tobytes(),
         frame_rate=sr,
@@ -62,9 +80,6 @@ def clean_audio(example):
 
     # 6️⃣ Retour en float32 normalisé
     arr = np.array(seg_clean.get_array_of_samples()).astype(np.float32) / 32767.0
-
-    # Clean up temporary file
-    os.unlink(tmp_wav_path)
 
     return {
         "clean": {
@@ -402,8 +417,8 @@ def combine_parts_if_needed():
 
 if __name__ == "__main__":
     try:
-        thimote_success = crawl_and_save_thimote()
-        rachida_success = crawl_and_save_rachida()    
+        # thimote_success = crawl_and_save_thimote()
+        #rachida_success = crawl_and_save_rachida()    
         # if not thimote_success and not rachida_success:
         #     logger.error("Both crawling phases failed")
         #     exit(1)
