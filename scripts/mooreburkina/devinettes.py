@@ -175,9 +175,9 @@ def process_saved_devinettes():
         
         # Clean audio
         logger.info("Starting audio cleaning process")
-        ds = ds.cast_column("audio", Audio(sampling_rate=16000))
-        ds = ds.map(clean_audio, batch_size=4)
-        ds = ds.cast_column("clean", Audio(sampling_rate=16000))
+        ds = ds.cast_column("audio", Audio(sampling_rate=44000))
+        ds = ds.map(clean_audio)
+        ds = ds.cast_column("clean", Audio(sampling_rate=44000))
         
         # Save processed dataset
         processed_path = "s3://burkimbia/audios/cooked/mooreburkina/devinettes_processed"
