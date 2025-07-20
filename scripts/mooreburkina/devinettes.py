@@ -192,17 +192,17 @@ def process_saved_devinettes():
 
 if __name__ == "__main__":
     try:
-        # crawl_success = crawl_and_save_devinettes()
-        # if not crawl_success:
-        #     logger.error("Crawling phase failed")
-        #     exit(1)
-            
-        process_success = process_saved_devinettes()
-        if process_success:
-            logger.info("Processing completed successfully!")
-        else:
-            logger.error("Processing phase failed")
+        crawl_success = crawl_and_save_devinettes()
+        if not crawl_success:
+            logger.error("Crawling phase failed")
             exit(1)
+            
+        # process_success = process_saved_devinettes()
+        # if process_success:
+        #     logger.info("Processing completed successfully!")
+        # else:
+        #     logger.error("Processing phase failed")
+        #     exit(1)
             
     except Exception as e:
         logger.error(f"Pipeline failed with error: {e}")
