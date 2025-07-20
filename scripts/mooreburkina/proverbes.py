@@ -187,28 +187,104 @@ def crawl_and_save_thimote():
         return False
 
 
-def crawl_and_save_rachida():
-    """Crawl Rachida data and save immediately"""
-    logger.info("=== PHASE 2: Crawling RACHIDA data ===")
-    BASE_URL_RACHIDA = "https://media.ipsapps.org/mos/ora/prv-v10/"
+def remove_duplicates(dataset):
+    """Supprime les doublons basés sur le texte en gardant la première occurrence."""
+    seen_texts = {}
+    indices_to_keep = []
+    
+    for i, text in enumerate(dataset['text']):
+        # Normaliser le texte pour la comparaison (enlever espaces supplémentaires, mettre en minuscules)
+        normalized_text = ' '.join(text.lower().split())
+        if normalized_text not in seen_texts:
+            seen_texts[normalized_text] = i
+            indices_to_keep.append(i)
+    
+    logger.info(f"Nombre d'échantillons avant déduplication: {len(dataset)}")
+    logger.info(f"Nombre d'échantillons après déduplication: {len(indices_to_keep)}")
+    
+    return dataset.select(indices_to_keep)
+
+def crawl_and_save_devinettes():
+    """Crawl Devinettes data and save immediately"""
+    logger.info("=== PHASE: Crawling DEVINETTES data ===")
+    BASE_URL_DEVINETTES = "https://media.ipsapps.org/mos/ora/devin/"
     datasets = []
     
-    for i in range(1, 22):  # 01 to 21
-        url = f"{BASE_URL_RACHIDA}{i:02d}-B{i:03d}-001.html"
-        logger.info(f"Scraping Rachida {url}")
+    for i in range(1, 20):  # 01 to 19
+        url = f"{BASE_URL_DEVINETTES}{i:02d}-B{i:03d}-001.html"
+        logger.info(f"Scraping Devinettes {url}")
         recs = crawl_and_collect(url)
         if recs:
             ds = build_dataset(recs)
-            if ds: 
+            if ds:
+                # Supprimer les doublons dans chaque sous-ensemble
+                ds = remove_duplicates(ds)
+                # Ajouter l'information du type
+                ds = ds.add_column("type", ["devinette"] * len(ds))
                 datasets.append(ds)
                 # Clear memory after each URL
                 del recs, ds
                 gc.collect()
     
     if datasets:
+        logger.info("Combining Devinettes datasets")
+        ds_full_devinettes = concatenate_datasets(datasets)
+        # Supprimer les doublons dans le dataset complet
+        ds_full_devinettes = remove_duplicates(ds_full_devinettes)
+        logger.info(f"Devinettes dataset final: {len(ds_full_devinettes)} samples")
+        
+        devinettes_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/devinettes_raw"
+        ds_full_devinettes.save_to_disk(devinettes_raw_path, storage_options=storage_options)
+        logger.info(f"Saved Devinettes raw dataset to {devinettes_raw_path}")
+        
+        del datasets, ds_full_devinettes
+        gc.collect()
+        return True
+    else:
+        logger.warning("No Devinettes datasets were created")
+        return False
+
+def crawl_and_save_rachida():
+    """Crawl Rachida data and save immediately"""
+    logger.info("=== PHASE 2: Crawling RACHIDA data ===")
+    
+    # Définir toutes les versions et leurs plages
+    versions = [
+        {"version": "v09", "range": (1, 15)},  # v09 a 14 fichiers
+        {"version": "v10", "range": (1, 22)},  # v10 a 21 fichiers
+        {"version": "v11", "range": (1, 22)}   # v11 a 21 fichiers
+    ]
+    
+    datasets = []
+    
+    for version_info in versions:
+        version = version_info["version"]
+        start, end = version_info["range"]
+        BASE_URL_RACHIDA = f"https://media.ipsapps.org/mos/ora/prv-{version}/"
+        
+        logger.info(f"=== Crawling Rachida {version} ===")
+        for i in range(start, end):
+            url = f"{BASE_URL_RACHIDA}{i:02d}-B{i:03d}-001.html"
+            logger.info(f"Scraping Rachida {url}")
+            recs = crawl_and_collect(url)
+            if recs:
+                ds = build_dataset(recs)
+                if ds:
+                    # Supprimer les doublons dans chaque sous-ensemble
+                    ds = remove_duplicates(ds)
+                    # Ajouter l'information de la version
+                    ds = ds.add_column("version", [version] * len(ds))
+                    datasets.append(ds)
+                    # Clear memory after each URL
+                    del recs, ds
+                    gc.collect()
+    
+    if datasets:
         logger.info("Combining Rachida datasets")
         ds_full_rachida = concatenate_datasets(datasets)
-        logger.info(f"Rachida dataset: {len(ds_full_rachida)} samples")
+        # Supprimer les doublons dans le dataset complet
+        ds_full_rachida = remove_duplicates(ds_full_rachida)
+        logger.info(f"Rachida dataset final: {len(ds_full_rachida)} samples")
         
         rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
         ds_full_rachida.save_to_disk(rachida_raw_path, storage_options=storage_options)
@@ -228,6 +304,24 @@ def process_saved_datasets():
     # Load datasets from disk
     datasets_to_combine = []
     
+    # Load Devinettes if exists
+    try:
+        devinettes_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/devinettes_raw"
+        ds_devinettes = load_from_disk(devinettes_raw_path, storage_options=storage_options)
+        logger.info(f"Loaded Devinettes dataset: {len(ds_devinettes)} samples")
+        
+        # Process Devinettes
+        ds_devinettes = ds_devinettes.map(lambda x: {"group": extraire_id(x["id"])})
+        ds_devinettes = ds_devinettes.map(lambda x: {"french_map": is_french(x["text"])})
+        ds_devinettes = ds_devinettes.map(add_duration_to_dataset)
+        ds_devinettes = find_language_and_group_segments(ds_devinettes)
+        ds_devinettes = ds_devinettes.filter(lambda x: is_french(x["text"])==False)
+        logger.info(f"Processed Devinettes dataset: {len(ds_devinettes)} samples")
+        
+    except Exception as e:
+        logger.warning(f"Could not load Devinettes dataset: {e}")
+        ds_devinettes = None
+
     # Load Thimote if exists
     try:
         thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
@@ -293,16 +387,20 @@ def process_saved_datasets():
         logger.warning(f"Could not load Rachida dataset: {e}")
         ds_rachida = None
     
-    # Combine datasets if both exist
-    if ds_thimote is not None and ds_rachida is not None:
-        logger.info("Combining processed datasets")
-        ds_combined = concatenate_datasets([ds_thimote, ds_rachida])
-    elif ds_thimote is not None:
-        logger.info("Using only Thimote dataset")
-        ds_combined = ds_thimote
-    elif ds_rachida is not None:
-        logger.info("Using only Rachida dataset")
-        ds_combined = ds_rachida
+    # Combine all available datasets
+    datasets_to_combine = []
+    if ds_thimote is not None:
+        datasets_to_combine.append(ds_thimote)
+    if ds_rachida is not None:
+        datasets_to_combine.append(ds_rachida)
+    if ds_devinettes is not None:
+        datasets_to_combine.append(ds_devinettes)
+
+    if datasets_to_combine:
+        logger.info(f"Combining {len(datasets_to_combine)} datasets")
+        ds_combined = concatenate_datasets(datasets_to_combine)
+    else:
+        logger.error("No datasets available to combine")
     else:
         logger.error("No datasets available to process")
         return False
@@ -417,11 +515,13 @@ def combine_parts_if_needed():
 
 if __name__ == "__main__":
     try:
-        # thimote_success = crawl_and_save_thimote()
-        #rachida_success = crawl_and_save_rachida()    
-        # if not thimote_success and not rachida_success:
-        #     logger.error("Both crawling phases failed")
-        #     exit(1)
+        thimote_success = crawl_and_save_thimote()
+        rachida_success = crawl_and_save_rachida()
+        devinettes_success = crawl_and_save_devinettes()
+        
+        if not thimote_success and not rachida_success and not devinettes_success:
+            logger.error("All crawling phases failed")
+            exit(1)
         
         process_success = process_saved_datasets()
         if process_success:
