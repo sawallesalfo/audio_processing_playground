@@ -107,9 +107,9 @@ if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
     ##############################CHANGE ME ######################################
-    CHAPTER = "yikri"
-    FOLDER_TO_PROCESS = "output_jsons_yikri"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_yikri"
+    CHAPTER = "Ɛsdras"
+    FOLDER_TO_PROCESS = "output_jsons_Ɛsdras"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/audio-dataset-aggregated_Ɛsdras"
     BATCH_SIZE= 7
     SILENCE_DURATION = 0.6
     #######################################################################################
