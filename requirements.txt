@@ -1,7 +1,7 @@
 python-dotenv
 openpyxl
 loguru
-datasets
+datasets==3.6.0
 boto3
 s3fs
 pydub  #audio
@@ -13,4 +13,5 @@ spleeter
 noisereduce
 torch
 torchaudio
+torchcodec
 # git+https://github.com/sawadogosalif/resemble-enhance.git
