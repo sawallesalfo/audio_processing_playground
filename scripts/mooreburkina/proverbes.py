@@ -401,8 +401,6 @@ def process_saved_datasets():
         ds_combined = concatenate_datasets(datasets_to_combine)
     else:
         logger.error("No datasets available to combine")
-    else:
-        logger.error("No datasets available to process")
         return False
     
     # Save combined raw dataset
