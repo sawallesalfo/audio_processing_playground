@@ -54,7 +54,7 @@
 | Ebre-rãmbã           | ✅      |
 | matiye              | ✅      |
 | sofoni              | ✅      |
-| ooze                | ⏳        |
+| ooze                | ✅        |
 | mark                | ⏳      |
 | Galat-rãmbã         | ⏳      |
 | Kolos-rãmbã         | ⏳      |
