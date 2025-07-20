@@ -100,8 +100,8 @@ if __name__ == "__main__":
 
     
     BUCKET_NAME = "moore-collection"
-    DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_ɛsdras"
-    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_ɛsdras"
+    DATASET_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_Ɛsdras"
+    OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_Ɛsdras"
     storage_options = {
         "key": os.getenv("AWS_ACCESS_KEY_ID"),
         "secret": os.getenv("AWS_SECRET_ACCESS_KEY"),
