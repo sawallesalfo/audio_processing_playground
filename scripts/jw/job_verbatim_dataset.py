@@ -70,7 +70,7 @@ if __name__ == "__main__":
     
     BUCKET_NAME = "moore-collection"
     ######################### CHANGE ME #################################
-    FOLDER_TO_PROCESS = "output_jsons_Ɛstɛɛr"
+    FOLDER_TO_PROCESS = "output_jsons_esteer"
     OUTPUT_PATH = f"s3://{BUCKET_NAME}/hf_datasets/verbatim_Ɛstɛɛr"
     CHAPTER = "Ɛstɛɛr"
     ########################################################################
