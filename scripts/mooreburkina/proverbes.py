@@ -5,6 +5,7 @@ from loguru import logger
 import torch
 import numpy as np
 from pydub import AudioSegment, silence
+from spleeter.separator import Separator
 from pathlib import Path
 
 from datasets import load_from_disk, Dataset, Audio, concatenate_datasets
@@ -29,6 +30,8 @@ storage_options = {
     "secret": os.getenv("AWS_SECRET_ACCESS_KEY"),
     "client_kwargs": {"endpoint_url": os.getenv("AWS_ENDPOINT_URL_S3")}
 }
+# Init Spleeter once
+separator = Separator('spleeter:2stems')
 
 def clean_audio(example, idx):
     audio_np = example["audio"]["array"]
