@@ -23,6 +23,7 @@ import torchaudio
 
 import soundfile as sf
 import librosa
+import noisereduce as nr
 
 # S3 storage options
 storage_options = {
