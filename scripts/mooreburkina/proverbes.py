@@ -5,6 +5,7 @@ from loguru import logger
 import torch
 import numpy as np
 from pydub import AudioSegment, silence
+from pathlib import Path
 
 from datasets import load_from_disk, Dataset, Audio, concatenate_datasets
 from langdetect import detect
@@ -13,6 +14,10 @@ from utils import build_dataset, crawl_and_collect
 MIN_SILENCE_LEN = 1000  # ms
 SILENCE_THRESH   = -40  # dBFS
 KEEP_SILENCE     = 200  # ms
+
+BASE_TMP_DIR = os.getenv("TMPDIR", "/tmp") + "/clean_audio_pool"
+os.makedirs(BASE_TMP_DIR, exist_ok=True)
+
 import torchaudio
 
 import soundfile as sf
@@ -187,45 +192,6 @@ def remove_duplicates(dataset):
     
     return dataset.select(indices_to_keep)
 
-def crawl_and_save_devinettes():
-    """Crawl Devinettes data and save immediately"""
-    logger.info("=== PHASE: Crawling DEVINETTES data ===")
-    BASE_URL_DEVINETTES = "https://media.ipsapps.org/mos/ora/devin/"
-    datasets = []
-    
-    for i in range(1, 20):  # 01 to 19
-        url = f"{BASE_URL_DEVINETTES}{i:02d}-B{i:03d}-001.html"
-        logger.info(f"Scraping Devinettes {url}")
-        recs = crawl_and_collect(url)
-        if recs:
-            ds = build_dataset(recs)
-            if ds:
-                # Supprimer les doublons dans chaque sous-ensemble
-                ds = remove_duplicates(ds)
-                # Ajouter l'information du type
-                ds = ds.add_column("type", ["devinette"] * len(ds))
-                datasets.append(ds)
-                # Clear memory after each URL
-                del recs, ds
-                gc.collect()
-    
-    if datasets:
-        logger.info("Combining Devinettes datasets")
-        ds_full_devinettes = concatenate_datasets(datasets)
-        # Supprimer les doublons dans le dataset complet
-        ds_full_devinettes = remove_duplicates(ds_full_devinettes)
-        logger.info(f"Devinettes dataset final: {len(ds_full_devinettes)} samples")
-        
-        devinettes_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/devinettes_raw"
-        ds_full_devinettes.save_to_disk(devinettes_raw_path, storage_options=storage_options)
-        logger.info(f"Saved Devinettes raw dataset to {devinettes_raw_path}")
-        
-        del datasets, ds_full_devinettes
-        gc.collect()
-        return True
-    else:
-        logger.warning("No Devinettes datasets were created")
-        return False
 
 def crawl_and_save_rachida():
     """Crawl Rachida data and save immediately"""
@@ -286,24 +252,6 @@ def process_saved_datasets():
     logger.info("=== PHASE 3: Processing saved datasets ===")
     # Load datasets from disk
     datasets_to_combine = []
-    
-    # Load Devinettes if exists
-    try:
-        devinettes_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/devinettes_raw"
-        ds_devinettes = load_from_disk(devinettes_raw_path, storage_options=storage_options)
-        logger.info(f"Loaded Devinettes dataset: {len(ds_devinettes)} samples")
-        
-        # Process Devinettes
-        ds_devinettes = ds_devinettes.map(lambda x: {"group": extraire_id(x["id"])})
-        ds_devinettes = ds_devinettes.map(lambda x: {"french_map": is_french(x["text"])})
-        ds_devinettes = ds_devinettes.map(add_duration_to_dataset)
-        ds_devinettes = find_language_and_group_segments(ds_devinettes)
-        ds_devinettes = ds_devinettes.filter(lambda x: is_french(x["text"])==False)
-        logger.info(f"Processed Devinettes dataset: {len(ds_devinettes)} samples")
-        
-    except Exception as e:
-        logger.warning(f"Could not load Devinettes dataset: {e}")
-        ds_devinettes = None
 
     # Load Thimote if exists
     try:
@@ -376,8 +324,6 @@ def process_saved_datasets():
         datasets_to_combine.append(ds_thimote)
     if ds_rachida is not None:
         datasets_to_combine.append(ds_rachida)
-    if ds_devinettes is not None:
-        datasets_to_combine.append(ds_devinettes)
 
     if datasets_to_combine:
         logger.info(f"Combining {len(datasets_to_combine)} datasets")
@@ -498,8 +444,8 @@ if __name__ == "__main__":
     try:
         # thimote_success = crawl_and_save_thimote()
         # rachida_success = crawl_and_save_rachida()
-        rachida_success,  thimote_success = True, True
-        if not thimote_success and not rachida_success and not devinettes_success:
+        rachida_success, thimote_success = True, True
+        if not thimote_success and not rachida_success:
             logger.error("All crawling phases failed")
             exit(1)
         
