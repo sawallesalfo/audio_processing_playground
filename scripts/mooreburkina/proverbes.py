@@ -15,8 +15,8 @@ SILENCE_THRESH   = -40  # dBFS
 KEEP_SILENCE     = 200  # ms
 import torchaudio
 
-import tempfile
 import soundfile as sf
+import librosa
 
 # S3 storage options
 storage_options = {
@@ -25,51 +25,41 @@ storage_options = {
     "client_kwargs": {"endpoint_url": os.getenv("AWS_ENDPOINT_URL_S3")}
 }
 
-def clean_audio(example):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    # — Extraire les données audio
+def clean_audio(example, idx):
     audio_np = example["audio"]["array"]
     sr = example["audio"]["sampling_rate"]
+    basename = f"audio_{idx:06d}"
+    wav_path = os.path.join(BASE_TMP_DIR, f"{basename}.wav")
+    out_dir = os.path.join(BASE_TMP_DIR, basename)
 
-    # 1. Créer un fichier temporaire pour l'audio d'entrée
-    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
-        sf.write(tmpfile.name, audio_np, sr)
-        input_wav_path = tmpfile.name
+    try:
+        sf.write(wav_path, audio_np, sr)
+        separator.separate_to_file(wav_path, BASE_TMP_DIR)
 
-    # 2. Utiliser Spleeter pour séparer la voix de la musique
-    from spleeter.separator import Separator
-    separator = Separator('spleeter:2stems')
-    
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        separator.separate_to_file(input_wav_path, tmpdirname)
-        # Récupérer le fichier vocals.wav généré par Spleeter
-        vocals_path = os.path.join(tmpdirname, os.path.splitext(os.path.basename(input_wav_path))[0], "vocals.wav")
-        # Charger le fichier vocal
-        vocals_wav, sr = librosa.load(vocals_path, sr=None)
+        vocals_path = os.path.join(out_dir, "vocals.wav")
+        if not os.path.isfile(vocals_path):
+            raise FileNotFoundError(f"{vocals_path} missing")
 
-        # 3. Appliquer noise reduce sur la voix isolée
-        import noisereduce as nr
-        vocals_denoised = nr.reduce_noise(y=vocals_wav, sr=sr)
-        
-        # Sauvegarder temporairement pour resemble-enhance
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
-            sf.write(tmpfile.name, vocals_denoised, sr)
-            denoised_path = tmpfile.name
+        y, sr_loaded = librosa.load(vocals_path, sr=None)
+        if y.ndim == 2:
+            y = y.mean(axis=1)
 
-    # Supprimer le fichier d'entrée original
-    os.unlink(input_wav_path)
+        y_denoised = nr.reduce_noise(y=y, sr=sr_loaded)
 
-    # Convertir le signal débruité en format pour pydub
-    denoised_int16 = (vocals_denoised * 32767).astype(np.int16)
+    finally:
+        try:
+            os.remove(wav_path)
+        except OSError:
+            pass
+
+    pcm16 = np.clip(y_denoised * 32767, -32768, 32767).astype(np.int16)
     seg = AudioSegment(
-        denoised_int16.tobytes(),
-        frame_rate=sr,
+        pcm16.tobytes(),
+        frame_rate=sr_loaded,
         sample_width=2,
         channels=1
     )
 
-    # 5️⃣ Split on silence
     chunks = silence.split_on_silence(
         seg,
         min_silence_len=MIN_SILENCE_LEN,
@@ -78,15 +68,8 @@ def clean_audio(example):
     )
     seg_clean = sum(chunks) if chunks else seg
 
-    # 6️⃣ Retour en float32 normalisé
-    arr = np.array(seg_clean.get_array_of_samples()).astype(np.float32) / 32767.0
-
-    return {
-        "clean": {
-            "array": arr,
-            "sampling_rate": sr
-        }
-    }
+    arr = np.array(seg_clean.get_array_of_samples(), dtype=np.float32) / 32767.0
+    return {"clean": {"array": arr, "sampling_rate": sr_loaded}}
 
 
 def is_french(text: str) -> bool:
@@ -424,9 +407,9 @@ def process_saved_datasets():
     
     # Clean audio for Part 1
     logger.info("Starting audio cleaning process for Part 1")
-    ds_part1 = ds_part1.cast_column("audio", Audio(sampling_rate=16000))
-    ds_part1 = ds_part1.map(clean_audio, batch_size=4)  # Reduced batch size for memory
-    ds_part1 = ds_part1.cast_column("clean", Audio(sampling_rate=16000))
+    ds_part1 = ds_part1.cast_column("audio", Audio(sampling_rate=44000))
+    ds_part1 = ds_part1.map(clean_audio, batch_size=4, with_indices=True)  # Reduced batch size for memory
+    ds_part1 = ds_part1.cast_column("clean", Audio(sampling_rate=44000))
     
     logger.info(f"Part 1 cleaned duration: {sum(ds_part1['duration']):.2f}s")
     
@@ -455,9 +438,9 @@ def process_saved_datasets():
     
     # Clean audio for Part 2
     logger.info("Starting audio cleaning process for Part 2")
-    ds_part2 = ds_part2.cast_column("audio", Audio(sampling_rate=16000))
-    ds_part2 = ds_part2.map(clean_audio, batch_size=4)  # Reduced batch size for memory
-    ds_part2 = ds_part2.cast_column("clean", Audio(sampling_rate=16000))
+    ds_part2 = ds_part2.cast_column("audio", Audio(sampling_rate=44000))
+    ds_part2 = ds_part2.map(clean_audio, batch_size=4, with_indices=True)  # Reduced batch size for memory
+    ds_part2 = ds_part2.cast_column("clean", Audio(sampling_rate=44000))
     
     logger.info(f"Part 2 cleaned duration: {sum(ds_part2['duration']):.2f}s")
     
@@ -513,10 +496,9 @@ def combine_parts_if_needed():
 
 if __name__ == "__main__":
     try:
-        thimote_success = crawl_and_save_thimote()
-        rachida_success = crawl_and_save_rachida()
-        devinettes_success = crawl_and_save_devinettes()
-        
+        # thimote_success = crawl_and_save_thimote()
+        # rachida_success = crawl_and_save_rachida()
+        rachida_success,  thimote_success = True, True
         if not thimote_success and not rachida_success and not devinettes_success:
             logger.error("All crawling phases failed")
             exit(1)
