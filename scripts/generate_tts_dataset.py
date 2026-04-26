@@ -27,7 +27,7 @@ print(f"Cache directories set up in: {cache_dir}")
 print(f"Config directories set up in: {config_dir}")
 
 # Dataset paths
-path_1 = "s3://burkimbia/audios/cooked/mooreburkina/contes"
+path_1 = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/contes"
 enriched_path = f"{path_1}_enriched"
 tagged_path = f"{path_1}_tagged"
 final_path = f"{path_1}_final"
