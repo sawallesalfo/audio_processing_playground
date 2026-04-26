@@ -112,7 +112,7 @@ def remove_duplicates(dataset):
 def process_saved_devinettes():
     logger.info("=== Processing Devinettes dataset ===")
     try:
-        raw_path = "s3://burkimbia/audios/cooked/mooreburkina/devinettes_raw"
+        raw_path = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/devinettes_raw"
         ds = load_from_disk(raw_path, storage_options=storage_options)
 
         ds = ds.map(lambda x: {"group": extraire_id(x["id"])})
@@ -123,7 +123,7 @@ def process_saved_devinettes():
         ds = ds.map(clean_audio, with_indices=True)
         ds = ds.cast_column("clean", Audio(sampling_rate=44000))
 
-        processed_path = "s3://burkimbia/audios/cooked/mooreburkina/devinettes_processed"
+        processed_path = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/devinettes_processed"
         ds.save_to_disk(processed_path, storage_options=storage_options)
 
         logger.info(f"Saved to {processed_path}")

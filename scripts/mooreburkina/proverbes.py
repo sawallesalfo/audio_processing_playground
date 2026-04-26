@@ -236,7 +236,7 @@ def crawl_and_save_thimote():
         del datasets
         force_cleanup()
         
-        thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
+        thimote_raw_path = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/thimote_raw"
         ds_full_thimote.save_to_disk(thimote_raw_path, storage_options=storage_options)
         logger.info(f"Saved Thimote raw dataset to {thimote_raw_path}")
         
@@ -322,7 +322,7 @@ def crawl_and_save_rachida():
         ds_full_rachida = remove_duplicates(ds_full_rachida)
         logger.info(f"Rachida dataset final: {len(ds_full_rachida)} samples")
         
-        rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
+        rachida_raw_path = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/rachida_raw"
         ds_full_rachida.save_to_disk(rachida_raw_path, storage_options=storage_options)
         logger.info(f"Saved Rachida raw dataset to {rachida_raw_path}")
         
@@ -341,7 +341,7 @@ def process_saved_datasets():
 
     # Load Thimote if exists
     try:
-        thimote_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/thimote_raw"
+        thimote_raw_path = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/thimote_raw"
         ds_thimote = load_from_disk(thimote_raw_path, storage_options=storage_options)
         logger.info(f"Loaded Thimote dataset: {len(ds_thimote)} samples")
         
@@ -377,7 +377,7 @@ def process_saved_datasets():
     
     # Load and process Rachida if exists
     try:
-        rachida_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/rachida_raw"
+        rachida_raw_path = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/rachida_raw"
         ds_rachida = load_from_disk(rachida_raw_path, storage_options=storage_options)
         logger.info(f"Loaded Rachida dataset: {len(ds_rachida)} samples")
         
@@ -457,7 +457,7 @@ def process_saved_datasets():
     force_cleanup()
     
     # Save combined raw dataset
-    combined_raw_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes_raw"
+    combined_raw_path = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/proverbes_raw"
     ds_combined.save_to_disk(combined_raw_path, storage_options=storage_options)
     logger.info(f"Saved combined raw dataset: {len(ds_combined)} samples")
     
@@ -502,7 +502,7 @@ def process_saved_datasets():
         logger.info(f"Part {part_num + 1} cleaned duration: {sum(ds_part['duration']):.2f}s")
         
         # Save this part
-        part_path = f"s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_{part_num + 1}"
+        part_path = f"s3://burkimbia-store/audio/raw/cooked/mooreburkina/proverbes_part_{part_num + 1}"
         ds_part.save_to_disk(part_path, storage_options=storage_options)
         logger.info(f"Saved Part {part_num + 1} to {part_path}")
         
@@ -529,7 +529,7 @@ def combine_parts_if_needed():
         total_duration = 0
         
         for part_num in range(1, 5):
-            part_path = f"s3://burkimbia/audios/cooked/mooreburkina/proverbes_part_{part_num}"
+            part_path = f"s3://burkimbia-store/audio/raw/cooked/mooreburkina/proverbes_part_{part_num}"
             try:
                 ds_part = load_from_disk(part_path, storage_options=storage_options)
                 parts.append(ds_part)
@@ -556,7 +556,7 @@ def combine_parts_if_needed():
         logger.info(f"Combined dataset: {len(ds_combined)} samples, {total_duration:.2f}s total")
         
         # Save combined dataset
-        final_path = "s3://burkimbia/audios/cooked/mooreburkina/proverbes"
+        final_path = "s3://burkimbia-store/audio/raw/cooked/mooreburkina/proverbes"
         ds_combined.save_to_disk(final_path, storage_options=storage_options)
         logger.info(f"Saved final combined dataset to {final_path}")
         
